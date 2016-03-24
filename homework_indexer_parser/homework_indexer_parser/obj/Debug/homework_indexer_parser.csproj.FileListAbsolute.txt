@@ -16,3 +16,12 @@ C:\Users\apple\Desktop\IR\Program Git\InformationR\homework_indexer_parser\homew
 C:\Users\apple\Desktop\IR\Program Git\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.Form1.resources
 C:\Users\apple\Desktop\IR\Program Git\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.Properties.Resources.resources
 C:\Users\apple\Desktop\IR\Program Git\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.csproj.GenerateResource.Cache
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\bin\Debug\homework_indexer_parser.exe.config
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.exe
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.pdb
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\bin\Debug\homework_indexer_parser.exe
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\bin\Debug\homework_indexer_parser.pdb
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.csprojResolveAssemblyReference.cache
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.Form1.resources
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.Properties.Resources.resources
+D:\University\InformationR\Project\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.csproj.GenerateResource.Cache

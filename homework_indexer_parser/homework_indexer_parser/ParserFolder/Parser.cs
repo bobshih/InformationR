@@ -47,7 +47,7 @@ namespace homework_indexer_parser.ParserFolder
             var element = subfinal.GetElementsByTagName(tag);
             foreach (XmlElement leaf in element)
             {
-                parseResultBuffer[parseResultBuffer.Count - 1].AddRange(leaf.InnerText.Split(new char[] { /*',', '.',/*digits*/ '?', '!', '~', ' ', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries));
+                parseResultBuffer[parseResultBuffer.Count - 1].AddRange(leaf.InnerText.Split(new char[] { /*',', '.',/*digits*/ '?', '!', '~', ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries));
             }
         }
 

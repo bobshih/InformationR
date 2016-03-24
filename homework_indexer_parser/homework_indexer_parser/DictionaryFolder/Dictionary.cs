@@ -9,6 +9,7 @@ namespace homework_indexer_parser.DictionaryFolder
     class Dictionary
     {
         List<Posting> posting;
+        List<String> article;
         int maximumDoc;
 
         public Dictionary()
@@ -22,7 +23,16 @@ namespace homework_indexer_parser.DictionaryFolder
             throw new NotImplementedException();
         }
 
-        public void AddArticle(List<String> article)
+        #region setter
+
+        public void SetArticle(List<String> para)
+        {
+            article = para;
+        }
+
+        #endregion
+
+        public void AddArticle()
         {
             maximumDoc++;
             for (int i = 0; i < article.Count;i++ )
@@ -54,6 +64,11 @@ namespace homework_indexer_parser.DictionaryFolder
             }
 
             // sort
+            //SortPosting()
+        }
+
+        private void SortPosting()
+        {
             posting.Sort(
                 delegate(Posting p1, Posting p2)
                 {
@@ -64,12 +79,13 @@ namespace homework_indexer_parser.DictionaryFolder
 
         public void OutputFile()
         {
+            SortPosting();
             using (System.IO.StreamWriter file =
             new System.IO.StreamWriter("output.txt"))
             {
                 foreach (Posting p in posting)
                 {
-                    file.WriteLine(p.GetWord()+", "+p.GetFreq().ToString());
+                    file.WriteLine(p.GetWord()+", "+p.GetFreq().ToString() + " :");
 
                     file.WriteLine("<");
                     List<PostingInformation> position = p.getFreqList();
