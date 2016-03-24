@@ -1,57 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 
 namespace homework_indexer_parser.ParserFolder
 {
-    public static class Parser
+    /// <summary>
+    /// SGML Reader
+    /// </summary>
+    public class SGMLReader
     {
-        public static bool FileOpening
+        private List<List<string>> parseResultBuffer = new List<List<string>>();
+
+        /// <summary>
+        /// </summary>
+        public SGMLReader()
         {
-            get;
-            set;
         }
 
-
-        private static UInt64 CurrentDataIndex;
-        static Parser()
-        {
-            if (!File.Exists("parse.index"))
-            {
-                File.WriteAllText("parse.index", "0");
-                CurrentDataIndex = 0;
-            }
-            else
-            {
-                CurrentDataIndex = UInt64.Parse(File.ReadAllText("parse.index"));
-            }
-        }
-
-        public static void Open(string str)
+        /// <summary>
+        /// Read And Append Parsed Result To Current Buffer
+        /// </summary>
+        /// <param name="filename">file to parse</param>
+        public void ReadFile(string filename)
         {
             XmlDocument document = new XmlDocument();
             document.XmlResolver = null;
-            //XmlDocumentFragment frag = document.CreateDocumentFragment();
-            string test = File.ReadAllText(str);
+            string test = File.ReadAllText(filename);
             test = "<root>" + test.Substring(test.IndexOf("\n")) + "</root>";
-            //frag.InnerXml = test;
             document.LoadXml(test);
             var elements = document.GetElementsByTagName("REUTERS");
             foreach (XmlElement reuters in elements)
             {
-                reuters.GetElementsByTagName("");
+                parseResultBuffer.Add(new List<string>());
+                ParseFinal(reuters, "TITLE");
+                ParseFinal(reuters, "BODY");
+                PostProcess(parseResultBuffer[parseResultBuffer.Count - 1]);
             }
         }
 
-
-
-        static List<string> GetNext()
+        /// <summary>
+        /// Split Texts In [tag] and add to parseResultBuffer[last]
+        /// </summary>
+        private void ParseFinal(XmlElement subfinal, string tag)
         {
-            throw new NotImplementedException();
+            var element = subfinal.GetElementsByTagName(tag);
+            foreach (XmlElement leaf in element)
+            {
+                parseResultBuffer[parseResultBuffer.Count - 1].AddRange(leaf.InnerText.Split(new char[] { /*',', '.',/*digits*/ '?', '!', '~', ' ', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries));
+            }
+        }
+
+        /// <summary>
+        /// PostProcess For Tokens
+        /// </summary>
+        private void PostProcess(List<string> tokens)
+        {
+            for (int i = 0; i < tokens.Count; ++i)
+            {
+                if (tokens[i].EndsWith(",") || tokens[i].EndsWith("."))
+                {
+                    tokens[i] = tokens[i].Remove(tokens[i].Length - 1);
+                }
+                tokens[i] = tokens[i].ToLower();
+            }
+        }
+
+        /// <summary>
+        /// Get Next Article ,If No Article Avalible ,null is returned
+        /// </summary>
+        public List<string> GetNext()
+        {
+            if (parseResultBuffer.Count != 0)
+            {
+                var ret = parseResultBuffer[0];
+                parseResultBuffer.RemoveAt(0);
+                return ret;
+            }
+            return null;
         }
     }
 }
