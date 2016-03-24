@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace homework_indexer_parser.ParserFolder
@@ -39,6 +40,8 @@ namespace homework_indexer_parser.ParserFolder
             }
         }
 
+        #region ReadFile Implementation
+
         /// <summary>
         /// Split Texts In [tag] and add to parseResultBuffer[last]
         /// </summary>
@@ -47,24 +50,40 @@ namespace homework_indexer_parser.ParserFolder
             var element = subfinal.GetElementsByTagName(tag);
             foreach (XmlElement leaf in element)
             {
-                parseResultBuffer[parseResultBuffer.Count - 1].AddRange(leaf.InnerText.Split(new char[] { /*',', '.',/*digits*/ '?', '!', '~', ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries));
+                var nospace = leaf.InnerText.Split(new char[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                parseResultBuffer[parseResultBuffer.Count - 1].AddRange(nospace);
             }
+        }
+
+        private static void KeepAlnum(List<string> candidate)
+        {
         }
 
         /// <summary>
         /// PostProcess For Tokens
         /// </summary>
-        private void PostProcess(List<string> tokens)
+        private static void PostProcess(List<string> tokens)
         {
             for (int i = 0; i < tokens.Count; ++i)
             {
-                if (tokens[i].EndsWith(",") || tokens[i].EndsWith("."))
+                char last = tokens[i][tokens[i].Length - 1];
+                while (!char.IsLetterOrDigit(last))
                 {
-                    tokens[i] = tokens[i].Remove(tokens[i].Length - 1);
+                    tokens[i].Remove(tokens[i].Length - 1);
                 }
+
+                if (tokens[i].Length == 0)
+                {
+                    tokens.RemoveAt(i);
+                    --i;
+                    continue;
+                }
+
                 tokens[i] = tokens[i].ToLower();
             }
         }
+
+        #endregion
 
         /// <summary>
         /// Get Next Article ,If No Article Avalible ,null is returned
