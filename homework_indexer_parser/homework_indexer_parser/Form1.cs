@@ -1,12 +1,6 @@
 ﻿using homework_indexer_parser.DictionaryFolder;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace homework_indexer_parser
@@ -27,6 +21,7 @@ namespace homework_indexer_parser
             List<String> temp1 = new List<String> { "tor", "arbc", "gegee", "arpple", "tor", "awpwple", "aqbc", "twrwer" };
             dictionary.AddArticle(temp1);
             dictionary.OutputFile();
+            ParserFolder.Parser.Open("test\\reut2-000.sgm");
         }
     }
 }
