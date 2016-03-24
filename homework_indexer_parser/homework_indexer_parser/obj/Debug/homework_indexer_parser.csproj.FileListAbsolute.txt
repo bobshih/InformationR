@@ -1,0 +1,9 @@
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\bin\Debug\homework_indexer_parser.exe.config
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\bin\Debug\homework_indexer_parser.exe
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\bin\Debug\homework_indexer_parser.pdb
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.csprojResolveAssemblyReference.cache
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.Form1.resources
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.Properties.Resources.resources
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.csproj.GenerateResource.Cache
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.exe
+D:\University\InformationR\homework_indexer_parser\homework_indexer_parser\obj\Debug\homework_indexer_parser.pdb
