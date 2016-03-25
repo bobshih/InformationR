@@ -45,7 +45,8 @@ namespace homework_indexer_parser.DictionaryFolder
             writer.WriteLine(Word + ", " + Frequency.ToString() + " :");
 
             writer.WriteLine("<");
-            foreach (var docIndexListPair in docPostition)
+            var sortedDocPostition = docPostition.OrderBy((x) => x.Key);
+            foreach (var docIndexListPair in sortedDocPostition)
             {
                 StringBuilder line = new StringBuilder(docIndexListPair.Key + ", " + docIndexListPair.Value.Count + ":<");
                 List<int> positions = docIndexListPair.Value;

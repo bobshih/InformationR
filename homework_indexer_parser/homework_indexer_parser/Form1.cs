@@ -27,23 +27,18 @@ namespace homework_indexer_parser
             Stopwatch timer = new Stopwatch();
             timer.Start();
 
-            //Diable Button
-            MethodInvoker invokerBegin = delegate()
-            {
-                UpdateButtonState(false, "Parsing...");
-            };
-            this.Invoke(invokerBegin);
+            //UI
+            UpdateButtonState(false, "Parsing...");
 
             //Read File
             SGMLReader reader = new SGMLReader();
-            reader.ReadFile("test\\reut2-000.sgm");
+            for (int i = 0; i <= 21; ++i)
+            {
+                reader.ReadFile("test\\reut2-" + String.Format("{0:000}", i) + ".sgm");
+            }
 
             //UI
-            MethodInvoker invokerDictionary = delegate()
-            {
-                UpdateButtonState(false, "Creating Index...");
-            };
-            this.Invoke(invokerDictionary);
+            UpdateButtonState(false, "Creating Index...");
 
             //Indexing
             Dictionary dictionary = new Dictionary();
@@ -60,21 +55,13 @@ namespace homework_indexer_parser
             }
 
             //UI
-            MethodInvoker invokerOutput = delegate()
-            {
-                UpdateButtonState(false, "Writting File...");
-            };
-            this.Invoke(invokerOutput);
-            
+            UpdateButtonState(false, "Writting File...");
+
             //Serialize
             dictionary.OutputFile();
 
             //UI
-            MethodInvoker invokerend = delegate()
-            {
-                UpdateButtonState(false, "Index Createed");
-            };
-            this.Invoke(invokerend);
+            UpdateButtonState(false, "Index Createed");
             timer.Stop();
         }
     }
