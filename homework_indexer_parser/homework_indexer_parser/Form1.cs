@@ -13,7 +13,7 @@ namespace homework_indexer_parser
         public Form1()
         {
             InitializeComponent();
-            Button_Test.Click += TestFunction;
+            //Button_Test.Click += TestFunction;
         }
 
         private async void TestFunction(object sender, EventArgs e)
@@ -40,14 +40,15 @@ namespace homework_indexer_parser
             InvodeUpdateButtonState(false, "Parsing...");
 
             //Read File
-            SGMLReader reader = new SGMLReader();
+            WARCReader reader = new WARCReader();
 
+            /*
             for (int i = 0; i <= 21; ++i)
             {
                 reader.ReadFile("test\\reut2-" + String.Format("{0:000}", i) + ".sgm");
                 InvokeUpdateProgressBar(22, i);
             }
-
+            */
             //UI
             InvodeUpdateButtonState(false, "Creating Index...");
 
@@ -108,14 +109,19 @@ namespace homework_indexer_parser
         private void Button_Test_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Multiselect = true;
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                SGMLReader read = new SGMLReader();
-                Dictionary dic = new Dictionary();
-                read.ReadFile(openFileDialog1.FileName);
-                dic.AddArticle(read.GetNext());
-                MessageBox.Show("輸出");
-                
+                foreach (var path in openFileDialog1.FileNames)
+                {
+                    //try
+
+                    //Read
+                    //Process
+
+                    //catch not good file
+                }
+                /*Write To File*/
             }
         }
     }
