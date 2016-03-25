@@ -1,9 +1,7 @@
 ﻿using homework_indexer_parser.DictionaryFolder;
-using homework_indexer_parser.ParserFolder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,12 +12,22 @@ namespace homework_indexer_parser
         public Form1()
         {
             InitializeComponent();
-            button1.Click += button1_Click;
+            Button_Test.Click += TestFunction;
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        private void UpdateButtonState(bool enable, string text)
         {
+            Button_Test.Text = text;
+            Button_Test.Enabled = enable;
+        }
 
+        private async void TestFunction(object sender, EventArgs e)
+        {
+            MethodInvoker invoker = delegate()
+            {
+                UpdateButtonState(false, "CreatingIndex...");
+            };
+            this.Invoke(invoker);
             Dictionary dictionary = new Dictionary();
             //List<String> temp = new List<String> { "to", "abc", "ggee", "apple", "to", "apple", "abc", "twrwer" };
             //dictionary.AddArticle(temp);
@@ -44,7 +52,7 @@ namespace homework_indexer_parser
                 }
                 dictionary.SetArticle(article);
                 await Task.Run(new Action(dictionary.AddArticle));
-                
+
                 articles++;
                 timer.Stop();
                 TimeSpan timespan = timer.Elapsed;
@@ -53,6 +61,11 @@ namespace homework_indexer_parser
             }
             dictionary.OutputFile();
 
+            MethodInvoker invokerend = delegate()
+            {
+                UpdateButtonState(false, "Index Createed");
+            };
+            this.Invoke(invokerend);
         }
     }
 }
