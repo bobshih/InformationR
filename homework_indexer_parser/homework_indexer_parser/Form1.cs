@@ -41,7 +41,6 @@ namespace homework_indexer_parser
 
             //Read File
             WARCReader reader = new WARCReader();
-
             /*
             for (int i = 0; i <= 21; ++i)
             {
@@ -49,6 +48,10 @@ namespace homework_indexer_parser
                 InvokeUpdateProgressBar(22, i);
             }
             */
+
+            if (reader.ProcessedArticleCount == 0)
+                throw new NotImplementedException("reader not read anything yet");
+
             //UI
             InvodeUpdateButtonState(false, "Creating Index...");
 
@@ -116,10 +119,10 @@ namespace homework_indexer_parser
                 {
                     //try
 
-                    //Read
-                    //Process
+                    //Read(Parser)
+                    //Process(Parser&Dictionary)
 
-                    //catch not good file
+                    //catch "not good file"
                 }
                 /*Write To File*/
             }

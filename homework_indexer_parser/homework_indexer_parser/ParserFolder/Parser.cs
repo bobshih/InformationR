@@ -1,9 +1,7 @@
-﻿using System;
+﻿using mshtml;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
-using mshtml;
-using System.Windows.Forms;
 
 namespace homework_indexer_parser.ParserFolder
 {
