@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace homework_indexer_parser.ParserFolder
@@ -17,6 +16,7 @@ namespace homework_indexer_parser.ParserFolder
         /// </summary>
         public SGMLReader()
         {
+            ProcessedArticleCount = 0;
         }
 
         /// <summary>
@@ -38,6 +38,7 @@ namespace homework_indexer_parser.ParserFolder
                 ParseFinal(documentTokens, reuters, "BODY");
                 PostProcess(documentTokens);
                 parseResultBuffer.Enqueue(documentTokens);
+                ++ProcessedArticleCount;
             }
         }
 
@@ -113,6 +114,26 @@ namespace homework_indexer_parser.ParserFolder
                 return parseResultBuffer.Dequeue();
             }
             return null;
+        }
+
+        /// <summary>
+        /// Get Buffered (Not Get By GetNext()) Artical Count
+        /// </summary>
+        public int AvalibleArticleCount
+        {
+            get
+            {
+                return parseResultBuffer.Count;
+            }
+        }
+
+        /// <summary>
+        /// Get Processed (All) Artical Count
+        /// </summary>
+        public int ProcessedArticleCount
+        {
+            get;
+            private set;
         }
     }
 }
