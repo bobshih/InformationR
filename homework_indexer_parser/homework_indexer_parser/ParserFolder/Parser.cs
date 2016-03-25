@@ -11,7 +11,7 @@ namespace homework_indexer_parser.ParserFolder
     /// </summary>
     public class SGMLReader
     {
-        private List<List<string>> parseResultBuffer = new List<List<string>>();
+        private Queue<List<string>> parseResultBuffer = new Queue<List<string>>();
 
         /// <summary>
         /// </summary>
@@ -36,8 +36,8 @@ namespace homework_indexer_parser.ParserFolder
                 List<string> documentTokens = new List<string>();
                 ParseFinal(documentTokens, reuters, "TITLE");
                 ParseFinal(documentTokens, reuters, "BODY");
-                PostProcess(parseResultBuffer[parseResultBuffer.Count - 1]);
-                parseResultBuffer.Add(documentTokens);
+                PostProcess(documentTokens);
+                parseResultBuffer.Enqueue(documentTokens);
             }
         }
 
@@ -110,9 +110,7 @@ namespace homework_indexer_parser.ParserFolder
         {
             if (parseResultBuffer.Count != 0)
             {
-                var ret = parseResultBuffer[0];
-                parseResultBuffer.RemoveAt(0);
-                return ret;
+                return parseResultBuffer.Dequeue();
             }
             return null;
         }
