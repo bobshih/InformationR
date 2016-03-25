@@ -50,13 +50,36 @@ namespace homework_indexer_parser.ParserFolder
             var element = subfinal.GetElementsByTagName(tag);
             foreach (XmlElement leaf in element)
             {
-                var nospace = leaf.InnerText.Split(new char[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                var nospace = leaf.InnerText.Split(new char[] { ' ', '\n', '\r', '\t', '(', ')' ,'\u007f'/*???*/}, StringSplitOptions.RemoveEmptyEntries);
                 parseResultBuffer[parseResultBuffer.Count - 1].AddRange(nospace);
             }
         }
 
-        private static void KeepAlnum(List<string> candidate)
+        public static bool PostProcessOnce(ref string str)
         {
+            int finalalnum = str.Length - 1;
+            for (; finalalnum >= 0; --finalalnum)
+            {
+                if (char.IsLetterOrDigit(str[finalalnum]))
+                    break;
+            }
+            int firstalnum = 0;
+            for (; firstalnum <= finalalnum; ++firstalnum)
+            {
+                if (char.IsLetterOrDigit(str[firstalnum]))
+                    break;
+            }
+
+            if (firstalnum <= finalalnum)
+            {
+                str = str.Substring(firstalnum, finalalnum - firstalnum + 1);
+                str = str.ToLower();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -66,20 +89,14 @@ namespace homework_indexer_parser.ParserFolder
         {
             for (int i = 0; i < tokens.Count; ++i)
             {
-                char last = tokens[i][tokens[i].Length - 1];
-                while (!char.IsLetterOrDigit(last))
-                {
-                    tokens[i].Remove(tokens[i].Length - 1);
-                }
-
-                if (tokens[i].Length == 0)
+                string str = tokens[i];
+                if (!PostProcessOnce(ref str))
                 {
                     tokens.RemoveAt(i);
                     --i;
                     continue;
                 }
-
-                tokens[i] = tokens[i].ToLower();
+                tokens[i] = str;
             }
         }
 

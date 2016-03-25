@@ -1,4 +1,5 @@
 ﻿using homework_indexer_parser.DictionaryFolder;
+using homework_indexer_parser.ParserFolder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,6 +19,7 @@ namespace homework_indexer_parser
 
         private async void button1_Click(object sender, EventArgs e)
         {
+
             Dictionary dictionary = new Dictionary();
             //List<String> temp = new List<String> { "to", "abc", "ggee", "apple", "to", "apple", "abc", "twrwer" };
             //dictionary.AddArticle(temp);
