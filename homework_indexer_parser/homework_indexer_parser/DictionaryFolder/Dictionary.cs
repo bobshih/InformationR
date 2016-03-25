@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace homework_indexer_parser.DictionaryFolder
 {
     class Dictionary
     {
         List<Posting> posting;
-        List<String> article;
         int maximumDoc;
 
         public Dictionary()
@@ -23,19 +19,10 @@ namespace homework_indexer_parser.DictionaryFolder
             throw new NotImplementedException();
         }
 
-        #region setter
-
-        public void SetArticle(List<String> para)
-        {
-            article = para;
-        }
-
-        #endregion
-
-        public void AddArticle()
+        public void AddArticle(List<String> article)
         {
             maximumDoc++;
-            for (int i = 0; i < article.Count;i++ )
+            for (int i = 0; i < article.Count; i++)
             {
                 bool flag = true;
                 foreach (Posting p in posting)
@@ -85,13 +72,13 @@ namespace homework_indexer_parser.DictionaryFolder
             {
                 foreach (Posting p in posting)
                 {
-                    file.WriteLine(p.GetWord()+", "+p.GetFreq().ToString() + " :");
+                    file.WriteLine(p.GetWord() + ", " + p.GetFreq().ToString() + " :");
 
                     file.WriteLine("<");
                     List<PostingInformation> position = p.getFreqList();
                     foreach (PostingInformation postingInformation in position)
                     {
-                        String line = postingInformation.GetDocNum() + ", " + postingInformation.GetFreq()+":<";
+                        String line = postingInformation.GetDocNum() + ", " + postingInformation.GetFreq() + ":<";
                         List<int> positions = postingInformation.getPosition();
                         for (int i = 0; i < positions.Count; i++)
                         {

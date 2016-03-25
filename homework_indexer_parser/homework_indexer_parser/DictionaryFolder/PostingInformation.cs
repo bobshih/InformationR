@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace homework_indexer_parser.DictionaryFolder
 {
     class PostingInformation
     {
-        int docNum;
-        int freq;
-        List<int> postition = new List<int>();
+        private int docNum;
+        private int freq;
+        private List<int> postition = new List<int>();
 
         public PostingInformation()
         {

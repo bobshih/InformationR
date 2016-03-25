@@ -1,4 +1,5 @@
 ﻿using homework_indexer_parser.DictionaryFolder;
+using homework_indexer_parser.ParserFolder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,49 +24,58 @@ namespace homework_indexer_parser
 
         private async void TestFunction(object sender, EventArgs e)
         {
-            MethodInvoker invoker = delegate()
-            {
-                UpdateButtonState(false, "CreatingIndex...");
-            };
-            this.Invoke(invoker);
-            Dictionary dictionary = new Dictionary();
-            //List<String> temp = new List<String> { "to", "abc", "ggee", "apple", "to", "apple", "abc", "twrwer" };
-            //dictionary.AddArticle(temp);
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
 
-            //List<String> temp1 = new List<String> { "tor", "arbc", "gegee", "arpple", "tor", "awpwple", "aqbc", "twrwer" };
-            //dictionary.AddArticle(temp1);
-            //dictionary.OutputFile();
-            homework_indexer_parser.ParserFolder.SGMLReader reader = new homework_indexer_parser.ParserFolder.SGMLReader();
+            //Diable Button
+            MethodInvoker invokerBegin = delegate()
+            {
+                UpdateButtonState(false, "Parsing...");
+            };
+            this.Invoke(invokerBegin);
+
+            //Read File
+            SGMLReader reader = new SGMLReader();
             reader.ReadFile("test\\reut2-000.sgm");
 
-            int articles = 0;
-            Stopwatch timer = new Stopwatch();
-
-            while (true)
+            //UI
+            MethodInvoker invokerDictionary = delegate()
             {
-                timer.Start();
+                UpdateButtonState(false, "Creating Index...");
+            };
+            this.Invoke(invokerDictionary);
 
-                List<String> article = reader.GetNext();
-                if (article == null)
-                {
-                    break;
-                }
-                dictionary.SetArticle(article);
-                await Task.Run(new Action(dictionary.AddArticle));
+            //Indexing
+            Dictionary dictionary = new Dictionary();
 
-                articles++;
-                timer.Stop();
+            List<String> article;
+            while ((article = reader.GetNext()) != null)
+            {
+                await Task.Run(() => dictionary.AddArticle(article));
+
                 TimeSpan timespan = timer.Elapsed;
                 label1.Text = String.Format("{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
-                progressBar1.Value = articles / 10;
+                progressBar1.Maximum = reader.ProcessedArticleCount;
+                progressBar1.Value = reader.ProcessedArticleCount - reader.AvalibleArticleCount;
             }
+
+            //UI
+            MethodInvoker invokerOutput = delegate()
+            {
+                UpdateButtonState(false, "Writting File...");
+            };
+            this.Invoke(invokerOutput);
+            
+            //Serialize
             dictionary.OutputFile();
 
+            //UI
             MethodInvoker invokerend = delegate()
             {
                 UpdateButtonState(false, "Index Createed");
             };
             this.Invoke(invokerend);
+            timer.Stop();
         }
     }
 }

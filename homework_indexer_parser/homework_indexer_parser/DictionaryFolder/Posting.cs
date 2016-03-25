@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace homework_indexer_parser.DictionaryFolder
 {
@@ -66,10 +64,6 @@ namespace homework_indexer_parser.DictionaryFolder
 
         public PostingInformation GetFinalPostingInformation()
         {
-            if (docPostition.Count == 0)
-            {
-                return null;
-            }
             return docPostition.LastOrDefault();
         }
 
