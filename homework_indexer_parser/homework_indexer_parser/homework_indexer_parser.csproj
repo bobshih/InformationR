@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="DictionaryFolder\Dictionary.cs" />
     <Compile Include="DictionaryFolder\Posting.cs" />
-    <Compile Include="DictionaryFolder\PostingInformation.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
