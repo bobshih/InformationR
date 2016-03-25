@@ -110,10 +110,10 @@ namespace homework_indexer_parser
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                System.IO.StreamReader sr = new
-                   System.IO.StreamReader(openFileDialog1.FileName);
-                MessageBox.Show(sr.ReadToEnd());
-                sr.Close();
+                SGMLReader read = new SGMLReader();
+                read.ReadFile(openFileDialog1.FileName);
+                MessageBox.Show("輸出");
+                
             }
         }
     }
