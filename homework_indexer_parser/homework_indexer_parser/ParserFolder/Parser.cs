@@ -33,10 +33,11 @@ namespace homework_indexer_parser.ParserFolder
             var elements = document.GetElementsByTagName("REUTERS");
             foreach (XmlElement reuters in elements)
             {
-                parseResultBuffer.Add(new List<string>());
-                ParseFinal(reuters, "TITLE");
-                ParseFinal(reuters, "BODY");
+                List<string> documentTokens = new List<string>();
+                ParseFinal(documentTokens, reuters, "TITLE");
+                ParseFinal(documentTokens, reuters, "BODY");
                 PostProcess(parseResultBuffer[parseResultBuffer.Count - 1]);
+                parseResultBuffer.Add(documentTokens);
             }
         }
 
@@ -45,13 +46,13 @@ namespace homework_indexer_parser.ParserFolder
         /// <summary>
         /// Split Texts In [tag] and add to parseResultBuffer[last]
         /// </summary>
-        private void ParseFinal(XmlElement subfinal, string tag)
+        private static void ParseFinal(List<string> list, XmlElement subfinal, string tag)
         {
             var element = subfinal.GetElementsByTagName(tag);
             foreach (XmlElement leaf in element)
             {
-                var nospace = leaf.InnerText.Split(new char[] { ' ', '\n', '\r', '\t', '(', ')' ,'\u007f'/*???*/}, StringSplitOptions.RemoveEmptyEntries);
-                parseResultBuffer[parseResultBuffer.Count - 1].AddRange(nospace);
+                var nospace = leaf.InnerText.Split(new char[] { ' ', '\n', '\r', '\t', '(', ')', '\u007f'/*???*/}, StringSplitOptions.RemoveEmptyEntries);
+                list.AddRange(nospace);
             }
         }
 
