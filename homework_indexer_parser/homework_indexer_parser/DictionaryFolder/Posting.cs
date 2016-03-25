@@ -1,71 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace homework_indexer_parser.DictionaryFolder
 {
-    class Posting
+    internal class Posting
     {
-        String word;
-        List<PostingInformation> docPostition;
-
-        public Posting()
+        public String Word
         {
-            docPostition = new List<PostingInformation>();
+            get;
+            set;
+        }
+        private Dictionary<int, List<int>> docPostition = new Dictionary<int, List<int>>();
+        public int Frequency
+        {
+            get;
+            private set;
         }
 
-        public Posting(String newWord, int doc, int position)
+        public Posting(String newWord)
         {
-            word = newWord;
-            docPostition = new List<PostingInformation>();
-            SetNewPostingInformation(doc, position);
+            Word = newWord;
         }
 
-        #region getter
-
-        public String GetWord()
+        public void AddPostingInformation(int docNum, int position)
         {
-            return word;
-        }
-
-        public int GetFreq()
-        {
-            int sumFreq = 0;
-            for (int i = 0; i < docPostition.Count; i++)
+            List<int> postingIndex;
+            if (!docPostition.TryGetValue(docNum, out postingIndex))
             {
-                sumFreq += docPostition[i].GetFreq();
+                docPostition.Add(docNum, new List<int>(new int[] { position }));
             }
-            return sumFreq;
+            else
+            {
+                postingIndex.Add(position);
+            }
+            ++Frequency;
         }
 
-        public List<PostingInformation> getFreqList()
+        internal void WriteToFile(StreamWriter writer)
         {
-            return docPostition;
+
+            writer.WriteLine(Word + ", " + Frequency.ToString() + " :");
+
+            writer.WriteLine("<");
+            foreach (var docIndexListPair in docPostition)
+            {
+                StringBuilder line = new StringBuilder(docIndexListPair.Key + ", " + docIndexListPair.Value.Count + ":<");
+                List<int> positions = docIndexListPair.Value;
+                for (int i = 0; i < positions.Count; i++)
+                {
+                    line.Append(positions[i]);
+                    if (i != positions.Count - 1)
+                    {
+                        line.Append(", ");
+                    }
+                }
+                line.Append(">;");
+                writer.WriteLine(line);
+            }
+            writer.WriteLine(">");
         }
-
-        #endregion
-
-        #region setter
-
-        public void SetWord(String w)
-        {
-            word = w;
-        }
-
-        public void SetNewPostingInformation(int docNum, int position)
-        {
-            PostingInformation postingInformation = new PostingInformation();
-            postingInformation.SetDocNum(docNum);
-            postingInformation.AddPostingInformation(position);
-            docPostition.Add(postingInformation);
-        }
-
-        #endregion
-
-        public PostingInformation GetFinalPostingInformation()
-        {
-            return docPostition.LastOrDefault();
-        }
-
     }
 }
