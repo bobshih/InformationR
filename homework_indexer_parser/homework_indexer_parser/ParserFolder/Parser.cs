@@ -10,13 +10,13 @@ namespace homework_indexer_parser.ParserFolder
     /// <summary>
     /// SGML Reader
     /// </summary>
-    public class SGMLReader
+    public class WARCReader
     {
         private Queue<List<string>> parseResultBuffer = new Queue<List<string>>();
 
         /// <summary>
         /// </summary>
-        public SGMLReader()
+        public WARCReader()
         {
             ProcessedArticleCount = 0;
         }
@@ -30,57 +30,34 @@ namespace homework_indexer_parser.ParserFolder
             HTMLDocument doc = new HTMLDocument();
             IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
 
-            WebBrowser web = new WebBrowser();
-            
-
-            XmlDocument document = new XmlDocument();
-            document.XmlResolver = null;
             string htmlFile = File.ReadAllText(filename);
-            int begin = htmlFile.IndexOf("<body>");
-            int end = htmlFile.IndexOf("</body>") + 7;
+            int begin = htmlFile.IndexOf("<html>");
+            int end = htmlFile.IndexOf("</html>") + 7;
             htmlFile = htmlFile.Substring(begin, end - begin);
 
             doc2.write(htmlFile);
-            var temp = doc.getElementsByTagName("body");
+            var temp = doc.getElementsByTagName("html");
 
 
             foreach (IHTMLElement element in temp)
             {
-                List<string> documentTokens = new List<string>();
-                documentTokens.AddRange( element.innerText.Split(new char[] { ' ', '\n', '\r', '\t', '(', ')', '\u007f'/*???*/}, StringSplitOptions.RemoveEmptyEntries));
-                PostProcess(documentTokens);
-                parseResultBuffer.Enqueue(documentTokens);
+                List<string> tokens = ParseElement(element);
+                parseResultBuffer.Enqueue(tokens);
                 ++ProcessedArticleCount;
             }
-            /*document.LoadXml(htmlFile);
-            var elements = document.GetElementsByTagName("REUTERS");
-            foreach (XmlElement reuters in elements)
-            {
-                List<string> documentTokens = new List<string>();
-                ParseFinal(documentTokens, reuters, "TITLE");
-                ParseFinal(documentTokens, reuters, "BODY");
-                PostProcess(documentTokens);
-                parseResultBuffer.Enqueue(documentTokens);
-                ++ProcessedArticleCount;
-            }*/
         }
 
         #region ReadFile Implementation
 
-        /// <summary>
-        /// Split Texts In [tag] and add to parseResultBuffer[last]
-        /// </summary>
-        private static void ParseFinal(List<string> list, XmlElement subfinal, string tag)
+        private static List<string> ParseElement(IHTMLElement element)
         {
-            var element = subfinal.GetElementsByTagName(tag);
-            foreach (XmlElement leaf in element)
-            {
-                var nospace = leaf.InnerText.Split(new char[] { ' ', '\n', '\r', '\t', '(', ')', '\u007f'/*???*/}, StringSplitOptions.RemoveEmptyEntries);
-                list.AddRange(nospace);
-            }
+            List<string> documentTokens = new List<string>();
+            documentTokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '\u007f'/*???*/}, StringSplitOptions.RemoveEmptyEntries));
+            PostProcess(documentTokens);
+            return documentTokens;
         }
 
-        public static bool PostProcessOnce(ref string str)
+        private static bool PostProcessOnce(ref string str)
         {
             int finalalnum = str.Length - 1;
             for (; finalalnum >= 0; --finalalnum)
