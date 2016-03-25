@@ -28,19 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Button_Test = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
+            this.Button_Test = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.Button_Test.Location = new System.Drawing.Point(122, 55);
-            this.Button_Test.Name = "button1";
-            this.Button_Test.Size = new System.Drawing.Size(140, 51);
-            this.Button_Test.TabIndex = 0;
-            this.Button_Test.Text = "button1";
-            this.Button_Test.UseVisualStyleBackColor = true;
             // 
             // progressBar1
             // 
@@ -57,16 +48,28 @@
             this.label1.Size = new System.Drawing.Size(0, 12);
             this.label1.TabIndex = 2;
             // 
+            // Button_Test
+            // 
+            this.Button_Test.Image = global::homework_indexer_parser.Properties.Resources.button1;
+            this.Button_Test.Location = new System.Drawing.Point(122, 55);
+            this.Button_Test.Name = "Button_Test";
+            this.Button_Test.Size = new System.Drawing.Size(165, 70);
+            this.Button_Test.TabIndex = 0;
+            this.Button_Test.Text = "output";
+            this.Button_Test.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::homework_indexer_parser.Properties.Resources.background1;
             this.ClientSize = new System.Drawing.Size(406, 287);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.Button_Test);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Information Retrieval";
             this.ResumeLayout(false);
             this.PerformLayout();
 
