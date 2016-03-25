@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using mshtml;
+using System.Windows.Forms;
 
 namespace homework_indexer_parser.ParserFolder
 {
@@ -25,11 +27,32 @@ namespace homework_indexer_parser.ParserFolder
         /// <param name="filename">file to parse</param>
         public void ReadFile(string filename)
         {
+            HTMLDocument doc = new HTMLDocument();
+            IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
+
+            WebBrowser web = new WebBrowser();
+            
+
             XmlDocument document = new XmlDocument();
             document.XmlResolver = null;
-            string test = File.ReadAllText(filename);
-            test = "<root>" + test.Substring(test.IndexOf("\n")) + "</root>";
-            document.LoadXml(test);
+            string htmlFile = File.ReadAllText(filename);
+            int begin = htmlFile.IndexOf("<body>");
+            int end = htmlFile.IndexOf("</body>") + 7;
+            htmlFile = htmlFile.Substring(begin, end - begin);
+
+            doc2.write(htmlFile);
+            var temp = doc.getElementsByTagName("body");
+
+
+            foreach (IHTMLElement element in temp)
+            {
+                List<string> documentTokens = new List<string>();
+                documentTokens.AddRange( element.innerText.Split(new char[] { ' ', '\n', '\r', '\t', '(', ')', '\u007f'/*???*/}, StringSplitOptions.RemoveEmptyEntries));
+                PostProcess(documentTokens);
+                parseResultBuffer.Enqueue(documentTokens);
+                ++ProcessedArticleCount;
+            }
+            /*document.LoadXml(htmlFile);
             var elements = document.GetElementsByTagName("REUTERS");
             foreach (XmlElement reuters in elements)
             {
@@ -39,7 +62,7 @@ namespace homework_indexer_parser.ParserFolder
                 PostProcess(documentTokens);
                 parseResultBuffer.Enqueue(documentTokens);
                 ++ProcessedArticleCount;
-            }
+            }*/
         }
 
         #region ReadFile Implementation

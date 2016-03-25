@@ -42,12 +42,13 @@ namespace homework_indexer_parser
             //Read File
             SGMLReader reader = new SGMLReader();
 
+            /*
             for (int i = 0; i <= 21; ++i)
             {
                 reader.ReadFile("test\\reut2-" + String.Format("{0:000}", i) + ".sgm");
                 InvokeUpdateProgressBar(22, i);
             }
-
+            */
             //UI
             InvodeUpdateButtonState(false, "Creating Index...");
 
