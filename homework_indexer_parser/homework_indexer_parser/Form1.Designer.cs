@@ -57,6 +57,7 @@
             this.Button_Test.TabIndex = 0;
             this.Button_Test.Text = "output";
             this.Button_Test.UseVisualStyleBackColor = true;
+            this.Button_Test.Click += new System.EventHandler(this.Button_Test_Click);
             // 
             // Form1
             // 
