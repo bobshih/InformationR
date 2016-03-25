@@ -111,7 +111,9 @@ namespace homework_indexer_parser
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 SGMLReader read = new SGMLReader();
+                Dictionary dic = new Dictionary();
                 read.ReadFile(openFileDialog1.FileName);
+                dic.AddArticle(read.GetNext());
                 MessageBox.Show("輸出");
                 
             }
