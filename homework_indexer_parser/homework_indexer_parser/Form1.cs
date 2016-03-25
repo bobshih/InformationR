@@ -16,29 +16,40 @@ namespace homework_indexer_parser
             Button_Test.Click += TestFunction;
         }
 
-        private void UpdateButtonState(bool enable, string text)
-        {
-            Button_Test.Text = text;
-            Button_Test.Enabled = enable;
-        }
-
         private async void TestFunction(object sender, EventArgs e)
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
+            Timer clock = new Timer();
+            clock.Interval = 3;
+            clock.Tick += (s, ev) =>
+            {
+                TimeSpan timespan = timer.Elapsed;
+                label1.Text = String.Format("{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
+            };
+            timer.Start();
+            clock.Start();
+            await Task.Run(() => InnerTestFunction());
+            clock.Stop();
+            timer.Stop();
+        }
 
+        private void InnerTestFunction()
+        {
             //UI
-            UpdateButtonState(false, "Parsing...");
+            InvodeUpdateButtonState(false, "Parsing...");
 
             //Read File
             SGMLReader reader = new SGMLReader();
+
             for (int i = 0; i <= 21; ++i)
             {
                 reader.ReadFile("test\\reut2-" + String.Format("{0:000}", i) + ".sgm");
+                InvokeUpdateProgressBar(22, i);
             }
 
             //UI
-            UpdateButtonState(false, "Creating Index...");
+            InvodeUpdateButtonState(false, "Creating Index...");
 
             //Indexing
             Dictionary dictionary = new Dictionary();
@@ -46,23 +57,45 @@ namespace homework_indexer_parser
             List<String> article;
             while ((article = reader.GetNext()) != null)
             {
-                await Task.Run(() => dictionary.AddArticle(article));
-
-                TimeSpan timespan = timer.Elapsed;
-                label1.Text = String.Format("{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
-                progressBar1.Maximum = reader.ProcessedArticleCount;
-                progressBar1.Value = reader.ProcessedArticleCount - reader.AvalibleArticleCount;
+                dictionary.AddArticle(article);
+                InvokeUpdateProgressBar(reader.ProcessedArticleCount, reader.ProcessedArticleCount - reader.AvalibleArticleCount);
             }
 
             //UI
-            UpdateButtonState(false, "Writting File...");
+            InvodeUpdateButtonState(false, "Writting File...");
+            InvokeUpdateProgressBar(100, 0);
 
             //Serialize
             dictionary.OutputFile();
 
             //UI
-            UpdateButtonState(false, "Index Createed");
-            timer.Stop();
+            InvodeUpdateButtonState(false, "Index Createed");
+        }
+
+        private void InvodeUpdateButtonState(bool enable, string text)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => InvodeUpdateButtonState(enable, text)));
+            }
+            else
+            {
+                Button_Test.Text = text;
+                Button_Test.Enabled = enable;
+            }
+        }
+
+        private void InvokeUpdateProgressBar(int max, int current)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => InvokeUpdateProgressBar(max, current)));
+            }
+            else
+            {
+                progressBar1.Maximum = max;
+                progressBar1.Value = current;
+            }
         }
     }
 }
