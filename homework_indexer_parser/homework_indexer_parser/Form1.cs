@@ -67,9 +67,16 @@ namespace homework_indexer_parser
 
             //Serialize
             dictionary.OutputFile();
+            InvokeUpdateProgressBar(100, 50);
+
+            //Creat Dictionary File
+            InvodeUpdateButtonState(false, "Writing Dictionary");
+            dictionary.OutputDictionary();
+            InvokeUpdateProgressBar(100, 75);
 
             //UI
             InvodeUpdateButtonState(false, "Index Createed");
+            InvokeUpdateProgressBar(100, 100);
         }
 
         private void InvodeUpdateButtonState(bool enable, string text)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace homework_indexer_parser.DictionaryFolder
@@ -41,13 +42,23 @@ namespace homework_indexer_parser.DictionaryFolder
 
         public void OutputFile()
         {
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter("output.txt"))
+            using (StreamWriter file = new StreamWriter("output.txt"))
             {
                 var sortedPosting = dic.Values.OrderBy((p) => p.Word);
                 foreach (Posting p in sortedPosting)
                 {
                     p.WriteToFile(file);
+                }
+            }
+        }
+
+        public void OutputDictionary()
+        {
+            using (StreamWriter file = new StreamWriter("Dictionary.txt"))
+            {
+                foreach (String word in dic.Keys.OrderBy((p)=>p))
+                {
+                    file.WriteLine(word);
                 }
             }
         }
