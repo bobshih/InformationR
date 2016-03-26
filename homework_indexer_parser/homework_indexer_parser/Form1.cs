@@ -16,6 +16,7 @@ namespace homework_indexer_parser
             //Button_Test.Click += TestFunction;
         }
 
+        #region somthing useful...
         private async void TestFunction(object sender, EventArgs e)
         {
             Stopwatch timer = new Stopwatch();
@@ -108,6 +109,7 @@ namespace homework_indexer_parser
                 progressBar1.Value = current;
             }
         }
+        #endregion
 
         private void Button_Test_Click(object sender, EventArgs e)
         {

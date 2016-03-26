@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+///
+///Contributor : 101820302 101820307
+///
+
 namespace homework_indexer_parser.DictionaryFolder
 {
     class Dictionary
