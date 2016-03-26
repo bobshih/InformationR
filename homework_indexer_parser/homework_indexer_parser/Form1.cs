@@ -113,19 +113,32 @@ namespace homework_indexer_parser
 
         private void Button_Test_Click(object sender, EventArgs e)
         {
+            WARCReader reader = new WARCReader();
+            Dictionary dic = new Dictionary();
+            
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             openFileDialog1.Multiselect = true;
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 foreach (var path in openFileDialog1.FileNames)
                 {
+                    try {                       
+                        reader.ReadFile(path);
+                        dic.AddArticle(reader.GetNext());
+                        System.Console.WriteLine("成功讀取檔案");
+                    }
+                    catch {
+                        System.Console.WriteLine("出錯");
+                    }
                     //try
-
+                   
                     //Read(Parser)
                     //Process(Parser&Dictionary)
 
                     //catch "not good file"
                 }
+                dic.OutputFile();
+                dic.OutputDictionary();
                 /*Write To File*/
             }
         }
