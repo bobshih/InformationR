@@ -26,7 +26,6 @@ namespace homework_indexer_parser
             clock.Tick += (s, ev) =>
             {
                 TimeSpan timespan = timer.Elapsed;
-                label_TimeSpan.Text = String.Format("{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
             };
             timer.Start();
             clock.Start();
@@ -93,11 +92,6 @@ namespace homework_indexer_parser
             }
             else
             {
-                label_State.Text = "State: " + text;
-                //Button_Test.Text = text;
-                //Button_Test.Enabled = enable;
-                button_ChooseFile.Enabled = enable;
-                button_ReadAllFiles.Enabled = enable;
             }
         }
 
@@ -109,80 +103,25 @@ namespace homework_indexer_parser
             }
             else
             {
-                progressBar1.Maximum = max;
-                progressBar1.Value = current;
             }
         }
         #endregion
 
-        private void Button_Test_Click(object sender, EventArgs e)
+        private void ParseFile(string path)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Multiselect = true;
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                foreach (var path in openFileDialog1.FileNames)
-                {
-                    //try
 
-                    //Read(Parser)
-                    //Process(Parser&Dictionary)
-
-                    //catch "not good file"
-                }
-                /*Write To File*/
-            }
         }
 
-        private void button_ChooseFile_Click(object sender, EventArgs e)
+        private void Button_Start_Click(object sender, EventArgs e)
         {
-            // 開啟檔案選擇視窗
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Multiselect = true;
-            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = false;
+            dialog.ValidateNames = true;
+            var result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
-                foreach (String path in fileDialog.FileNames)
-                {
-                    if (!path.EndsWith(".warc"))
-                    {
-                        //MessageBox.Show(path + " 的檔案格式不是.marc", "檔案格式不符合");
-                        continue;
-                    }
-                    dataGridView_FilePath.Rows.Add(path);
 
-                    //try
-
-                    //Read(Parser)
-                    //Process(Parser&Dictionary)
-
-                    //catch "not good file"
-                }
-                /*Write To File*/
             }
-        }
-
-        private void dataGridView_FilePath_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == 1)
-            {
-                //MessageBox.Show("here");
-                //MessageBox.Show(dataGridView_FilePath.Rows[e.RowIndex].Cells[0].Value.ToString());
-                RunParsing(new List<String>(new String[] { dataGridView_FilePath.Rows[e.RowIndex].Cells[0].Value.ToString() }));
-                //DataGridViewDisableButtonCell button = (DataGridViewDisableButtonCell)dataGridView_FilePath.Rows[e.RowIndex].Cells[];
-                //button.Enabled = false;
-            }
-        }
-
-        private void button_ReadAllFiles_Click(object sender, EventArgs e)
-        {
-            List<String> paths = new List<string>();
-            for (int i = 0; i < dataGridView_FilePath.Rows.Count; i++)
-            {
-                paths.Add(dataGridView_FilePath.Rows[i].Cells[0].Value.ToString());
-                //dataGridView_FilePath_CellContentClick(new object(), new DataGridViewCellEventArgs(1, i));
-            }
-
-            RunParsing(paths);
         }
 
     }
