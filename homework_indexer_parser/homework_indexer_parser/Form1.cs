@@ -155,11 +155,53 @@ namespace homework_indexer_parser
                 {
                     File.WriteAllLines(dialog.FileName, ListBox_FileName.GetStringList().ToArray());
                 }
-                catch(IOException)
+                catch (IOException)
                 {
                     MessageBox.Show("Fail to write file", "WARNNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+
+        private void Button_LoadList_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;
+            dialog.ValidateNames = true;
+            dialog.CheckFileExists = true;
+            var result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (var path in dialog.FileNames)
+                {
+                    ReadPathFromFile(path);
+                    throw new NotImplementedException("Add List");
+                }
+            }
+            ListBox_FileName.RemoveDuplicate();
+        }
+
+        private List<string> ReadPathFromFile(string path)
+        {
+            List<string> paths;
+            try
+            {
+                paths = new List<string>(File.ReadAllLines(path));
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Read file '" + path + "' failed", "WARNNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return new List<string>();
+            }
+
+            foreach (var p in paths)
+            {
+                if (!File.Exists(p))
+                {
+                    paths.Remove(p);
+                }
+            }
+
+            return paths;
         }
     }
 }

@@ -34,7 +34,7 @@
             this.Button_AddFile = new System.Windows.Forms.Button();
             this.Button_RemoveFile = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Button_LoadList = new System.Windows.Forms.Button();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
             // 
@@ -110,22 +110,23 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button_SaveList_Click);
             // 
-            // button2
+            // Button_LoadList
             // 
-            this.button2.AutoSize = true;
-            this.button2.Location = new System.Drawing.Point(264, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(68, 38);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "AddList";
-            this.button2.UseVisualStyleBackColor = true;
+            this.Button_LoadList.AutoSize = true;
+            this.Button_LoadList.Location = new System.Drawing.Point(264, 12);
+            this.Button_LoadList.Name = "Button_LoadList";
+            this.Button_LoadList.Size = new System.Drawing.Size(68, 38);
+            this.Button_LoadList.TabIndex = 9;
+            this.Button_LoadList.Text = "AddList";
+            this.Button_LoadList.UseVisualStyleBackColor = true;
+            this.Button_LoadList.Click += new System.EventHandler(this.Button_LoadList_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(601, 359);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.Button_LoadList);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ListBox_FileName);
             this.Controls.Add(tableLayoutPanel1);
@@ -148,7 +149,7 @@
         private System.Windows.Forms.Button Button_AddFile;
         private System.Windows.Forms.Button Button_RemoveFile;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button Button_LoadList;
 
     }
 }
