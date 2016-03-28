@@ -3,6 +3,7 @@ using homework_indexer_parser.ParserFolder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -142,10 +143,23 @@ namespace homework_indexer_parser
             }
         }
 
-        int tempi = 0;
         private void Button_SaveList_Click(object sender, EventArgs e)
         {
-            ListBox_FileName.Items.AddRange(new string[] { "123" + tempi, "456" + tempi, "789" + tempi });
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.CheckPathExists = true;
+            dialog.OverwritePrompt = true;
+            var result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    File.WriteAllLines(dialog.FileName, ListBox_FileName.GetStringList().ToArray());
+                }
+                catch(IOException)
+                {
+                    MessageBox.Show("Fail to write file", "WARNNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
     }
 }
