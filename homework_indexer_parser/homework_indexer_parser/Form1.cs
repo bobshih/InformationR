@@ -166,7 +166,7 @@ namespace homework_indexer_parser
             if (e.ColumnIndex == 1)
             {
                 //MessageBox.Show("here");
-                MessageBox.Show(dataGridView_FilePath.Rows[e.RowIndex].Cells[0].Value.ToString());
+                //MessageBox.Show(dataGridView_FilePath.Rows[e.RowIndex].Cells[0].Value.ToString());
                 RunParsing(new List<String>(new String[] { dataGridView_FilePath.Rows[e.RowIndex].Cells[0].Value.ToString() }));
                 //DataGridViewDisableButtonCell button = (DataGridViewDisableButtonCell)dataGridView_FilePath.Rows[e.RowIndex].Cells[];
                 //button.Enabled = false;
