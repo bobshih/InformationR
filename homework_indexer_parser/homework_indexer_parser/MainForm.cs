@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace homework_indexer_parser
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             //Button_Test.Click += TestFunction;
@@ -113,6 +113,7 @@ namespace homework_indexer_parser
 
         }
 
+        #region UI CALLBACK
         private void Button_Start_Click(object sender, EventArgs e)
         {
         }
@@ -175,6 +176,7 @@ namespace homework_indexer_parser
             }
             ListBox_FileName.RemoveDuplicate();
         }
+#endregion
 
         private List<string> ReadPathFromFile(string path)
         {

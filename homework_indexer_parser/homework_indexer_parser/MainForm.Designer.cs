@@ -1,6 +1,6 @@
 ﻿namespace homework_indexer_parser
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// 設計工具所需的變數。
