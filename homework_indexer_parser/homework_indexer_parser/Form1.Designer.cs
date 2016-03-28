@@ -67,11 +67,9 @@
             // ListBox_FileName
             // 
             this.ListBox_FileName.FormattingEnabled = true;
-            this.ListBox_FileName.HorizontalExtent = 100000;
             this.ListBox_FileName.HorizontalScrollbar = true;
             this.ListBox_FileName.ItemHeight = 15;
             this.ListBox_FileName.Location = new System.Drawing.Point(12, 67);
-            this.ListBox_FileName.MultiColumn = true;
             this.ListBox_FileName.Name = "ListBox_FileName";
             this.ListBox_FileName.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.ListBox_FileName.Size = new System.Drawing.Size(320, 124);
