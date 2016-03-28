@@ -67,18 +67,20 @@
             // ListBox_FileName
             // 
             this.ListBox_FileName.FormattingEnabled = true;
+            this.ListBox_FileName.HorizontalExtent = 100000;
             this.ListBox_FileName.HorizontalScrollbar = true;
             this.ListBox_FileName.ItemHeight = 15;
-            this.ListBox_FileName.Location = new System.Drawing.Point(42, 67);
+            this.ListBox_FileName.Location = new System.Drawing.Point(12, 67);
             this.ListBox_FileName.MultiColumn = true;
             this.ListBox_FileName.Name = "ListBox_FileName";
             this.ListBox_FileName.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.ListBox_FileName.Size = new System.Drawing.Size(290, 109);
+            this.ListBox_FileName.Size = new System.Drawing.Size(320, 124);
             this.ListBox_FileName.TabIndex = 8;
             // 
             // Button_AddFile
             // 
-            this.Button_AddFile.Location = new System.Drawing.Point(42, 12);
+            this.Button_AddFile.AutoSize = true;
+            this.Button_AddFile.Location = new System.Drawing.Point(12, 12);
             this.Button_AddFile.Name = "Button_AddFile";
             this.Button_AddFile.Size = new System.Drawing.Size(68, 38);
             this.Button_AddFile.TabIndex = 6;
@@ -88,7 +90,8 @@
             // 
             // Button_RemoveFile
             // 
-            this.Button_RemoveFile.Location = new System.Drawing.Point(116, 12);
+            this.Button_RemoveFile.AutoSize = true;
+            this.Button_RemoveFile.Location = new System.Drawing.Point(96, 12);
             this.Button_RemoveFile.Name = "Button_RemoveFile";
             this.Button_RemoveFile.Size = new System.Drawing.Size(68, 38);
             this.Button_RemoveFile.TabIndex = 6;
@@ -98,15 +101,18 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(190, 12);
+            this.button1.AutoSize = true;
+            this.button1.Location = new System.Drawing.Point(180, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(68, 38);
             this.button1.TabIndex = 9;
             this.button1.Text = "SaveList";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button_SaveList_Click);
             // 
             // button2
             // 
+            this.button2.AutoSize = true;
             this.button2.Location = new System.Drawing.Point(264, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(68, 38);
@@ -131,6 +137,7 @@
             this.Name = "Form1";
             this.Text = "Information Retrieval";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

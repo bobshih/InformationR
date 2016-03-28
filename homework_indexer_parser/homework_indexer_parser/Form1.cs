@@ -112,15 +112,16 @@ namespace homework_indexer_parser
 
         }
 
+        int i = 0;
         private void Button_Start_Click(object sender, EventArgs e)
         {
-            
+            RemoveDuplicate(ListBox_FileName.ToStringList());
         }
 
         private void Button_AddFile_Clicked(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Multiselect = false;
+            dialog.Multiselect = true;
             dialog.ValidateNames = true;
             dialog.CheckFileExists = true;
             var result = dialog.ShowDialog();
@@ -132,8 +133,27 @@ namespace homework_indexer_parser
 
         private void Button_RemoveFile_Click(object sender, EventArgs e)
         {
-
+            while (ListBox_FileName.SelectedItems.Count != 0)
+            {
+                ListBox_FileName.Items.Remove(ListBox_FileName.SelectedItems[0]);
+            }
         }
 
+        private void RemoveDuplicate(List<string> list)
+        {
+            list.Sort();
+            for (int i = 1; i < list.Count; ++i)
+            {
+                if (list[i] == list[i - 1])
+                {
+                    list.RemoveAt(i);
+                }
+            }
+        }
+
+        private void Button_SaveList_Click(object sender, EventArgs e)
+        {
+            ListBox_FileName.Items.AddRange(new string[] { "123" + i, "456" + i, "789" + i });
+        }
     }
 }
