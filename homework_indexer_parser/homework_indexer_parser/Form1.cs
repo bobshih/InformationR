@@ -107,15 +107,17 @@ namespace homework_indexer_parser
         }
         #endregion
 
+
+
+
+
         private void ParseFile(string path)
         {
 
         }
 
-        int i = 0;
         private void Button_Start_Click(object sender, EventArgs e)
         {
-            RemoveDuplicate(ListBox_FileName.ToStringList());
         }
 
         private void Button_AddFile_Clicked(object sender, EventArgs e)
@@ -127,8 +129,9 @@ namespace homework_indexer_parser
             var result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                ParseFile(dialog.FileName);
+                ListBox_FileName.Items.AddRange(dialog.FileNames);
             }
+            ListBox_FileName.RemoveDuplicate();
         }
 
         private void Button_RemoveFile_Click(object sender, EventArgs e)
@@ -139,21 +142,10 @@ namespace homework_indexer_parser
             }
         }
 
-        private void RemoveDuplicate(List<string> list)
-        {
-            list.Sort();
-            for (int i = 1; i < list.Count; ++i)
-            {
-                if (list[i] == list[i - 1])
-                {
-                    list.RemoveAt(i);
-                }
-            }
-        }
-
+        int tempi = 0;
         private void Button_SaveList_Click(object sender, EventArgs e)
         {
-            ListBox_FileName.Items.AddRange(new string[] { "123" + i, "456" + i, "789" + i });
+            ListBox_FileName.Items.AddRange(new string[] { "123" + tempi, "456" + tempi, "789" + tempi });
         }
     }
 }
