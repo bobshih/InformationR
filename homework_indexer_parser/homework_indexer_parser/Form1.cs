@@ -114,14 +114,25 @@ namespace homework_indexer_parser
 
         private void Button_Start_Click(object sender, EventArgs e)
         {
+            
+        }
+
+        private void Button_AddFile_Clicked(object sender, EventArgs e)
+        {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = false;
             dialog.ValidateNames = true;
+            dialog.CheckFileExists = true;
             var result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-
+                ParseFile(dialog.FileName);
             }
+        }
+
+        private void Button_RemoveFile_Click(object sender, EventArgs e)
+        {
+
         }
 
     }
