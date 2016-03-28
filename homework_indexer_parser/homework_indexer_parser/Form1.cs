@@ -108,10 +108,6 @@ namespace homework_indexer_parser
         }
         #endregion
 
-
-
-
-
         private void ParseFile(string path)
         {
 
@@ -173,8 +169,8 @@ namespace homework_indexer_parser
             {
                 foreach (var path in dialog.FileNames)
                 {
-                    ReadPathFromFile(path);
-                    throw new NotImplementedException("Add List");
+                    var files = ReadPathFromFile(path);
+                    ListBox_FileName.Items.AddRange(files.ToArray());
                 }
             }
             ListBox_FileName.RemoveDuplicate();
@@ -182,10 +178,10 @@ namespace homework_indexer_parser
 
         private List<string> ReadPathFromFile(string path)
         {
-            List<string> paths;
+            string[] candidatePath;
             try
             {
-                paths = new List<string>(File.ReadAllLines(path));
+                candidatePath = File.ReadAllLines(path);
             }
             catch (IOException)
             {
@@ -193,15 +189,16 @@ namespace homework_indexer_parser
                 return new List<string>();
             }
 
-            foreach (var p in paths)
+            List<string> existPath = new List<string>();
+            foreach (var p in candidatePath)
             {
-                if (!File.Exists(p))
+                if (File.Exists(p))
                 {
-                    paths.Remove(p);
+                    existPath.Add(p);
                 }
             }
 
-            return paths;
+            return existPath;
         }
     }
 }
