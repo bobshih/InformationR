@@ -28,7 +28,7 @@ namespace homework_indexer_parser.Parser
             HTMLResponse response = null;
             while (!sreader.EndOfStream)
             {
-                var header = WARCHeaderParser.ReadHeader(sreader);
+                var header = WARCBasicParser.ReadOne(sreader);
                 if (header.WARC_Type != WARCType.response)
                     continue;
 

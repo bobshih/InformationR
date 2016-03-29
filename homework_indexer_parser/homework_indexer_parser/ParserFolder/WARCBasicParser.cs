@@ -10,14 +10,6 @@ using System.IO;
 
 namespace homework_indexer_parser.Parser
 {
-    public class ParserException : Exception
-    {
-        public ParserException(string message = "parser error") :
-            base(message)
-        {
-        }
-    }
-
     public enum WARCType
     {
         warcinfo,
@@ -30,7 +22,7 @@ namespace homework_indexer_parser.Parser
         continuation
     };
 
-    public struct WARCHeader
+    public struct WARCBasic
     {
         public double WARC_Version;
         public WARCType WARC_Type;
@@ -40,11 +32,11 @@ namespace homework_indexer_parser.Parser
         public char[] content;
     }
 
-    public class WARCHeaderParser
+    public class WARCBasicParser
     {
-        public static WARCHeader ReadHeader(StreamReader reader)
+        public static WARCBasic ReadOne(StreamReader reader)
         {
-            WARCHeader header = new WARCHeader();
+            WARCBasic header = new WARCBasic();
             GetVersion(reader, ref header);
             Get_warc_fields(reader, ref header);
             char[] buffer = new char[header.content_length];
@@ -53,7 +45,7 @@ namespace homework_indexer_parser.Parser
             return header;
         }
 
-        private static void GetVersion(StreamReader reader, ref WARCHeader header)
+        private static void GetVersion(StreamReader reader, ref WARCBasic header)
         {
             try
             {
@@ -68,7 +60,7 @@ namespace homework_indexer_parser.Parser
             }
         }
 
-        private static void Get_warc_fields(StreamReader reader, ref WARCHeader header)
+        private static void Get_warc_fields(StreamReader reader, ref WARCBasic header)
         {
             try
             {
@@ -85,7 +77,7 @@ namespace homework_indexer_parser.Parser
             }
         }
 
-        private static void ParseMandatoryField(ref WARCHeader header)
+        private static void ParseMandatoryField(ref WARCBasic header)
         {
             string type;
             header.named_field.TryGetValue("WARC-Type", out type);
@@ -98,7 +90,7 @@ namespace homework_indexer_parser.Parser
             header.named_field.TryGetValue("WARC-Record-ID", out header.ID);
         }
 
-        private static bool CheckMandatoryFieldName(WARCHeader header)
+        private static bool CheckMandatoryFieldName(WARCBasic header)
         {
             string[] mandatory = { "WARC-Record-ID", "Content-Length", "WARC-Date", "WARC-Type" };
             foreach (var s in mandatory)
@@ -107,7 +99,7 @@ namespace homework_indexer_parser.Parser
             return true;
         }
 
-        private static bool Get_named_field(StreamReader reader, ref WARCHeader header)
+        private static bool Get_named_field(StreamReader reader, ref WARCBasic header)
         {
             string str = reader.ReadLine();
             if (str.Length == 0)
