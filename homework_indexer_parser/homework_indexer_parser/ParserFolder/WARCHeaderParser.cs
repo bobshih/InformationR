@@ -29,20 +29,29 @@ namespace homework_indexer_parser.Parser
 
     struct WARCHeader
     {
-        double WARC_Version;
-        WARCType WARC_Type;
+        public double WARC_Version;
+        public WARCType WARC_Type;
     }
 
     internal class WARCHeaderParser
     {
         public void ReadHeader(StreamReader reader)
         {
+            WARCHeader header = new WARCHeader();
+            GetVersion(reader, ref header);
         }
 
         private static void GetVersion(StreamReader reader, ref WARCHeader header)
         {
-            string str = reader.ReadLine();
-
+            try
+            {
+                string str = reader.ReadLine();
+                header.WARC_Version = double.Parse(str);
+            }
+            catch
+            {
+                throw new ParserException("Not Warc File");
+            }
         }
     }
 }
