@@ -60,14 +60,6 @@ namespace homework_indexer_parser
             }
         }
 
-        private void ProcessFinish()
-        {
-            Processing = false;
-            Finish = true;
-            End = true;
-            thread.Join();
-        }
-
         /// <summary>
         /// Initialize Processing Class With File List
         /// </summary>
@@ -117,7 +109,6 @@ namespace homework_indexer_parser
         public void Stop()
         {
             abortEvent.Set();
-            thread.Join();
         }
 
         private void ProcessFile(object parameters)
@@ -137,11 +128,32 @@ namespace homework_indexer_parser
                     PostMessage(MessageType.ERROR, "Can not parse file " + file);
                     continue;
                 }
-                suspendEvent.WaitOne();
+
+                while (!suspendEvent.WaitOne(1000))
+                {
+                    if (abortEvent.WaitOne(0))
+                    {
+                        //Abort Requested
+                        ProcessAbort();
+                        return;
+                    }
+                }
                 //TODO: one word by one to track progress
                 dictionary.AddArticle(tokenList);
             }
             ProcessFinish();
+        }
+        private void ProcessFinish()
+        {
+            Processing = false;
+            Finish = true;
+            End = true;
+        }
+        private void ProcessAbort()
+        {
+            Processing = false;
+            Finish = true;
+            End = true;
         }
     }
 }
