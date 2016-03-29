@@ -1,6 +1,7 @@
 ﻿using homework_indexer_parser.DictionaryFolder;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace homework_indexer_parser
@@ -21,6 +22,7 @@ namespace homework_indexer_parser
         #endregion
 
         private List<string> targetFiles;
+        Thread workingThread;
 
         #region Constructors
 
@@ -55,12 +57,16 @@ namespace homework_indexer_parser
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Cancel Process
+        /// </summary>
         public void Cancel()
         {
             throw new NotImplementedException();
         }
 
         #endregion
+
 
     }
 }
