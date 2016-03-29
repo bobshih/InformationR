@@ -45,29 +45,6 @@
             label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // ProgressBar_TotalPrograss
-            // 
-            this.ProgressBar_TotalPrograss.Location = new System.Drawing.Point(25, 58);
-            this.ProgressBar_TotalPrograss.Name = "ProgressBar_TotalPrograss";
-            this.ProgressBar_TotalPrograss.Size = new System.Drawing.Size(230, 20);
-            this.ProgressBar_TotalPrograss.TabIndex = 0;
-            // 
-            // ProgressBar_CurrentProgress
-            // 
-            this.ProgressBar_CurrentProgress.Location = new System.Drawing.Point(25, 173);
-            this.ProgressBar_CurrentProgress.Name = "ProgressBar_CurrentProgress";
-            this.ProgressBar_CurrentProgress.Size = new System.Drawing.Size(230, 20);
-            this.ProgressBar_CurrentProgress.TabIndex = 0;
-            // 
-            // Labal_CurrentTimeComsumed
-            // 
-            this.Labal_CurrentTimeComsumed.AutoSize = true;
-            this.Labal_CurrentTimeComsumed.Location = new System.Drawing.Point(211, 155);
-            this.Labal_CurrentTimeComsumed.Name = "Labal_CurrentTimeComsumed";
-            this.Labal_CurrentTimeComsumed.Size = new System.Drawing.Size(44, 15);
-            this.Labal_CurrentTimeComsumed.TabIndex = 1;
-            this.Labal_CurrentTimeComsumed.Text = "0.00%";
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -76,15 +53,6 @@
             label2.Size = new System.Drawing.Size(103, 15);
             label2.TabIndex = 1;
             label2.Text = "Total Time Used";
-            // 
-            // Lable_TotalTime
-            // 
-            this.Lable_TotalTime.AutoSize = true;
-            this.Lable_TotalTime.Location = new System.Drawing.Point(211, 30);
-            this.Lable_TotalTime.Name = "Lable_TotalTime";
-            this.Lable_TotalTime.Size = new System.Drawing.Size(44, 15);
-            this.Lable_TotalTime.TabIndex = 2;
-            this.Lable_TotalTime.Text = "00:00s";
             // 
             // label4
             // 
@@ -112,6 +80,38 @@
             label6.Size = new System.Drawing.Size(69, 15);
             label6.TabIndex = 5;
             label6.Text = "Time Used";
+            // 
+            // ProgressBar_TotalPrograss
+            // 
+            this.ProgressBar_TotalPrograss.Location = new System.Drawing.Point(25, 58);
+            this.ProgressBar_TotalPrograss.Name = "ProgressBar_TotalPrograss";
+            this.ProgressBar_TotalPrograss.Size = new System.Drawing.Size(230, 20);
+            this.ProgressBar_TotalPrograss.TabIndex = 0;
+            // 
+            // ProgressBar_CurrentProgress
+            // 
+            this.ProgressBar_CurrentProgress.Location = new System.Drawing.Point(25, 173);
+            this.ProgressBar_CurrentProgress.Name = "ProgressBar_CurrentProgress";
+            this.ProgressBar_CurrentProgress.Size = new System.Drawing.Size(230, 20);
+            this.ProgressBar_CurrentProgress.TabIndex = 0;
+            // 
+            // Labal_CurrentTimeComsumed
+            // 
+            this.Labal_CurrentTimeComsumed.AutoSize = true;
+            this.Labal_CurrentTimeComsumed.Location = new System.Drawing.Point(211, 155);
+            this.Labal_CurrentTimeComsumed.Name = "Labal_CurrentTimeComsumed";
+            this.Labal_CurrentTimeComsumed.Size = new System.Drawing.Size(44, 15);
+            this.Labal_CurrentTimeComsumed.TabIndex = 1;
+            this.Labal_CurrentTimeComsumed.Text = "0.00%";
+            // 
+            // Lable_TotalTime
+            // 
+            this.Lable_TotalTime.AutoSize = true;
+            this.Lable_TotalTime.Location = new System.Drawing.Point(211, 30);
+            this.Lable_TotalTime.Name = "Lable_TotalTime";
+            this.Lable_TotalTime.Size = new System.Drawing.Size(44, 15);
+            this.Lable_TotalTime.TabIndex = 2;
+            this.Lable_TotalTime.Text = "00:00s";
             // 
             // Labal_CurrentProgress
             // 
@@ -158,6 +158,7 @@
             this.Controls.Add(this.ProgressBar_TotalPrograss);
             this.Name = "ProcessingForm";
             this.Text = "Processing";
+            this.Load += new System.EventHandler(this.ProcessingForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

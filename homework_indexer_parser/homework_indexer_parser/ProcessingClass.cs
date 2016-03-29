@@ -19,26 +19,45 @@ namespace homework_indexer_parser
         };
         public event Action<MessageType, string> MessageHandler;
 
+        /// <summary>
+        /// Is Processing (Include Pausing)
+        /// </summary>
         public bool Processing
         {
             get;
             private set;
         }
+
+        /// <summary>
+        /// Is Pauseing
+        /// </summary>
         public bool Pause
         {
             get;
             private set;
         }
+
+        /// <summary>
+        /// Is Suscessfully Processed
+        /// </summary>
         public bool Finish
         {
             get;
             private set;
         }
+
+        /// <summary>
+        /// Is Processing Begin Started (Include After Finish)
+        /// </summary>
         private bool Started
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Is Processing End (Include Abort And Finish)
+        /// </summary>
         public bool End
         {
             get;
@@ -75,9 +94,10 @@ namespace homework_indexer_parser
             End = false;
         }
 
-        public ~ProcessingClass()
+        ~ProcessingClass()
         {
             Stop();
+            thread.Join();
         }
 
         /// <summary>
@@ -92,6 +112,9 @@ namespace homework_indexer_parser
             thread.Start(files);
         }
 
+        /// <summary>
+        /// Pause Processing
+        /// </summary>
         public void Suspend()
         {
             if (Started)
@@ -100,12 +123,18 @@ namespace homework_indexer_parser
             suspendEvent.Reset();
         }
 
+        /// <summary>
+        /// Resume Processing
+        /// </summary>
         public void Resume()
         {
             suspendEvent.Set();
             Pause = false;
         }
 
+        /// <summary>
+        /// Abort Processing
+        /// </summary>
         public void Stop()
         {
             abortEvent.Set();
@@ -143,12 +172,14 @@ namespace homework_indexer_parser
             }
             ProcessFinish();
         }
+
         private void ProcessFinish()
         {
             Processing = false;
             Finish = true;
             End = true;
         }
+
         private void ProcessAbort()
         {
             Processing = false;

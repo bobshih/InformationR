@@ -8,21 +8,7 @@ namespace homework_indexer_parser
 {
     public partial class ProcessingForm : Form
     {
-        #region Event Handler
-
-        public enum MessageType
-        {
-            ERROR,
-            WARNNING,
-            NOTICE
-        };
-        public event Action<Dictionary> Successed;
-        public event Action<MessageType, string> MessageHandler;
-
-        #endregion
-
-        private List<string> targetFiles;
-        Thread workingThread;
+        private ProcessingClass pclass;
 
         #region Constructors
 
@@ -34,7 +20,7 @@ namespace homework_indexer_parser
         public ProcessingForm(List<string> fileNames)
             : this()
         {
-            targetFiles = fileNames;
+            pclass = new ProcessingClass(fileNames);
         }
 
         #endregion
@@ -44,28 +30,41 @@ namespace homework_indexer_parser
         /// <summary>
         /// Start Process Files
         /// </summary>
-        public void Start()
+        private void Start()
         {
-            throw new NotImplementedException();
+            pclass.Start();
         }
 
         /// <summary>
         /// Start Process Files
         /// </summary>
-        public void Pause()
+        private void Pause()
         {
-            throw new NotImplementedException();
+            pclass.Suspend();
+        }
+
+        /// <summary>
+        /// Start Process Files
+        /// </summary>
+        private void Resumn()
+        {
+            pclass.Resume();
         }
 
         /// <summary>
         /// Cancel Process
         /// </summary>
-        public void Cancel()
+        private void Cancel()
         {
-            throw new NotImplementedException();
+            pclass.Stop();
         }
 
         #endregion
+
+        private void ProcessingForm_Load(object sender, EventArgs e)
+        {
+            pclass.Start();
+        }
 
 
     }
