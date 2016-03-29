@@ -35,7 +35,6 @@ namespace homework_indexer_parser
             timer.Stop();
         }
 
-
         private void Parse(List<String> path)
         {
             //UI
@@ -116,6 +115,8 @@ namespace homework_indexer_parser
         #region UI CALLBACK
         private void Button_Start_Click(object sender, EventArgs e)
         {
+            ProcessingForm pf = new ProcessingForm(ListBox_FileName.GetStringList());
+            pf.ShowDialog();
         }
 
         private void Button_AddFile_Clicked(object sender, EventArgs e)

@@ -18,6 +18,9 @@ namespace homework_indexer_parser
             NOTICE
         };
         public event Action<MessageType, string> MessageHandler;
+        public event Action<Dictionary> ProcessEndHandler;
+
+        #region Process State Properties
 
         /// <summary>
         /// Is Processing (Include Pausing)
@@ -64,6 +67,7 @@ namespace homework_indexer_parser
             private set;
         }
 
+        #endregion
 
         private List<string> files;
         private Dictionary dictionary = new Dictionary();
@@ -76,6 +80,13 @@ namespace homework_indexer_parser
             if (MessageHandler != null)
             {
                 Task.Run(() => MessageHandler(type, message));
+            }
+        }
+        private void PostEnd()
+        {
+            if (ProcessEndHandler != null)
+            {
+                ProcessEndHandler(dictionary);
             }
         }
 
@@ -146,15 +157,16 @@ namespace homework_indexer_parser
 
         private void ProcessFile(object parameters)
         {
-            var waitGroup = new EventWaitHandle[] { suspendEvent, abortEvent };
+            var waitGroup = new EventWaitHandle[] { abortEvent, suspendEvent };
             List<string> fileNames = parameters as List<string>;
             WARCReader reader = new WARCReader();
             foreach (string file in fileNames)
             {
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                 {
+                    //aborted
                     ProcessAbort();
-                    return;//aborted
+                    return;
                 }
                 List<string> tokenList;
                 try
@@ -171,8 +183,9 @@ namespace homework_indexer_parser
                 {
                     if (EventWaitHandle.WaitAny(waitGroup) == 0)
                     {
+                        //aborted
                         ProcessAbort();
-                        return;//aborted
+                        return;
                     }
                     //TODO: one word by one to track progress
                     dictionary.AddArticle(tokenList);
@@ -186,6 +199,7 @@ namespace homework_indexer_parser
             Processing = false;
             Finish = true;
             End = true;
+            PostEnd();
         }
 
         private void ProcessAbort()
@@ -193,6 +207,7 @@ namespace homework_indexer_parser
             Processing = false;
             Finish = true;
             End = true;
+            PostEnd();
         }
     }
 }

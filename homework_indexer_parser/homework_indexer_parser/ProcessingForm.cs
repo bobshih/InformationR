@@ -34,16 +34,37 @@ namespace homework_indexer_parser
             : this()
         {
             pclass = new ProcessingClass(fileNames);
+            pclass.ProcessEndHandler += (dictionary) =>
+            {
+                dictionary.OutputDictionary();
+                dictionary.OutputFile();
+                AfterProcess();
+            };
         }
 
         #endregion
+
+        private void AfterProcess()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((Action)AfterProcess);
+                return;
+            }
+            Button_OK.Show();
+            Button_CancelOrOK.Hide();
+        }
 
         private void ProcessingForm_Load(object sender, EventArgs e)
         {
             pclass.Start();
             _pause = false;
+            Button_OK.Visible = false;
         }
 
-
+        private void Button_OK_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
