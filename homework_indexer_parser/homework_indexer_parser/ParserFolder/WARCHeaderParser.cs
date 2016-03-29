@@ -94,9 +94,11 @@ namespace homework_indexer_parser.Parser
             int index = str.IndexOf(':');
             if (index == -1)//Not Found
                 throw new ParserException();
-            string field_name = str.Substring(0, index);
-            string field_value = str.Substring(index + 2);
+            string field_name = str.Substring(0, index).Trim();
+            string field_value = str.Substring(index + 2).Trim();
             header.named_field.Add(field_name, field_value);
+            return true;
+            //TODO: validate name-value pair
         }
     }
 }
