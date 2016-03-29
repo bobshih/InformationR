@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.IO;
 ///
 ///Contributor : 101820307
@@ -21,11 +17,11 @@ namespace homework_indexer_parser.Parser
     {
         public static WARCBasic ReadOne(StreamReader reader)
         {
-            WARCBasic header = new WARCBasic();
-            GetVersion(reader, ref header);
-            Get_warc_fields(reader, ref header);
-            Get_content(reader, ref header);
-            return header;
+            WARCBasic block = new WARCBasic();
+            GetVersion(reader, ref block);
+            Get_warc_fields(reader, ref block);
+            Get_content(reader, ref block);
+            return block;
         }
 
         private static void Get_content(StreamReader reader, ref WARCBasic header)
@@ -69,7 +65,6 @@ namespace homework_indexer_parser.Parser
                 throw new ParserException("Not Valid Warc Fields");
             }
         }
-
         private static bool CheckMandatoryFieldName(WARCBasic header)
         {
             foreach (var s in WARCFieldName.mandatoryFields)

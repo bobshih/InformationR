@@ -7,34 +7,52 @@ using System.Threading.Tasks;
 
 namespace homework_indexer_parser.Parser
 {
-    internal class HTMLResponse
+    internal class HTMLRecord
     {
-        string id;
-        string content_type;
-        string content;
+        public string recordID;
+        public string htmlContent;
     }
-    internal class SomethingWARCParser
+
+    internal class WARC_HTML_ONLYReader
     {
         FileStream fstream;
         StreamReader sreader;
-        public SomethingWARCParser(string path)
+        public WARC_HTML_ONLYReader(string path)
         {
             fstream = File.OpenRead(path);
             sreader = new StreamReader(fstream);
         }
-        /*
-        public HTMLResponse ReadNextHtml()
+
+        public HTMLRecord ReadNextHtml()
         {
-            HTMLResponse response = null;
             while (!sreader.EndOfStream)
             {
-                var header = WARCBasicParser.ReadOne(sreader);
-                if (header.WARC_Type != WARCType.response && header.)
+                var block = WARCBasicParser.ReadOne(sreader);
+                if (block.Type() != WARCType.response)
                     continue;
-
+                string text;
+                try
+                {
+                    HTMLRecord response = new HTMLRecord();
+                    text = new string(block.content);
+                    int contenttypeindex = text.IndexOf("Content-Type:", StringComparison.CurrentCultureIgnoreCase) + "Content-Type:".Length;
+                    if (contenttypeindex == -1)
+                        continue;
+                    if (text.Substring(contenttypeindex, 20).IndexOf("text", StringComparison.CurrentCultureIgnoreCase) == -1)
+                        continue;
+                    int begin = text.IndexOf("<html>");
+                    int end = text.IndexOf("</html>") + 7;
+                    response.htmlContent = text.Substring(begin, end - begin);
+                    response.recordID = block.ID();
+                    return response;
+                }
+                catch
+                {
+                    continue;
+                }
             }
-            return response;
-        }*/
+            return null;
+        }
 
     }
 }
