@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataGridViewDisableButtonCell.cs" />
     <Compile Include="DictionaryFolder\Dictionary.cs" />
     <Compile Include="DictionaryFolder\Posting.cs" />
     <Compile Include="Extension Method\ListBoxExtension.cs" />
@@ -57,7 +56,6 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model.cs" />
     <Compile Include="ParserFolder\ParserException.cs" />
     <Compile Include="ParserFolder\WARCHeaderParser.cs" />
     <Compile Include="ParserFolder\WARCParser.cs" />
