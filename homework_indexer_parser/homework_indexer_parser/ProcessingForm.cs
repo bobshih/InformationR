@@ -10,6 +10,19 @@ namespace homework_indexer_parser
     {
         private ProcessingClass pclass;
 
+        private bool _pause = false;
+        private bool Pause
+        {
+            get
+            {
+                return _pause;
+            }
+            set
+            {
+                _pause = value;
+                Button_CancelOrOK.Text = value ? "Pause" : "Resume";
+            }
+        }
         #region Constructors
 
         private ProcessingForm()
@@ -25,45 +38,10 @@ namespace homework_indexer_parser
 
         #endregion
 
-        #region State Change Functions
-
-        /// <summary>
-        /// Start Process Files
-        /// </summary>
-        private void Start()
-        {
-            pclass.Start();
-        }
-
-        /// <summary>
-        /// Start Process Files
-        /// </summary>
-        private void Pause()
-        {
-            pclass.Suspend();
-        }
-
-        /// <summary>
-        /// Start Process Files
-        /// </summary>
-        private void Resumn()
-        {
-            pclass.Resume();
-        }
-
-        /// <summary>
-        /// Cancel Process
-        /// </summary>
-        private void Cancel()
-        {
-            pclass.Stop();
-        }
-
-        #endregion
-
         private void ProcessingForm_Load(object sender, EventArgs e)
         {
             pclass.Start();
+            _pause = false;
         }
 
 

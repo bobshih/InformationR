@@ -68,8 +68,8 @@ namespace homework_indexer_parser
         private List<string> files;
         private Dictionary dictionary = new Dictionary();
         private Thread thread;
-        private AutoResetEvent suspendEvent;
-        private AutoResetEvent abortEvent;
+        private EventWaitHandle suspendEvent = new ManualResetEvent(true);
+        private EventWaitHandle abortEvent = new ManualResetEvent(false);
 
         private void PostMessage(MessageType type, string message)
         {
@@ -99,6 +99,8 @@ namespace homework_indexer_parser
             Stop();
             thread.Join();
         }
+
+        #region State Controll Functions
 
         /// <summary>
         /// Start Processing
@@ -140,17 +142,24 @@ namespace homework_indexer_parser
             abortEvent.Set();
         }
 
+        #endregion
+
         private void ProcessFile(object parameters)
         {
+            var waitGroup = new EventWaitHandle[] { suspendEvent, abortEvent };
             List<string> fileNames = parameters as List<string>;
             WARCReader reader = new WARCReader();
             foreach (string file in fileNames)
             {
+                if (EventWaitHandle.WaitAny(waitGroup) == 0)
+                {
+                    ProcessAbort();
+                    return;//aborted
+                }
                 List<string> tokenList;
                 try
                 {
                     reader.ReadFile(file);
-                    tokenList = reader.GetNext();
                 }
                 catch
                 {
@@ -158,17 +167,16 @@ namespace homework_indexer_parser
                     continue;
                 }
 
-                while (!suspendEvent.WaitOne(1000))
+                while ((tokenList = reader.GetNext()) != null)
                 {
-                    if (abortEvent.WaitOne(0))
+                    if (EventWaitHandle.WaitAny(waitGroup) == 0)
                     {
-                        //Abort Requested
                         ProcessAbort();
-                        return;
+                        return;//aborted
                     }
+                    //TODO: one word by one to track progress
+                    dictionary.AddArticle(tokenList);
                 }
-                //TODO: one word by one to track progress
-                dictionary.AddArticle(tokenList);
             }
             ProcessFinish();
         }
