@@ -3,14 +3,15 @@ using homework_indexer_parser.ParserFolder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace homework_indexer_parser
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             //Button_Test.Click += TestFunction;
@@ -26,7 +27,6 @@ namespace homework_indexer_parser
             clock.Tick += (s, ev) =>
             {
                 TimeSpan timespan = timer.Elapsed;
-                label_TimeSpan.Text = String.Format("{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
             };
             timer.Start();
             clock.Start();
@@ -34,7 +34,6 @@ namespace homework_indexer_parser
             clock.Stop();
             timer.Stop();
         }
-
 
         private void Parse(List<String> path)
         {
@@ -93,11 +92,6 @@ namespace homework_indexer_parser
             }
             else
             {
-                label_State.Text = "State: " + text;
-                //Button_Test.Text = text;
-                //Button_Test.Enabled = enable;
-                button_ChooseFile.Enabled = enable;
-                button_ReadAllFiles.Enabled = enable;
             }
         }
 
@@ -109,81 +103,105 @@ namespace homework_indexer_parser
             }
             else
             {
-                progressBar1.Maximum = max;
-                progressBar1.Value = current;
             }
         }
         #endregion
 
-        private void Button_Test_Click(object sender, EventArgs e)
+        private void ParseFile(string path)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Multiselect = true;
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+
+        }
+
+        #region UI CALLBACK
+        private void Button_Start_Click(object sender, EventArgs e)
+        {
+            ProcessingForm pf = new ProcessingForm(ListBox_FileName.GetStringList());
+            pf.ShowDialog();
+        }
+
+        private void Button_AddFile_Clicked(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;
+            dialog.ValidateNames = true;
+            dialog.CheckFileExists = true;
+            var result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
-                foreach (var path in openFileDialog1.FileNames)
+                ListBox_FileName.Items.AddRange(dialog.FileNames);
+            }
+            ListBox_FileName.RemoveDuplicate();
+        }
+
+        private void Button_RemoveFile_Click(object sender, EventArgs e)
+        {
+            while (ListBox_FileName.SelectedItems.Count != 0)
+            {
+                ListBox_FileName.Items.Remove(ListBox_FileName.SelectedItems[0]);
+            }
+        }
+
+        private void Button_SaveList_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.CheckPathExists = true;
+            dialog.OverwritePrompt = true;
+            var result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                try
                 {
-                    //try
-
-                    //Read(Parser)
-                    //Process(Parser&Dictionary)
-
-                    //catch "not good file"
+                    File.WriteAllLines(dialog.FileName, ListBox_FileName.GetStringList().ToArray());
                 }
-                /*Write To File*/
-            }
-        }
-
-        private void button_ChooseFile_Click(object sender, EventArgs e)
-        {
-            // 開啟檔案選擇視窗
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Multiselect = true;
-            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                foreach (String path in fileDialog.FileNames)
+                catch (IOException)
                 {
-                    if (!path.EndsWith(".warc"))
-                    {
-                        //MessageBox.Show(path + " 的檔案格式不是.marc", "檔案格式不符合");
-                        continue;
-                    }
-                    dataGridView_FilePath.Rows.Add(path);
-
-                    //try
-
-                    //Read(Parser)
-                    //Process(Parser&Dictionary)
-
-                    //catch "not good file"
+                    MessageBox.Show("Fail to write file", "WARNNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                /*Write To File*/
             }
         }
 
-        private void dataGridView_FilePath_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void Button_LoadList_Click(object sender, EventArgs e)
         {
-            if (e.ColumnIndex == 1)
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;
+            dialog.ValidateNames = true;
+            dialog.CheckFileExists = true;
+            var result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
-                //MessageBox.Show("here");
-                MessageBox.Show(dataGridView_FilePath.Rows[e.RowIndex].Cells[0].Value.ToString());
-                RunParsing(new List<String>(new String[] { dataGridView_FilePath.Rows[e.RowIndex].Cells[0].Value.ToString() }));
-                //DataGridViewDisableButtonCell button = (DataGridViewDisableButtonCell)dataGridView_FilePath.Rows[e.RowIndex].Cells[];
-                //button.Enabled = false;
+                foreach (var path in dialog.FileNames)
+                {
+                    var files = ReadPathFromFile(path);
+                    ListBox_FileName.Items.AddRange(files.ToArray());
+                }
             }
+            ListBox_FileName.RemoveDuplicate();
         }
+#endregion
 
-        private void button_ReadAllFiles_Click(object sender, EventArgs e)
+        private List<string> ReadPathFromFile(string path)
         {
-            List<String> paths = new List<string>();
-            for (int i = 0; i < dataGridView_FilePath.Rows.Count; i++)
+            string[] candidatePath;
+            try
             {
-                paths.Add(dataGridView_FilePath.Rows[i].Cells[0].Value.ToString());
-                //dataGridView_FilePath_CellContentClick(new object(), new DataGridViewCellEventArgs(1, i));
+                candidatePath = File.ReadAllLines(path);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Read file '" + path + "' failed", "WARNNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return new List<string>();
             }
 
-            RunParsing(paths);
-        }
+            List<string> existPath = new List<string>();
+            foreach (var p in candidatePath)
+            {
+                if (File.Exists(p))
+                {
+                    existPath.Add(p);
+                }
+            }
 
+            return existPath;
+        }
     }
 }
