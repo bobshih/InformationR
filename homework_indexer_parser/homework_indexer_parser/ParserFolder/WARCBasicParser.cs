@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 ///
 ///Contributor : 101820307
@@ -6,10 +7,10 @@ using System.IO;
 
 namespace homework_indexer_parser.Parser
 {
-    public struct WARCBasic
+    public class WARCBasic
     {
         public double WARC_Version;
-        public Dictionary<string, string> named_field;
+        public Dictionary<string, string> named_field = new Dictionary<string, string>();
         public char[] content;
     }
 
@@ -21,6 +22,8 @@ namespace homework_indexer_parser.Parser
             GetVersion(reader, ref block);
             Get_warc_fields(reader, ref block);
             Get_content(reader, ref block);
+            reader.ReadLine();
+            reader.ReadLine();
             return block;
         }
 
@@ -29,9 +32,8 @@ namespace homework_indexer_parser.Parser
             string lengthString;
             header.named_field.TryGetValue(WARCFieldName.content_length, out lengthString);
             int length = int.Parse(lengthString);
-
             char[] buffer = new char[length];
-            reader.ReadBlock(buffer, 0, length);
+            reader.Read(buffer, 0, length);
             header.content = buffer;
         }
 
@@ -41,10 +43,10 @@ namespace homework_indexer_parser.Parser
             {
                 string str = reader.ReadLine();
                 if (str.Substring(0, 5) != @"WARC/")
-                    throw new ParserException();
+                    throw new ParserException(str);
                 header.WARC_Version = double.Parse(str.Substring(5));
             }
-            catch
+            catch (ParserException e)
             {
                 throw new ParserException("Not Warc File");
             }
@@ -60,7 +62,7 @@ namespace homework_indexer_parser.Parser
                 if (!CheckMandatoryFieldName(header))
                     throw new ParserException();
             }
-            catch
+            catch (ParserException e)
             {
                 throw new ParserException("Not Valid Warc Fields");
             }
@@ -82,7 +84,8 @@ namespace homework_indexer_parser.Parser
             if (index == -1)//Not Found
                 throw new ParserException();
             string field_name = str.Substring(0, index).Trim();
-            string field_value = str.Substring(index + 2).Trim();
+            string field_value = str.Substring(index).Trim();
+            field_value = field_value.Remove(0, 1).Trim();
             header.named_field.Add(field_name, field_value);
             return true;
         }

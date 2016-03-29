@@ -20,6 +20,7 @@ namespace homework_indexer_parser
         };
         public event Action<MessageType, string> MessageHandler;
         public event Action<Dictionary> ProcessEndHandler;
+        WARCReader reader;
 
         #region Process State Properties
 
@@ -95,8 +96,9 @@ namespace homework_indexer_parser
         /// Initialize Processing Class With File List
         /// </summary>
         /// <param name="filenames">files to process</param>
-        public ProcessingClass(List<string> filenames)
+        public ProcessingClass(List<string> filenames,PostProcessingChoice choice)
         {
+            reader = new WARCReader(choice);
             thread = new Thread(ProcessFile);
             files = filenames;
             Processing = false;
@@ -160,7 +162,6 @@ namespace homework_indexer_parser
         {
             var waitGroup = new EventWaitHandle[] { abortEvent, suspendEvent };
             List<string> fileNames = parameters as List<string>;
-            WARCReader reader = new WARCReader();
             foreach (string file in fileNames)
             {
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
@@ -169,7 +170,7 @@ namespace homework_indexer_parser
                     ProcessAbort();
                     return;
                 }
-                List<string> tokenList;
+                WARC_TOPIC_TOKENS tokenList;
                 try
                 {
                     reader.AddFile(file);
@@ -188,8 +189,7 @@ namespace homework_indexer_parser
                         ProcessAbort();
                         return;
                     }
-                    //TODO: one word by one to track progress
-                    dictionary.AddArticle(tokenList);
+                    dictionary.AddArticle(tokenList.tokens);
                 }
             }
             ProcessFinish();

@@ -28,7 +28,7 @@ namespace homework_indexer_parser.Parser
     public class WARCReader
     {
         //private Queue<WARC_TOPIC_TOKENS> parseResultBuffer = new Queue<WARC_TOPIC_TOKENS>();
-        private Queue<string> fileBuffer;
+        private Queue<string> fileBuffer = new Queue<string>();
         private WARC_HTML_ONLYReader warchtmlReader = null;
         private PostProcessingChoice choice;
 
@@ -42,7 +42,7 @@ namespace homework_indexer_parser.Parser
         /// </summary>
         public WARCReader(PostProcessingChoice choice)
         {
-            ProcessedArticleCount = 0;
+            this.choice = choice;
         }
 
         /// <summary>

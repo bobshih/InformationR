@@ -1,4 +1,5 @@
 ﻿using homework_indexer_parser.DictionaryFolder;
+using homework_indexer_parser.Parser;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -33,10 +34,10 @@ namespace homework_indexer_parser
             InitializeComponent();
         }
 
-        public ProcessingForm(List<string> fileNames)
+        public ProcessingForm(List<string> fileNames, PostProcessingChoice c)
             : this()
         {
-            pclass = new ProcessingClass(fileNames);
+            pclass = new ProcessingClass(fileNames, c);
             pclass.ProcessEndHandler += (dictionary) =>
             {
                 dictionary.OutputDictionary();

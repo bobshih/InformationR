@@ -11,6 +11,8 @@ namespace homework_indexer_parser
 {
     public partial class MainForm : Form
     {
+        private PostProcessingChoice choice = PostProcessingChoice.NONE;
+
         public MainForm()
         {
             InitializeComponent();
@@ -21,7 +23,7 @@ namespace homework_indexer_parser
 
         private void Button_Start_Click(object sender, EventArgs e)
         {
-            ProcessingForm pf = new ProcessingForm(ListBox_FileName.GetStringList());
+            ProcessingForm pf = new ProcessingForm(ListBox_FileName.GetStringList(), choice);
             pf.ShowDialog();
         }
 
@@ -83,7 +85,7 @@ namespace homework_indexer_parser
             }
             ListBox_FileName.RemoveDuplicate();
         }
-#endregion
+        #endregion
 
         private List<string> ReadPathFromFile(string path)
         {
