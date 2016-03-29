@@ -2,10 +2,11 @@
 using homework_indexer_parser.Parser;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+///
+///Contributor : 101820307
+///
 
 namespace homework_indexer_parser
 {
@@ -171,7 +172,7 @@ namespace homework_indexer_parser
                 List<string> tokenList;
                 try
                 {
-                    reader.ReadFile(file);
+                    reader.AddFile(file);
                 }
                 catch
                 {
