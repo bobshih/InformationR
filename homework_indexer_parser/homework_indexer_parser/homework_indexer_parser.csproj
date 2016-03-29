@@ -59,8 +59,10 @@
     </Compile>
     <Compile Include="Model.cs" />
     <Compile Include="ParserFolder\ParserException.cs" />
+    <Compile Include="ParserFolder\WARCHeaderParser.cs" />
     <Compile Include="ParserFolder\WARCParser.cs" />
     <Compile Include="ParserFolder\WARCBasicParser.cs" />
+    <Compile Include="ParserFolder\WARCStructures.cs" />
     <Compile Include="ProcessingClass.cs" />
     <Compile Include="ProcessingForm.cs">
       <SubType>Form</SubType>

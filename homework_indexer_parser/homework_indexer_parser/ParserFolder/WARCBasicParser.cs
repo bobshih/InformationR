@@ -10,24 +10,9 @@ using System.IO;
 
 namespace homework_indexer_parser.Parser
 {
-    public enum WARCType
-    {
-        warcinfo,
-        response,
-        resource,
-        request,
-        metadata,
-        revisit,
-        conversion,
-        continuation
-    };
-
     public struct WARCBasic
     {
         public double WARC_Version;
-        public WARCType WARC_Type;
-        public int content_length;
-        public string ID;
         public Dictionary<string, string> named_field;
         public char[] content;
     }
@@ -39,10 +24,19 @@ namespace homework_indexer_parser.Parser
             WARCBasic header = new WARCBasic();
             GetVersion(reader, ref header);
             Get_warc_fields(reader, ref header);
-            char[] buffer = new char[header.content_length];
-            reader.ReadBlock(buffer,0,header.content_length);
-            header.content = buffer;
+            Get_content(reader, ref header);
             return header;
+        }
+
+        private static void Get_content(StreamReader reader, ref WARCBasic header)
+        {
+            string lengthString;
+            header.named_field.TryGetValue(WARCFieldName.content_length, out lengthString);
+            int length = int.Parse(lengthString);
+
+            char[] buffer = new char[length];
+            reader.ReadBlock(buffer, 0, length);
+            header.content = buffer;
         }
 
         private static void GetVersion(StreamReader reader, ref WARCBasic header)
@@ -69,7 +63,6 @@ namespace homework_indexer_parser.Parser
                     ;
                 if (!CheckMandatoryFieldName(header))
                     throw new ParserException();
-                ParseMandatoryField(ref header);
             }
             catch
             {
@@ -77,23 +70,9 @@ namespace homework_indexer_parser.Parser
             }
         }
 
-        private static void ParseMandatoryField(ref WARCBasic header)
-        {
-            string type;
-            header.named_field.TryGetValue("WARC-Type", out type);
-            header.WARC_Type = (WARCType)Enum.Parse(typeof(WARCType), type);
-
-            string length;
-            header.named_field.TryGetValue("Content-Length", out length);
-            header.content_length = int.Parse(length);
-
-            header.named_field.TryGetValue("WARC-Record-ID", out header.ID);
-        }
-
         private static bool CheckMandatoryFieldName(WARCBasic header)
         {
-            string[] mandatory = { "WARC-Record-ID", "Content-Length", "WARC-Date", "WARC-Type" };
-            foreach (var s in mandatory)
+            foreach (var s in WARCFieldName.mandatoryFields)
                 if (!header.named_field.ContainsKey(s))
                     return false;
             return true;
@@ -111,7 +90,6 @@ namespace homework_indexer_parser.Parser
             string field_value = str.Substring(index + 2).Trim();
             header.named_field.Add(field_name, field_value);
             return true;
-            //TODO: validate name-value pair
         }
     }
 }

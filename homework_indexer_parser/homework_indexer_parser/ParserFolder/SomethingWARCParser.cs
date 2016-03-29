@@ -22,19 +22,19 @@ namespace homework_indexer_parser.Parser
             fstream = File.OpenRead(path);
             sreader = new StreamReader(fstream);
         }
-
+        /*
         public HTMLResponse ReadNextHtml()
         {
             HTMLResponse response = null;
             while (!sreader.EndOfStream)
             {
                 var header = WARCBasicParser.ReadOne(sreader);
-                if (header.WARC_Type != WARCType.response)
+                if (header.WARC_Type != WARCType.response && header.)
                     continue;
 
             }
             return response;
-        }
+        }*/
 
     }
 }
