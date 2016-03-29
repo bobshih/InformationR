@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Model.cs" />
     <Compile Include="ParserFolder\Parser.cs" />
+    <Compile Include="ParserFolder\WARCHeaderParser.cs" />
     <Compile Include="ProcessingClass.cs" />
     <Compile Include="ProcessingForm.cs">
       <SubType>Form</SubType>

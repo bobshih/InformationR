@@ -6,7 +6,7 @@ using System.IO;
 ///Contributor : 101820302 101820307
 ///
 
-namespace homework_indexer_parser.ParserFolder
+namespace homework_indexer_parser.Parser
 {
     /// <summary>
     /// SGML Reader

@@ -1,5 +1,5 @@
 ﻿using homework_indexer_parser.DictionaryFolder;
-using homework_indexer_parser.ParserFolder;
+using homework_indexer_parser.Parser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
