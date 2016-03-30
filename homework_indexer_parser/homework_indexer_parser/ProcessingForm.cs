@@ -86,13 +86,14 @@ namespace homework_indexer_parser
             // 顯示目前檔案
             String[] filePath = files[currentFile].Split(new char[] { '\\' });
             int ends = filePath.Length;
-            Label_CurrentFile.Text = filePath[ends];
+            Label_CurrentFile.Text = filePath[ends-1];
         }
 
         private void ShowTime()
         {
 
-            Label_TotalTime.Text = stopwatch_Total.Elapsed.ToString(@"hh\:mm\:ss");
+            Label_TotalTime.Text = String.Format("{0:00}:{1:00}:{2:00}", stopwatch_Total.Elapsed.Hours,
+                stopwatch_Total.Elapsed.Minutes, stopwatch_Total.Elapsed.Seconds);
             if (pclass.DoneFIlesCount != currentFile)
             {
                 currentFile = pclass.DoneFIlesCount;
@@ -100,7 +101,8 @@ namespace homework_indexer_parser
                 stopwatch_current.Reset();
                 stopwatch_current.Start();
             }
-            Label_CurrentTimeComsumed.Text = stopwatch_current.Elapsed.ToString(@"hh\.mm:\:ss");
+            Label_CurrentTimeComsumed.Text = String.Format("{0:00}:{1:00}:{2:00}", stopwatch_current.Elapsed.Hours,
+                stopwatch_current.Elapsed.Minutes, stopwatch_current.Elapsed.Seconds);
         }
 
         void HandleProcessMessage(ProcessingClass.MessageType messageType, string message)

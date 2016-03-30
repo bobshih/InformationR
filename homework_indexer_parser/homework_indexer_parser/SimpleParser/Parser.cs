@@ -116,6 +116,7 @@ namespace homework_indexer_parser.SimpleParser
                         continue;
                     }
                     temptopic.AppendLine(temp.Substring(beingIndex));
+                    break;
                 }
                 if (reader.Peek() == -1)
                     continue;
@@ -148,7 +149,7 @@ namespace homework_indexer_parser.SimpleParser
                 tokens.AddRange(ParseAndRemoveSeperator(element));
             }
             WARC_TOPIC_TOKENS tk = new WARC_TOPIC_TOKENS();
-            tk.ID = CurrentFile;
+            tk.ID = IDName;
             tk.tokens = tokens;
             return tk;
         }
@@ -283,7 +284,7 @@ namespace homework_indexer_parser.SimpleParser
         {
             get
             {
-                return ProcessedArticalCount.ToString() + ProcessedFileCount.ToString() + "(" + CurrentFile + ")";
+                return ProcessedArticalCount.ToString() + " " + ProcessedFileCount.ToString() + "(" + CurrentFile + ")";
             }
         }
 
