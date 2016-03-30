@@ -49,6 +49,8 @@ namespace homework_indexer_parser
                 dictionary.OutputFile();
                 AfterProcess();
             };
+
+            pclass.MessageHandler += HandleProcessMessage;
         }
 
         #endregion
@@ -80,6 +82,16 @@ namespace homework_indexer_parser
             ProgressBar_TotalPrograss.Value = pclass.DoneFIlesCount * 100 / files.Count;
             ProgressBar_CurrentProgress.Value = pclass.Progress;
             // 顯示經過時間
+            ShowTime();
+            // 顯示目前檔案
+            String[] filePath = files[currentFile].Split(new char[] { '\\' });
+            int ends = filePath.Length;
+            Label_CurrentFile.Text = filePath[ends];
+        }
+
+        private void ShowTime()
+        {
+
             Label_TotalTime.Text = stopwatch_Total.Elapsed.ToString(@"hh\:mm\:ss");
             if (pclass.DoneFIlesCount != currentFile)
             {
@@ -89,10 +101,24 @@ namespace homework_indexer_parser
                 stopwatch_current.Start();
             }
             Label_CurrentTimeComsumed.Text = stopwatch_current.Elapsed.ToString(@"hh\.mm:\:ss");
-            // 顯示目前檔案
-            String[] filePath = files[currentFile].Split(new char[] { '\\' });
-            int ends = filePath.Length;
-            Label_CurrentFile.Text = filePath[ends];
+        }
+
+        void HandleProcessMessage(ProcessingClass.MessageType messageType, string message)
+        {
+            switch (messageType)
+            {
+                case ProcessingClass.MessageType.ERROR:
+                    ListBox_Errors.Items.Add("<ERROR> : " + message);
+                    break;
+                case ProcessingClass.MessageType.WARNNING:
+                    ListBox_Errors.Items.Add("<Warning> : " + message);
+                    break;
+                case ProcessingClass.MessageType.NOTICE:
+                    ListBox_Errors.Items.Add("<Notice> : " + message);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void AfterProcess()
@@ -102,7 +128,9 @@ namespace homework_indexer_parser
                 Invoke((Action)AfterProcess);
                 return;
             }
-
+            ShowTime();
+            stopwatch_current.Stop();
+            stopwatch_Total.Stop();
             Button_OK.Show();
             Button_CancelOrOK.Hide();
         }
