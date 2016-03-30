@@ -10,7 +10,7 @@ namespace homework_indexer_parser
     {
         private ProcessingClass pclass;
 
-        
+        private List<String> files;
         private bool _pause = false;
         private bool Pause
         {
@@ -24,6 +24,7 @@ namespace homework_indexer_parser
                 Button_CancelOrOK.Text = value ? "Pause" : "Resume";
             }
         }
+
         #region Constructors
 
         private ProcessingForm()
@@ -34,6 +35,7 @@ namespace homework_indexer_parser
         public ProcessingForm(List<string> fileNames)
             : this()
         {
+            files = fileNames;
             pclass = new ProcessingClass(fileNames);
             pclass.ProcessEndHandler += (dictionary) =>
             {
