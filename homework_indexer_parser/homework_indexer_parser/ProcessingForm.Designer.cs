@@ -42,6 +42,7 @@
             this.Button_CancelOrOK = new System.Windows.Forms.Button();
             this.Button_OK = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.ListBox_Errors = new System.Windows.Forms.ListBox();
             label2 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
@@ -165,11 +166,21 @@
             this.Button_OK.UseVisualStyleBackColor = true;
             this.Button_OK.Click += new System.EventHandler(this.Button_OK_Click);
             // 
+            // ListBox_Errors
+            // 
+            this.ListBox_Errors.FormattingEnabled = true;
+            this.ListBox_Errors.ItemHeight = 12;
+            this.ListBox_Errors.Location = new System.Drawing.Point(225, 24);
+            this.ListBox_Errors.Name = "ListBox_Errors";
+            this.ListBox_Errors.Size = new System.Drawing.Size(246, 172);
+            this.ListBox_Errors.TabIndex = 10;
+            // 
             // ProcessingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(212, 202);
+            this.ClientSize = new System.Drawing.Size(483, 202);
+            this.Controls.Add(this.ListBox_Errors);
             this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.Button_CancelOrOK);
             this.Controls.Add(this.Label_CurrentFile);
@@ -202,5 +213,6 @@
         private System.Windows.Forms.Button Button_CancelOrOK;
         private System.Windows.Forms.Button Button_OK;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.ListBox ListBox_Errors;
     }
 }
