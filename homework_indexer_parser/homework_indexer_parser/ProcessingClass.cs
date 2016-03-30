@@ -183,7 +183,8 @@ namespace homework_indexer_parser
             WARC_TOPIC_TOKENS tokenList;
             while ((tokenList = reader.GetNext()) != null)
             {
-                Progress = (int)Math.Floor(100 * reader.CurrentFilePosition / (double)reader.CurrentFileSize);
+                double value = 100 * (reader.CurrentFilePosition / (double)(reader.CurrentFileSize + 1));
+                Progress = (int)Math.Floor(value);
                 DoneFIlesCount = reader.ProcessedFileCount;
                 this.DoneFIlesCount = reader.ProcessedFileCount;
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)

@@ -295,7 +295,7 @@ namespace homework_indexer_parser.SimpleParser
         {
             get
             {
-                return reader == null ? reader.BaseStream.Length : 0;
+                return reader != null ? reader.BaseStream.Length : 0;
             }
         }
 
@@ -306,7 +306,7 @@ namespace homework_indexer_parser.SimpleParser
         {
             get
             {
-                return reader == null ? reader.BaseStream.Position : 0;
+                return reader != null ? reader.BaseStream.Position : 0;
             }
         }
 
