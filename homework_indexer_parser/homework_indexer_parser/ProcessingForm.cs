@@ -1,8 +1,7 @@
-﻿using homework_indexer_parser.DictionaryFolder;
+﻿using homework_indexer_parser.SimpleParser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace homework_indexer_parser
@@ -36,12 +35,12 @@ namespace homework_indexer_parser
             InitializeComponent();
         }
 
-        public ProcessingForm(List<string> fileNames)
+        public ProcessingForm(List<string> fileNames, PostProcessingChoice choice)
             : this()
         {
             files = fileNames;
             currentFile = 0;
-            pclass = new ProcessingClass(fileNames);
+            pclass = new ProcessingClass(fileNames, choice);
             InitializeTimer();
 
             pclass.ProcessEndHandler += (dictionary) =>
@@ -103,7 +102,7 @@ namespace homework_indexer_parser
                 Invoke((Action)AfterProcess);
                 return;
             }
-            
+
             Button_OK.Show();
             Button_CancelOrOK.Hide();
         }

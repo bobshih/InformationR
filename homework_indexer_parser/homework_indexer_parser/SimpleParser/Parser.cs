@@ -7,7 +7,7 @@ using System.Text;
 ///Contributor : 101820302 101820307
 ///
 
-namespace homework_indexer_parser.Parser
+namespace homework_indexer_parser.SimpleParser
 {
     [Flags]
     public enum PostProcessingChoice
@@ -35,6 +35,7 @@ namespace homework_indexer_parser.Parser
         private StreamReader reader = null;
         private PostProcessingChoice choice;
 
+
         #endregion
 
         #region public method
@@ -44,7 +45,6 @@ namespace homework_indexer_parser.Parser
         public WARCReader(PostProcessingChoice choice)
         {
             this.choice = choice;
-            ProcessedFileCount = 0;
             CurrentFile = null;
         }
 
@@ -249,22 +249,64 @@ namespace homework_indexer_parser.Parser
         }
 
         /// <summary>
-        /// Get Current Reading File Name
+        /// Count Of File Added
         /// </summary>
-        public int ProcessedFileCount
+        public int TotalFileCount
         {
             get;
             private set;
         }
 
         /// <summary>
+        /// Count Of File Processed
+        /// </summary>
+        public int ProcessedFileCount
+        {
+            get
+            {
+                return TotalFileCount - fileBuffer.Count;
+            }
+        }
+
+        /// <summary>
         /// Get Current Reading File Name
+        /// </summary>
+        public int ProcessedArticalCount
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Get Current IDNAME
         /// </summary>
         private string IDName
         {
             get
             {
-                return CurrentFile + ProcessedFileCount.ToString();
+                return ProcessedArticalCount.ToString() + ProcessedFileCount.ToString() + "(" + CurrentFile + ")";
+            }
+        }
+
+        /// <summary>
+        /// Get Current Reading File Length
+        /// </summary>
+        public long CurrentFileSize
+        {
+            get
+            {
+                return reader == null ? reader.BaseStream.Length : 0;
+            }
+        }
+
+        /// <summary>
+        /// Get Current Reading File Position
+        /// </summary>
+        public long CurrentFilePosition
+        {
+            get
+            {
+                return reader == null ? reader.BaseStream.Position : 0;
             }
         }
 

@@ -1,9 +1,7 @@
 ﻿using homework_indexer_parser.DictionaryFolder;
-using homework_indexer_parser.ParserFolder;
+using homework_indexer_parser.SimpleParser;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -69,26 +67,30 @@ namespace homework_indexer_parser
 
 
         /// <summary>
-        /// 
+        /// Current File Progress (%)
         /// </summary>
         public int Progress
         {
             get;
-            
+            private set;
         }
 
+        /// <summary>
+        /// Processed File
+        /// </summary>
         public int DoneFIlesCount
         {
             get;
+            private set;
         }
 
         #endregion
 
-        private List<string> files;
         private Dictionary dictionary = new Dictionary();
         private Thread thread;
         private EventWaitHandle suspendEvent = new ManualResetEvent(true);
         private EventWaitHandle abortEvent = new ManualResetEvent(false);
+        WARCReader reader;
 
         private void PostMessage(MessageType type, string message)
         {
@@ -97,6 +99,7 @@ namespace homework_indexer_parser
                 Task.Run(() => MessageHandler(type, message));
             }
         }
+
         private void PostEnd()
         {
             if (ProcessEndHandler != null)
@@ -109,15 +112,18 @@ namespace homework_indexer_parser
         /// Initialize Processing Class With File List
         /// </summary>
         /// <param name="filenames">files to process</param>
-        public ProcessingClass(List<string> filenames)
+        public ProcessingClass(List<string> filenames, PostProcessingChoice choice)
         {
             thread = new Thread(ProcessFile);
-            files = filenames;
             Processing = false;
             Pause = false;
             Finish = false;
             Started = false;
             End = false;
+            reader = new WARCReader(choice);
+            reader.AddFile(filenames);
+            Progress = 0;
+            DoneFIlesCount = 0;
         }
 
         ~ProcessingClass()
@@ -137,7 +143,7 @@ namespace homework_indexer_parser
                 return;
             Started = true;
             Processing = true;
-            thread.Start(files);
+            thread.Start();
         }
 
         /// <summary>
@@ -170,42 +176,26 @@ namespace homework_indexer_parser
 
         #endregion
 
-        private void ProcessFile(object parameters)
+        private void ProcessFile()
         {
             var waitGroup = new EventWaitHandle[] { abortEvent, suspendEvent };
-            List<string> fileNames = parameters as List<string>;
-            WARCReader reader = new WARCReader();
-            foreach (string file in fileNames)
+
+            WARC_TOPIC_TOKENS tokenList;
+            while ((tokenList = reader.GetNext()) != null)
             {
+                Progress = (int)Math.Floor(100 * reader.CurrentFilePosition / (double)reader.CurrentFileSize);
+                DoneFIlesCount = reader.ProcessedFileCount;
+                this.DoneFIlesCount = reader.ProcessedFileCount;
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                 {
                     //aborted
+                    PostMessage(MessageType.WARNNING, "Progress Abort");
                     ProcessAbort();
                     return;
                 }
-                List<string> tokenList;
-                try
-                {
-                    reader.ReadFile(file);
-                }
-                catch
-                {
-                    PostMessage(MessageType.ERROR, "Can not parse file " + file);
-                    continue;
-                }
-
-                while ((tokenList = reader.GetNext()) != null)
-                {
-                    if (EventWaitHandle.WaitAny(waitGroup) == 0)
-                    {
-                        //aborted
-                        ProcessAbort();
-                        return;
-                    }
-                    //TODO: one word by one to track progress
-                    dictionary.AddArticle(tokenList);
-                }
+                dictionary.AddArticle(tokenList.tokens);
             }
+
             ProcessFinish();
         }
 
@@ -220,7 +210,6 @@ namespace homework_indexer_parser
         private void ProcessAbort()
         {
             Processing = false;
-            Finish = true;
             End = true;
             PostEnd();
         }
