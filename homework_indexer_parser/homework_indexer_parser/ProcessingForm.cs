@@ -1,7 +1,7 @@
-﻿using homework_indexer_parser.DictionaryFolder;
+﻿using homework_indexer_parser.SimpleParser;
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace homework_indexer_parser
@@ -10,7 +10,10 @@ namespace homework_indexer_parser
     {
         private ProcessingClass pclass;
 
-        
+        private List<String> files = new List<string>();
+        private int currentFile;
+        private Stopwatch stopwatch_Total = new Stopwatch();
+        private Stopwatch stopwatch_current = new Stopwatch();
         private bool _pause = false;
         private bool Pause
         {
@@ -24,6 +27,7 @@ namespace homework_indexer_parser
                 Button_CancelOrOK.Text = value ? "Pause" : "Resume";
             }
         }
+
         #region Constructors
 
         private ProcessingForm()
@@ -31,19 +35,93 @@ namespace homework_indexer_parser
             InitializeComponent();
         }
 
-        public ProcessingForm(List<string> fileNames)
+        public ProcessingForm(List<string> fileNames, PostProcessingChoice choice)
             : this()
         {
-            pclass = new ProcessingClass(fileNames);
+            files = fileNames;
+            currentFile = 0;
+            pclass = new ProcessingClass(fileNames, choice);
+            InitializeTimer();
+
             pclass.ProcessEndHandler += (dictionary) =>
             {
                 dictionary.OutputDictionary();
                 dictionary.OutputFile();
                 AfterProcess();
             };
+
+            pclass.MessageHandler += HandleProcessMessage;
         }
 
         #endregion
+
+        /// <summary>
+        /// 初始化計時器
+        /// </summary>
+        private void InitializeTimer()
+        {
+            timer.Interval = 500;
+            timer.Enabled = true;
+            // start stopwatch
+            stopwatch_current.Stop();
+            stopwatch_current.Reset();
+            stopwatch_current.Start();
+            stopwatch_Total = new Stopwatch();
+            stopwatch_Total.Reset();
+            stopwatch_Total.Start();
+
+            timer.Tick += new EventHandler(CheckProgress);
+        }
+
+        /// <summary>
+        /// 計時器事件
+        /// </summary>
+        private void CheckProgress(object obj, EventArgs e)
+        {
+            // 設定porgress bar
+            ProgressBar_TotalPrograss.Value = pclass.DoneFIlesCount * 100 / files.Count;
+            ProgressBar_CurrentProgress.Value = pclass.Progress;
+            // 顯示經過時間
+            ShowTime();
+            // 顯示目前檔案
+            String[] filePath = files[currentFile].Split(new char[] { '\\' });
+            int ends = filePath.Length;
+            Label_CurrentFile.Text = filePath[ends-1];
+        }
+
+        private void ShowTime()
+        {
+
+            Label_TotalTime.Text = String.Format("{0:00}:{1:00}:{2:00}", stopwatch_Total.Elapsed.Hours,
+                stopwatch_Total.Elapsed.Minutes, stopwatch_Total.Elapsed.Seconds);
+            if (pclass.DoneFIlesCount != currentFile)
+            {
+                currentFile = pclass.DoneFIlesCount;
+                stopwatch_current.Stop();
+                stopwatch_current.Reset();
+                stopwatch_current.Start();
+            }
+            Label_CurrentTimeComsumed.Text = String.Format("{0:00}:{1:00}:{2:00}", stopwatch_current.Elapsed.Hours,
+                stopwatch_current.Elapsed.Minutes, stopwatch_current.Elapsed.Seconds);
+        }
+
+        void HandleProcessMessage(ProcessingClass.MessageType messageType, string message)
+        {
+            switch (messageType)
+            {
+                case ProcessingClass.MessageType.ERROR:
+                    ListBox_Errors.Items.Add("<ERROR> : " + message);
+                    break;
+                case ProcessingClass.MessageType.WARNNING:
+                    ListBox_Errors.Items.Add("<Warning> : " + message);
+                    break;
+                case ProcessingClass.MessageType.NOTICE:
+                    ListBox_Errors.Items.Add("<Notice> : " + message);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         private void AfterProcess()
         {
@@ -52,6 +130,9 @@ namespace homework_indexer_parser
                 Invoke((Action)AfterProcess);
                 return;
             }
+            ShowTime();
+            stopwatch_current.Stop();
+            stopwatch_Total.Stop();
             Button_OK.Show();
             Button_CancelOrOK.Hide();
         }
