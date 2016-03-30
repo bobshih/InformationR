@@ -23,7 +23,7 @@ namespace homework_indexer_parser.Parser
         public WARC_HTML_ONLYReader(string path)
         {
             fstream = File.OpenRead(path);
-            sreader = new StreamReader(fstream);
+            sreader = new StreamReader(fstream, true);
         }
 
         public HTMLRecord ReadNextHtml()
