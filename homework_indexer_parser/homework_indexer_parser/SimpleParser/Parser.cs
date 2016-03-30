@@ -2,177 +2,272 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+///
+///Contributor : 101820302 101820307
+///
 
-namespace homework_indexer_parser.SimpleParser
+namespace homework_indexer_parser.Parser
 {
-    class Parser
+    [Flags]
+    public enum PostProcessingChoice
     {
-        public class WARCReader
+        NONE = 0,
+        CASE_FOLDING = 1,
+        NO_NUMBER = 2,
+    }
+
+    public class WARC_TOPIC_TOKENS
+    {
+        public string ID;
+        public List<string> tokens;
+    }
+
+    /// <summary>
+    /// SGML Reader
+    /// </summary>
+    public class WARCReader
+    {
+        #region member variable
+
+        //private Queue<WARC_TOPIC_TOKENS> parseResultBuffer = new Queue<WARC_TOPIC_TOKENS>();
+        private Queue<string> fileBuffer = new Queue<string>();
+        private StreamReader reader = null;
+        private PostProcessingChoice choice;
+
+        #endregion
+
+        #region public method
+
+        /// <summary>
+        /// </summary>
+        public WARCReader(PostProcessingChoice choice)
         {
-            private Queue<List<string>> parseResultBuffer = new Queue<List<string>>();
+            this.choice = choice;
+            ProcessedFileCount = 0;
+            CurrentFile = null;
+        }
 
-            /// <summary>
-            /// </summary>
-            public WARCReader()
+        /// <summary>
+        /// Add File To ReadBuffer
+        /// </summary>
+        /// <param name="filename">file to parse</param>
+        public void AddFile(string filename)
+        {
+            fileBuffer.Enqueue(filename);
+        }
+
+        /// <summary>
+        /// Add Many File To ReadBuffer
+        /// </summary>
+        /// <param name="filename">file list to parse</param>
+        public void AddFile(List<string> filenames)
+        {
+            foreach (string s in filenames)
+                fileBuffer.Enqueue(s);
+        }
+
+        /// <summary>
+        /// Get Next Article ,If No Article Avalible ,null is returned
+        /// </summary>
+        public WARC_TOPIC_TOKENS GetNext()
+        {
+            //May Use Buffer Is Not Return Directly
+            return this.ReadOneArticle();
+        }
+
+        #endregion
+
+        #region Parse Implementation
+        private bool ValidateReader()
+        {
+            while (reader == null || reader.Peek() == -1)
             {
-                ProcessedArticleCount = 0;
-            }
-
-            /// <summary>
-            /// Read And Append Parsed Result To Current Buffer
-            /// </summary>
-            /// <param name="filename">file to parse</param>
-            public void ReadFile(string filename)
-            {
-                
-                HTMLDocument doc = new HTMLDocument();
-                IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
-                /**/
-                StreamReader stream = new StreamReader(filename);
-                string[] htmlFile = File.ReadAllLines(filename);
-                String paraph = "";
-
-
-                bool inBody = false;
-                while (true)
+                if (fileBuffer.Count == 0)
                 {
-                    String temp = stream.ReadLine();
-                    if (temp == null)
-                    {
-                        break;
-                    }
-                    if (temp.Contains("</body>"))
-                    {
-                        paraph += temp;
-                        inBody = false;
-
-                        doc2.write(paraph);
-                        var t = doc.getElementsByTagName("body");
-                        foreach (IHTMLElement element in t)
-                        {
-                            List<string> tokens = ParseElement(element);
-                            parseResultBuffer.Enqueue(tokens);
-                            ++ProcessedArticleCount;
-                        }
-
-                        paraph = "";
-                    }
-                    if (temp.Contains("<body>"))
-                    {
-                        inBody = true;
-                    }
-                    if (inBody)
-                    {
-                        paraph += temp;
-                    }
-                }
-                //int begin = htmlFile.IndexOf("<html>");
-                //int end = htmlFile.IndexOf("</html>") + 7;
-                //htmlFile = htmlFile.Substring(begin, end - begin);
-
-                //doc2.write(htmlFile);
-                //var temp = doc.getElementsByTagName("html");
-
-                /*
-                foreach (IHTMLElement element in temp)
-                {
-                    List<string> tokens = ParseElement(element);
-                    parseResultBuffer.Enqueue(tokens);
-                    ++ProcessedArticleCount;
-                }/**/
-            }
-
-            #region ReadFile Implementation
-
-            private static List<string> ParseElement(IHTMLElement element)
-            {
-                List<string> documentTokens = new List<string>();
-                documentTokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '\u007f'/*???*/}, StringSplitOptions.RemoveEmptyEntries));
-                PostProcess(documentTokens);
-                return documentTokens;
-            }
-
-            private static bool PostProcessOnce(ref string str)
-            {
-                int finalalnum = str.Length - 1;
-                for (; finalalnum >= 0; --finalalnum)
-                {
-                    if (char.IsLetterOrDigit(str[finalalnum]))
-                        break;
-                }
-                int firstalnum = 0;
-                for (; firstalnum <= finalalnum; ++firstalnum)
-                {
-                    if (char.IsLetterOrDigit(str[firstalnum]))
-                        break;
-                }
-
-                if (firstalnum <= finalalnum)
-                {
-                    str = str.Substring(firstalnum, finalalnum - firstalnum + 1);
-                    str = str.ToLower();
-                    return true;
+                    CurrentFile = null;
+                    return false;
                 }
                 else
                 {
-                    return false;
+                    CurrentFile = fileBuffer.Dequeue();
+                    reader = new StreamReader(CurrentFile);
                 }
             }
+            return true;
+        }
 
-            /// <summary>
-            /// PostProcess For Tokens
-            /// </summary>
-            private static void PostProcess(List<string> tokens)
+        private WARC_TOPIC_TOKENS ReadOneArticle()
+        {
+            string topic = null;
+            while (String.IsNullOrEmpty(topic))
             {
-                for (int i = 0; i < tokens.Count; ++i)
+                if (!ValidateReader())
+                    return null;
+                StringBuilder temptopic = new StringBuilder();
+                string temp;
+
+                //Find <HTML>
+                while ((temp = reader.ReadLine()) != null)
                 {
-                    string str = tokens[i];
-                    if (!PostProcessOnce(ref str))
+                    int beingIndex = temp.IndexOf("<html>", StringComparison.CurrentCultureIgnoreCase);
+                    if (beingIndex == -1)
                     {
-                        tokens.RemoveAt(i);
-                        --i;
                         continue;
                     }
-                    tokens[i] = str;
+                    temptopic.AppendLine(temp.Substring(beingIndex));
                 }
-            }
+                if (reader.Peek() == -1)
+                    continue;
 
-            #endregion
-
-            /// <summary>
-            /// Get Next Article ,If No Article Avalible ,null is returned
-            /// </summary>
-            public List<string> GetNext()
-            {
-                if (parseResultBuffer.Count != 0)
+                //Find Until </HTML>
+                while ((temp = reader.ReadLine()) != null)
                 {
-                    return parseResultBuffer.Dequeue();
+                    int endIndex = temp.IndexOf("</html>", StringComparison.CurrentCultureIgnoreCase);
+                    if (endIndex == -1)
+                    {
+                        temptopic.AppendLine(temp);
+                    }
+                    else
+                    {
+                        temptopic.AppendLine(temp.Substring(0, endIndex + "</html>".Length));
+                    }
                 }
-                return null;
+
+                topic = temptopic.ToString();
+                break;
             }
 
-            /// <summary>
-            /// Get Buffered (Not Get By GetNext()) Artical Count
-            /// </summary>
-            public int AvalibleArticleCount
+            HTMLDocument doc = new HTMLDocument();
+            IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
+            doc2.write(topic);
+
+            var paralist = doc.getElementsByTagName("html");
+            List<string> tokens = new List<string>();
+            foreach (IHTMLElement element in paralist)
             {
-                get
-                {
-                    return parseResultBuffer.Count;
-                }
+                tokens.AddRange(ParseAndRemoveSeperator(element));
+            }
+            WARC_TOPIC_TOKENS tk = new WARC_TOPIC_TOKENS();
+            tk.ID = CurrentFile;
+            tk.tokens = tokens;
+            return tk;
+        }
+
+        private List<string> ParseAndRemoveSeperator(IHTMLElement element)
+        {
+            List<string> documentTokens = new List<string>();
+            documentTokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')' }, StringSplitOptions.RemoveEmptyEntries));
+            PostProcess(documentTokens);
+            return documentTokens;
+        }
+
+        private string GetCenterString(string str, Predicate<char> pred)
+        {
+            int finalalnum = str.Length - 1;
+            for (; finalalnum >= 0; --finalalnum)
+            {
+                if (pred(str[finalalnum]))
+                    break;
+            }
+            int firstalnum = 0;
+            for (; firstalnum <= finalalnum; ++firstalnum)
+            {
+                if (pred(str[firstalnum]))
+                    break;
             }
 
-            /// <summary>
-            /// Get Processed (All) Artical Count
-            /// </summary>
-            public int ProcessedArticleCount
+            if (firstalnum <= finalalnum)
             {
-                get;
-                private set;
+                str = str.Substring(firstalnum, finalalnum - firstalnum + 1);
+                return str;
+            }
+            else
+            {
+                return "";
             }
         }
+
+        private bool PostProcessOnce(ref string str)
+        {
+            str = GetCenterString(str, Char.IsLetterOrDigit);
+
+            if (HasFlag(PostProcessingChoice.CASE_FOLDING))
+            {
+                str = str.ToLower();
+            }
+
+            if (HasFlag(PostProcessingChoice.NO_NUMBER))
+            {
+                foreach (var c in str)
+                {
+                    if (char.IsLetter(c))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            return string.IsNullOrWhiteSpace(str);
+        }
+
+        /// <summary>
+        /// PostProcess For Tokens
+        /// </summary>
+        private void PostProcess(List<string> tokens)
+        {
+            for (int i = 0; i < tokens.Count; ++i)
+            {
+                string str = tokens[i];
+                if (!PostProcessOnce(ref str))
+                {
+                    tokens.RemoveAt(i);
+                    --i;
+                    continue;
+                }
+                tokens[i] = str;
+            }
+        }
+
+        private bool HasFlag(PostProcessingChoice flag)
+        {
+            return (choice & flag) != PostProcessingChoice.NONE;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Get Current Reading File Name
+        /// </summary>
+        public string CurrentFile
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Get Current Reading File Name
+        /// </summary>
+        public int ProcessedFileCount
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Get Current Reading File Name
+        /// </summary>
+        private string IDName
+        {
+            get
+            {
+                return CurrentFile + ProcessedFileCount.ToString();
+            }
+        }
+
+        #endregion
     }
 }
