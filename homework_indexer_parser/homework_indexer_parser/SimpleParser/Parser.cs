@@ -131,11 +131,10 @@ namespace homework_indexer_parser.SimpleParser
                     else
                     {
                         temptopic.AppendLine(temp.Substring(0, endIndex + "</html>".Length));
+                        topic = temptopic.ToString();
+                        break;
                     }
                 }
-
-                topic = temptopic.ToString();
-                break;
             }
 
             HTMLDocument doc = new HTMLDocument();

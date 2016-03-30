@@ -10,10 +10,10 @@ namespace homework_indexer_parser
     {
         private ProcessingClass pclass;
 
-        private List<String> files;
+        private List<String> files = new List<string>();
         private int currentFile;
-        private Stopwatch stopwatch_Total;
-        private Stopwatch stopwatch_current;
+        private Stopwatch stopwatch_Total = new Stopwatch();
+        private Stopwatch stopwatch_current = new Stopwatch();
         private bool _pause = false;
         private bool Pause
         {
