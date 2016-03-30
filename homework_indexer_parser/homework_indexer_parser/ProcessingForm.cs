@@ -10,6 +10,7 @@ namespace homework_indexer_parser
     {
         private ProcessingClass pclass;
 
+        
         private bool _pause = false;
         private bool Pause
         {

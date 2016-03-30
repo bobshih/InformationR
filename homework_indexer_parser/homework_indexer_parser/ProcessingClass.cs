@@ -67,6 +67,21 @@ namespace homework_indexer_parser
             private set;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Progress
+        {
+            get;
+            
+        }
+
+        public int DoneFIlesCount
+        {
+            get;
+        }
+
         #endregion
 
         private List<string> files;
