@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace homework_indexer_parser
 {
@@ -38,7 +39,7 @@ namespace homework_indexer_parser
         public ProcessingForm(List<string> fileNames, PostProcessingChoice choice)
             : this()
         {
-            files = fileNames;
+            files = new List<string>(fileNames);
             currentFile = 0;
             pclass = new ProcessingClass(fileNames, choice);
             InitializeTimer();
@@ -60,7 +61,7 @@ namespace homework_indexer_parser
         /// </summary>
         private void InitializeTimer()
         {
-            timer.Interval = 500;
+            timer.Interval = 10;
             timer.Enabled = true;
             // start stopwatch
             stopwatch_current.Stop();
@@ -79,14 +80,25 @@ namespace homework_indexer_parser
         private void CheckProgress(object obj, EventArgs e)
         {
             // 設定porgress bar
-            ProgressBar_TotalPrograss.Value = pclass.DoneFIlesCount * 100 / files.Count;
-            ProgressBar_CurrentProgress.Value = pclass.Progress;
+            if (obj != null)
+            {
+                ProgressBar_TotalPrograss.Value = (pclass.DoneFIlesCount != files.Count) ? (pclass.DoneFIlesCount * 100 + pclass.Progress) / (files.Count) : 100;
+                ProgressBar_CurrentProgress.Value = pclass.Progress;
+                // 顯示目前檔案
+                if (pclass.CurrentFile != null)
+                {
+                    String[] filePath = pclass.CurrentFile.Split(new char[] { '\\' });
+                    Label_CurrentFile.Text = filePath.Last();
+                }
+            }
+            else
+            {
+                ProgressBar_TotalPrograss.Value = 100;
+                ProgressBar_CurrentProgress.Value = 100;
+                Label_CurrentFile.Text = "Done";
+            }
             // 顯示經過時間
             ShowTime();
-            // 顯示目前檔案
-            String[] filePath = files[currentFile].Split(new char[] { '\\' });
-            int ends = filePath.Length;
-            Label_CurrentFile.Text = filePath[ends-1];
         }
 
         private void ShowTime()
@@ -133,6 +145,8 @@ namespace homework_indexer_parser
             ShowTime();
             stopwatch_current.Stop();
             stopwatch_Total.Stop();
+            timer.Stop();
+            CheckProgress(null, null);
             Button_OK.Show();
             Button_CancelOrOK.Hide();
         }

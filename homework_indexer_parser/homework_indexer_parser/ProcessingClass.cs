@@ -84,6 +84,12 @@ namespace homework_indexer_parser
             private set;
         }
 
+        public string CurrentFile
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
         private Dictionary dictionary = new Dictionary();
@@ -183,21 +189,27 @@ namespace homework_indexer_parser
             WARC_TOPIC_TOKENS tokenList;
             while ((tokenList = reader.GetNext()) != null)
             {
-                double value = 100 * (reader.CurrentFilePosition / (double)(reader.CurrentFileSize + 1));
-                Progress = (int)Math.Floor(value);
-                DoneFIlesCount = reader.ProcessedFileCount;
-                this.DoneFIlesCount = reader.ProcessedFileCount;
+                UpdateFileProgress();
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                 {
                     //aborted
                     PostMessage(MessageType.WARNNING, "Progress Abort");
+                    UpdateFileProgress();
                     ProcessAbort();
                     return;
                 }
                 dictionary.AddArticle(tokenList.tokens);
             }
-
+            UpdateFileProgress();
             ProcessFinish();
+        }
+
+        private void UpdateFileProgress()
+        {
+            double value = 100 * (reader.CurrentFilePosition / (double)(reader.CurrentFileSize + 1));
+            Progress = (int)Math.Floor(value);
+            DoneFIlesCount = reader.ProcessedFileCount;
+            CurrentFile = reader.CurrentFile;
         }
 
         private void ProcessFinish()

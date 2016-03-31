@@ -55,6 +55,7 @@ namespace homework_indexer_parser.SimpleParser
         public void AddFile(string filename)
         {
             fileBuffer.Enqueue(filename);
+            TotalFileCount++;
         }
 
         /// <summary>
@@ -65,6 +66,7 @@ namespace homework_indexer_parser.SimpleParser
         {
             foreach (string s in filenames)
                 fileBuffer.Enqueue(s);
+            TotalFileCount += filenames.Count;
         }
 
         /// <summary>
