@@ -90,9 +90,11 @@ namespace homework_indexer_parser
                     String[] filePath = pclass.CurrentFile.Split(new char[] { '\\' });
                     Label_CurrentFile.Text = filePath.Last();
                 }
+                Label_CurrentProgress.Text = "Processing";
             }
             else
             {
+                Label_CurrentProgress.Text = "Finish";
                 ProgressBar_TotalPrograss.Value = 100;
                 ProgressBar_CurrentProgress.Value = 100;
                 Label_CurrentFile.Text = "Done";
@@ -119,6 +121,11 @@ namespace homework_indexer_parser
 
         void HandleProcessMessage(ProcessingClass.MessageType messageType, string message)
         {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(()=>HandleProcessMessage(messageType, message)));
+                return;
+            }
             switch (messageType)
             {
                 case ProcessingClass.MessageType.ERROR:
@@ -161,6 +168,16 @@ namespace homework_indexer_parser
         private void Button_OK_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void Button_CancelOrOK_Click(object sender, EventArgs e)
+        {
+            pclass.Stop();   
+        }
+
+        private void ProcessingForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            pclass.Stop();
         }
     }
 }

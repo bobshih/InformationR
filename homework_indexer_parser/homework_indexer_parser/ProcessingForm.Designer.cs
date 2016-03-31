@@ -107,43 +107,43 @@
             // 
             // Label_CurrentTimeComsumed
             // 
-            this.Label_CurrentTimeComsumed.AutoSize = true;
-            this.Label_CurrentTimeComsumed.Location = new System.Drawing.Point(158, 124);
+            this.Label_CurrentTimeComsumed.Location = new System.Drawing.Point(119, 124);
             this.Label_CurrentTimeComsumed.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Label_CurrentTimeComsumed.Name = "Label_CurrentTimeComsumed";
-            this.Label_CurrentTimeComsumed.Size = new System.Drawing.Size(36, 12);
+            this.Label_CurrentTimeComsumed.Size = new System.Drawing.Size(72, 12);
             this.Label_CurrentTimeComsumed.TabIndex = 1;
-            this.Label_CurrentTimeComsumed.Text = "00.00s";
+            this.Label_CurrentTimeComsumed.Text = "00:00:00";
+            this.Label_CurrentTimeComsumed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Label_TotalTime
             // 
-            this.Label_TotalTime.AutoSize = true;
-            this.Label_TotalTime.Location = new System.Drawing.Point(158, 24);
+            this.Label_TotalTime.Location = new System.Drawing.Point(126, 24);
             this.Label_TotalTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Label_TotalTime.Name = "Label_TotalTime";
-            this.Label_TotalTime.Size = new System.Drawing.Size(36, 12);
+            this.Label_TotalTime.Size = new System.Drawing.Size(65, 12);
             this.Label_TotalTime.TabIndex = 2;
-            this.Label_TotalTime.Text = "00:00s";
+            this.Label_TotalTime.Text = "00:00:00";
+            this.Label_TotalTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Label_CurrentProgress
             // 
-            this.Label_CurrentProgress.AutoSize = true;
-            this.Label_CurrentProgress.Location = new System.Drawing.Point(119, 99);
+            this.Label_CurrentProgress.Location = new System.Drawing.Point(113, 99);
             this.Label_CurrentProgress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Label_CurrentProgress.Name = "Label_CurrentProgress";
             this.Label_CurrentProgress.Size = new System.Drawing.Size(78, 12);
             this.Label_CurrentProgress.TabIndex = 6;
             this.Label_CurrentProgress.Text = "Current Porcess";
+            this.Label_CurrentProgress.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Label_CurrentFile
             // 
-            this.Label_CurrentFile.AutoSize = true;
-            this.Label_CurrentFile.Location = new System.Drawing.Point(134, 82);
+            this.Label_CurrentFile.Location = new System.Drawing.Point(73, 82);
             this.Label_CurrentFile.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Label_CurrentFile.Name = "Label_CurrentFile";
-            this.Label_CurrentFile.Size = new System.Drawing.Size(61, 12);
+            this.Label_CurrentFile.Size = new System.Drawing.Size(118, 12);
             this.Label_CurrentFile.TabIndex = 7;
             this.Label_CurrentFile.Text = "Current File";
+            this.Label_CurrentFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Button_CancelOrOK
             // 
@@ -154,6 +154,7 @@
             this.Button_CancelOrOK.TabIndex = 8;
             this.Button_CancelOrOK.Text = "Cancel";
             this.Button_CancelOrOK.UseVisualStyleBackColor = true;
+            this.Button_CancelOrOK.Click += new System.EventHandler(this.Button_CancelOrOK_Click);
             // 
             // Button_OK
             // 
@@ -181,7 +182,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(483, 202);
             this.Controls.Add(this.ListBox_Errors);
-            this.Controls.Add(this.Button_OK);
             this.Controls.Add(this.Button_CancelOrOK);
             this.Controls.Add(this.Label_CurrentFile);
             this.Controls.Add(this.Label_CurrentProgress);
@@ -193,9 +193,11 @@
             this.Controls.Add(this.Label_CurrentTimeComsumed);
             this.Controls.Add(this.ProgressBar_CurrentProgress);
             this.Controls.Add(this.ProgressBar_TotalPrograss);
+            this.Controls.Add(this.Button_OK);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ProcessingForm";
             this.Text = "Processing";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProcessingForm_FormClosing);
             this.Load += new System.EventHandler(this.ProcessingForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
