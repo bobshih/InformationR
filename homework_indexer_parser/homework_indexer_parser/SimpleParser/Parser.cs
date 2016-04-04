@@ -222,7 +222,7 @@ namespace homework_indexer_parser.SimpleParser
             for (int i = 0; i < tokens.Count; ++i)
             {
                 string str = tokens[i];
-                if (!PostProcessOnce(ref str))
+                if (PostProcessOnce(ref str))
                 {
                     tokens.RemoveAt(i);
                     --i;
