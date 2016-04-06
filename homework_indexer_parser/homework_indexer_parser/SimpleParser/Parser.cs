@@ -190,6 +190,11 @@ namespace homework_indexer_parser.SimpleParser
             }
         }
 
+        /// <summary>
+        /// <para> Postprocessing 'str' with current configuration</para>
+        /// <para>Return False When 'str' Is *NOT* A Valid String After Process</para>
+        /// </summary>
+        /// <param name="str">string to process</param>
         private bool PostProcessOnce(ref string str)
         {
             str = GetCenterString(str, Char.IsLetterOrDigit);
@@ -211,7 +216,7 @@ namespace homework_indexer_parser.SimpleParser
                 return false;
             }
 
-            return string.IsNullOrWhiteSpace(str);
+            return !string.IsNullOrWhiteSpace(str);
         }
 
         /// <summary>
@@ -222,7 +227,7 @@ namespace homework_indexer_parser.SimpleParser
             for (int i = 0; i < tokens.Count; ++i)
             {
                 string str = tokens[i];
-                if (PostProcessOnce(ref str))
+                if (!PostProcessOnce(ref str))
                 {
                     tokens.RemoveAt(i);
                     --i;
