@@ -13,7 +13,7 @@ namespace InformationRetrieval
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SimpleForm());
+            Application.Run(new IndexingFrom());
 
         }
     }

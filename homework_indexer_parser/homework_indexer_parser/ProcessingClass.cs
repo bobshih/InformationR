@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +15,6 @@ namespace InformationRetrieval
             NOTICE
         };
         public event Action<MessageType, string> MessageHandler;
-        public event Action<Dictionary> ProcessEndHandler;
 
         #region Process State Properties
 
@@ -94,6 +94,10 @@ namespace InformationRetrieval
         private EventWaitHandle suspendEvent = new ManualResetEvent(true);
         private EventWaitHandle abortEvent = new ManualResetEvent(false);
 
+        private string file;
+        private string dir;
+        private DirectoryOrganizer dirorg;
+
         private void PostMessage(MessageType type, string message)
         {
             if (MessageHandler != null)
@@ -102,28 +106,20 @@ namespace InformationRetrieval
             }
         }
 
-        private void PostEnd()
-        {
-            if (ProcessEndHandler != null)
-            {
-                ProcessEndHandler(dictionary);
-            }
-        }
-
         /// <summary>
         /// Initialize Processing Class With File List
         /// </summary>
         /// <param name="filenames">files to process</param>
-        public ProcessingClass(List<string> filenames, PostProcessingChoice choice)
+        public ProcessingClass(string file, DirectoryOrganizer dirorg)
         {
+            this.dirorg = dirorg;
+            this.file = file;
             thread = new Thread(ProcessFile);
             Processing = false;
             Pause = false;
             Finish = false;
             Started = false;
             End = false;
-            reader = new WARCReader(choice);
-            reader.AddFile(filenames);
             Progress = 0;
             DoneFIlesCount = 0;
         }
@@ -180,12 +176,45 @@ namespace InformationRetrieval
 
         private void ProcessFile()
         {
-            var waitGroup = new EventWaitHandle[] { abortEvent, suspendEvent };
-
-            WARC_TOPIC_TOKENS tokenList;
-            while ((tokenList = reader.GetNext()) != null)
+            try
             {
-                UpdateFileProgress();
+                var waitGroup = new EventWaitHandle[] { abortEvent, suspendEvent };
+                int currentsplitedartical = 0;
+                PostMessage(MessageType.NOTICE, "Splitting File");
+                int artical_count = warc_spliter.split(file, x => File.WriteAllText(dirorg.GetArticalPath(currentsplitedartical++), x));
+                PostMessage(MessageType.NOTICE, "Splitting File Finish");
+
+                PostMessage(MessageType.NOTICE, "Tokenizing File");
+                for (int i = 0; i < artical_count; ++i)
+                {
+                    PostMessage(MessageType.NOTICE, "Tokenizing File " + i.ToString());
+                    File.WriteAllLines(dirorg.GetTokenPath(i), html_tokenizer.tokenize(dirorg.GetArticalPath(i)));
+                }
+                PostMessage(MessageType.NOTICE, "Tokenizing File Finish");
+
+                PostMessage(MessageType.NOTICE, "Indexing File");
+                Dictionary<string, List<int>> mainDic = new Dictionary<string, List<int>>();
+                for (int i = 0; i < artical_count; ++i)
+                {
+                    PostMessage(MessageType.NOTICE, "Indexing File " + i.ToString());
+                    var dic = indexing.genetrateInvertedIndex(dirorg.GetTokenPath(i));
+                    DictionaryAndPostingSerializer.Save(dic, dirorg.GetDictionaryPath(i));
+                    foreach (var key in dic.Keys)
+                    {
+                        List<int> doc;
+                        if (mainDic.TryGetValue(key, out doc))
+                        {
+                            doc.Add(i);
+                        }
+                        else
+                        {
+                            mainDic.Add(key, new List<int>(new int[] { i }));
+                        }
+                    }
+                }
+                DictionaryAndPostingSerializer.Save(mainDic, dirorg.GetMainDictionaryPath());
+                PostMessage(MessageType.NOTICE, "Indexing File Finish");
+                /*
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                 {
                     //aborted
@@ -194,18 +223,14 @@ namespace InformationRetrieval
                     ProcessAbort();
                     return;
                 }
-                dictionary.AddArticle(tokenList.tokens);
+                */
+                ProcessFinish();
             }
-            UpdateFileProgress();
-            ProcessFinish();
-        }
-
-        private void UpdateFileProgress()
-        {
-            double value = 100 * (reader.CurrentFilePosition / (double)(reader.CurrentFileSize + 1));
-            Progress = (int)Math.Floor(value);
-            DoneFIlesCount = reader.ProcessedFileCount;
-            CurrentFile = reader.CurrentFile;
+            catch (Exception e)
+            {
+                PostMessage(MessageType.ERROR, "Something Bas Happened");
+                PostMessage(MessageType.ERROR, e.Message);
+            }
         }
 
         private void ProcessFinish()
@@ -213,14 +238,12 @@ namespace InformationRetrieval
             Processing = false;
             Finish = true;
             End = true;
-            PostEnd();
         }
 
         private void ProcessAbort()
         {
             Processing = false;
             End = true;
-            PostEnd();
         }
     }
 }

@@ -36,8 +36,11 @@ namespace InformationRetrieval
     {
         public static void tokenize(string file, Action<List<string>> action)
         {
-            if (action == null)
-                return;
+            action(tokenize(file));
+        }
+
+        public static List<string> tokenize(string file)
+        {
             HTMLDocument doc = new HTMLDocument();
             IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
             doc2.write(File.ReadAllText(file));
@@ -48,7 +51,7 @@ namespace InformationRetrieval
             {
                 tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')' }, StringSplitOptions.RemoveEmptyEntries));
             }
-            action(tokens);
+            return (tokens);
         }
     }
 }

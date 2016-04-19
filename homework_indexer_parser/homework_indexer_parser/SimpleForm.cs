@@ -57,18 +57,34 @@ namespace InformationRetrieval
 
         private void button5_Click(object sender, EventArgs e)
         {
+            Dictionary<string, List<int>> tddic = new Dictionary<string, List<int>>();
             var path = label2.Text;
             for (int i = 0; i < currentFile; ++i)
             {
                 // using (var stream = File.OpenWrite(path + i.ToString() + ".dictionary.txt"))
                 {
                     var dic = indexing.genetrateInvertedIndex(path + i.ToString() + ".tokenized.txt");
+
+                    foreach (var key in dic.Keys)
+                    {
+                        List<int> doc;
+                        if (tddic.TryGetValue(key, out doc))
+                        {
+                            doc.Add(i);
+                        }
+                        else
+                        {
+                            tddic.Add(key, new List<int>(new int[] { i }));
+                        }
+                    }
+
                     DictionaryAndPostingSerializer.Save(dic, path + i.ToString() + ".dictionary.txt");
-                    Dictionary<string,List<int>> dicre;
+                    //Dictionary<string,List<int>> dicre;
                     //DictionaryAndPostingSerializer.Load(out dicre, path + i.ToString() + ".dictionary.txt");
                     //;
                 }
             }
+            DictionaryAndPostingSerializer.Save(tddic, path + "mainDictionary.dictionary.txt");
         }
     }
 }
