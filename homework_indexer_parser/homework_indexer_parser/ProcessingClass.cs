@@ -92,11 +92,9 @@ namespace InformationRetrieval
 
         #endregion
 
-        private Dictionary dictionary = new Dictionary();
         private Thread thread;
         private EventWaitHandle suspendEvent = new ManualResetEvent(true);
         private EventWaitHandle abortEvent = new ManualResetEvent(false);
-        WARCReader reader;
 
         private void PostMessage(MessageType type, string message)
         {

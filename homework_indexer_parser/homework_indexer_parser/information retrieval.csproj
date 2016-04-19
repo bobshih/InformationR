@@ -47,18 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictionaryFolder\Dictionary.cs" />
-    <Compile Include="DictionaryFolder\Posting.cs" />
-    <Compile Include="Extension Method\ListBoxExtension.cs" />
+    <Compile Include="DictionaryAndPosting.cs" />
     <Compile Include="Extension_StreamReader.cs" />
     <Compile Include="indexing.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ParserFolder\Parser.cs" />
     <Compile Include="ProcessingClass.cs" />
     <Compile Include="ProcessingForm.cs">
       <SubType>Form</SubType>
@@ -74,11 +65,7 @@
     <Compile Include="SimpleForm.Designer.cs">
       <DependentUpon>SimpleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SimpleParser\Parser.cs" />
     <Compile Include="warc_spliter.cs" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ProcessingForm.resx">
       <DependentUpon>ProcessingForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -107,18 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\button.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\button1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
