@@ -1,6 +1,4 @@
-﻿using InformationRetrieval.DictionaryFolder;
-using InformationRetrieval.SimpleParser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

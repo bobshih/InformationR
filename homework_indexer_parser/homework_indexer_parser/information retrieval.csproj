@@ -50,13 +50,6 @@
     <Compile Include="DictionaryAndPosting.cs" />
     <Compile Include="Extension_StreamReader.cs" />
     <Compile Include="indexing.cs" />
-    <Compile Include="ProcessingClass.cs" />
-    <Compile Include="ProcessingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProcessingForm.Designer.cs">
-      <DependentUpon>ProcessingForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleForm.cs">
@@ -66,9 +59,6 @@
       <DependentUpon>SimpleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="warc_spliter.cs" />
-    <EmbeddedResource Include="ProcessingForm.resx">
-      <DependentUpon>ProcessingForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
