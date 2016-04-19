@@ -1,11 +1,11 @@
-﻿using homework_indexer_parser.DictionaryFolder;
-using homework_indexer_parser.SimpleParser;
+﻿using InformationRetrieval.DictionaryFolder;
+using InformationRetrieval.SimpleParser;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace homework_indexer_parser
+namespace InformationRetrieval
 {
     class ProcessingClass
     {

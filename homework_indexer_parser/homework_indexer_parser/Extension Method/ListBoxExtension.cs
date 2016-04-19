@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace homework_indexer_parser
+namespace InformationRetrieval
 {
     public static class ListBoxExtension
     {

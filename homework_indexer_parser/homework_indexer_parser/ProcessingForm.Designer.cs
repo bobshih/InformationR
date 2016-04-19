@@ -1,4 +1,4 @@
-﻿namespace homework_indexer_parser
+﻿namespace InformationRetrieval
 {
     partial class ProcessingForm
     {

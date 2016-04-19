@@ -1,11 +1,11 @@
-﻿using homework_indexer_parser.SimpleParser;
+﻿using InformationRetrieval.SimpleParser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Linq;
 
-namespace homework_indexer_parser
+namespace InformationRetrieval
 {
     public partial class ProcessingForm : Form
     {

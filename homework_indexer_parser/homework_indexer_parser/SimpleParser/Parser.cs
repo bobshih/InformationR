@@ -7,7 +7,7 @@ using System.Text;
 ///Contributor : 101820302 101820307
 ///
 
-namespace homework_indexer_parser.SimpleParser
+namespace InformationRetrieval.SimpleParser
 {
     [Flags]
     public enum PostProcessingChoice

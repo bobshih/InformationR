@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace homework_indexer_parser
+namespace InformationRetrieval
 {
     static class Program
     {

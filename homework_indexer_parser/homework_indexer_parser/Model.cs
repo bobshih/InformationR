@@ -1,12 +1,12 @@
-﻿using homework_indexer_parser.DictionaryFolder;
-using homework_indexer_parser.ParserFolder;
+﻿using InformationRetrieval.DictionaryFolder;
+using InformationRetrieval.ParserFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace homework_indexer_parser
+namespace InformationRetrieval
 {
     class Model
     {
