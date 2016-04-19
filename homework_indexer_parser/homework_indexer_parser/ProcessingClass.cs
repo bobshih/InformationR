@@ -95,7 +95,6 @@ namespace InformationRetrieval
         private EventWaitHandle abortEvent = new ManualResetEvent(false);
 
         private string file;
-        private string dir;
         private DirectoryOrganizer dirorg;
 
         private void PostMessage(MessageType type, string message)
@@ -228,7 +227,7 @@ namespace InformationRetrieval
             }
             catch (Exception e)
             {
-                PostMessage(MessageType.ERROR, "Something Bas Happened");
+                PostMessage(MessageType.ERROR, "Something Bad Happened :(");
                 PostMessage(MessageType.ERROR, e.Message);
             }
         }
