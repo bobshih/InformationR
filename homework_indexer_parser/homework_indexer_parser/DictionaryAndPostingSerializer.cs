@@ -28,7 +28,6 @@ namespace InformationRetrieval
 
         public static void Load(out Dictionary<string, List<int>> dic, string file)
         {
-            dic = new Dictionary<string, List<int>>();
             XElement root = XElement.Parse(File.ReadAllText(file));
             dic = root.Descendants("node").ToDictionary(
                 x => (string)x.Attribute("term"),

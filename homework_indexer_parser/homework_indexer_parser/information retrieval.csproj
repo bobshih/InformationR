@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictionaryAndPosting.cs" />
+    <Compile Include="DictionaryAndPostingSerializer.cs" />
     <Compile Include="Extension_StreamReader.cs" />
     <Compile Include="indexing.cs" />
     <Compile Include="Program.cs" />

@@ -60,21 +60,13 @@ namespace InformationRetrieval
             var path = label2.Text;
             for (int i = 0; i < currentFile; ++i)
             {
-                using (var stream = File.OpenWrite(path + i.ToString() + ".dictionary.txt"))
+                // using (var stream = File.OpenWrite(path + i.ToString() + ".dictionary.txt"))
                 {
                     var dic = indexing.genetrateInvertedIndex(path + i.ToString() + ".tokenized.txt");
-                    XElement root = new XElement("items");
-                    foreach (var pair in dic)
-                    {
-                        XElement node = new XElement(
-                            "node",
-                            new XAttribute("term", pair.Key),
-                            new XAttribute("term-frequency", pair.Value.Count),
-                            new XElement("position",pair.Value.Select(x=>new XElement("p",x)))//posting
-                            );
-                        root.Add(node);
-                    }
-                    root.Save(stream);
+                    DictionaryAndPostingSerializer.Save(dic, path + i.ToString() + ".dictionary.txt");
+                    Dictionary<string,List<int>> dicre;
+                    //DictionaryAndPostingSerializer.Load(out dicre, path + i.ToString() + ".dictionary.txt");
+                    //;
                 }
             }
         }
