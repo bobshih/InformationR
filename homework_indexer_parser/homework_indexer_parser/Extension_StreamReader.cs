@@ -8,27 +8,27 @@ namespace InformationRetrieval
     {
         public static string ReadUntil(this StreamReader reader, string delim)
         {
+            if (delim.Length == 1)
+            {
+                return ReadUntil(reader, delim[0]);
+            }
+
             StringBuilder builder = new StringBuilder();
+            string fdelim = delim.Substring(0, delim.Length - 1);
             while (reader.Peek() != -1)
             {
-                string temp = reader.ReadUntil(delim[0]);
-                int i = 1;
-                for (; i < delim.Length; ++i)
+                string temp = reader.ReadUntil(delim[delim.Length - 1]);
+                if (temp.Length > delim.Length - 1 && temp.Substring(temp.Length - fdelim.Length).Equals(fdelim))
                 {
-                    int current = reader.Peek();
-                    if (delim[i] == current)
-                    {
-                        reader.Read();
-                    }
-                    else
-                    {
-                        builder.Append(delim.Substring(0, i));
-                        break;
-                    }
-                }
-                if (i == delim.Length)//find 'delim'
-                {
+                    //find 'delim'
+                    builder.Append(temp.Substring(0, temp.Length - fdelim.Length));
                     break;
+                }
+                else
+                {
+                    //not find 'delim'
+                    builder.Append(temp);
+                    continue;
                 }
             }
             return builder.ToString();

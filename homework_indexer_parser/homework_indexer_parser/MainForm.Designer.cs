@@ -28,39 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
             this.Button_Start = new System.Windows.Forms.Button();
             this.ListBox_FileName = new System.Windows.Forms.ListBox();
             this.Button_AddFile = new System.Windows.Forms.Button();
             this.Button_RemoveFile = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.Button_LoadList = new System.Windows.Forms.Button();
-            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            tableLayoutPanel1.Location = new System.Drawing.Point(304, 33);
-            tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 5;
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(273, 105);
-            tableLayoutPanel1.TabIndex = 7;
             // 
             // Button_Start
             // 
-            this.Button_Start.Location = new System.Drawing.Point(322, 171);
-            this.Button_Start.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Button_Start.Location = new System.Drawing.Point(429, 214);
+            this.Button_Start.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Button_Start.Name = "Button_Start";
-            this.Button_Start.Size = new System.Drawing.Size(99, 89);
+            this.Button_Start.Size = new System.Drawing.Size(132, 111);
             this.Button_Start.TabIndex = 6;
             this.Button_Start.Text = "Start";
             this.Button_Start.UseVisualStyleBackColor = true;
@@ -70,21 +51,21 @@
             // 
             this.ListBox_FileName.FormattingEnabled = true;
             this.ListBox_FileName.HorizontalScrollbar = true;
-            this.ListBox_FileName.ItemHeight = 12;
-            this.ListBox_FileName.Location = new System.Drawing.Point(9, 54);
-            this.ListBox_FileName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ListBox_FileName.ItemHeight = 15;
+            this.ListBox_FileName.Location = new System.Drawing.Point(12, 68);
+            this.ListBox_FileName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ListBox_FileName.Name = "ListBox_FileName";
             this.ListBox_FileName.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.ListBox_FileName.Size = new System.Drawing.Size(241, 100);
+            this.ListBox_FileName.Size = new System.Drawing.Size(320, 124);
             this.ListBox_FileName.TabIndex = 8;
             // 
             // Button_AddFile
             // 
             this.Button_AddFile.AutoSize = true;
-            this.Button_AddFile.Location = new System.Drawing.Point(9, 10);
-            this.Button_AddFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Button_AddFile.Location = new System.Drawing.Point(12, 12);
+            this.Button_AddFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Button_AddFile.Name = "Button_AddFile";
-            this.Button_AddFile.Size = new System.Drawing.Size(51, 30);
+            this.Button_AddFile.Size = new System.Drawing.Size(68, 38);
             this.Button_AddFile.TabIndex = 6;
             this.Button_AddFile.Text = "Add";
             this.Button_AddFile.UseVisualStyleBackColor = true;
@@ -93,10 +74,10 @@
             // Button_RemoveFile
             // 
             this.Button_RemoveFile.AutoSize = true;
-            this.Button_RemoveFile.Location = new System.Drawing.Point(72, 10);
-            this.Button_RemoveFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Button_RemoveFile.Location = new System.Drawing.Point(96, 12);
+            this.Button_RemoveFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Button_RemoveFile.Name = "Button_RemoveFile";
-            this.Button_RemoveFile.Size = new System.Drawing.Size(54, 30);
+            this.Button_RemoveFile.Size = new System.Drawing.Size(72, 38);
             this.Button_RemoveFile.TabIndex = 6;
             this.Button_RemoveFile.Text = "Remove";
             this.Button_RemoveFile.UseVisualStyleBackColor = true;
@@ -105,10 +86,10 @@
             // button1
             // 
             this.button1.AutoSize = true;
-            this.button1.Location = new System.Drawing.Point(135, 10);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Location = new System.Drawing.Point(180, 12);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(54, 30);
+            this.button1.Size = new System.Drawing.Size(72, 38);
             this.button1.TabIndex = 9;
             this.button1.Text = "SaveList";
             this.button1.UseVisualStyleBackColor = true;
@@ -117,10 +98,10 @@
             // Button_LoadList
             // 
             this.Button_LoadList.AutoSize = true;
-            this.Button_LoadList.Location = new System.Drawing.Point(198, 10);
-            this.Button_LoadList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Button_LoadList.Location = new System.Drawing.Point(264, 12);
+            this.Button_LoadList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Button_LoadList.Name = "Button_LoadList";
-            this.Button_LoadList.Size = new System.Drawing.Size(52, 30);
+            this.Button_LoadList.Size = new System.Drawing.Size(69, 38);
             this.Button_LoadList.TabIndex = 9;
             this.Button_LoadList.Text = "AddList";
             this.Button_LoadList.UseVisualStyleBackColor = true;
@@ -128,17 +109,17 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(451, 287);
+            this.ClientSize = new System.Drawing.Size(601, 359);
             this.Controls.Add(this.Button_LoadList);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ListBox_FileName);
-            this.Controls.Add(tableLayoutPanel1);
             this.Controls.Add(this.Button_RemoveFile);
             this.Controls.Add(this.Button_AddFile);
             this.Controls.Add(this.Button_Start);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "Information Retrieval";
             this.ResumeLayout(false);

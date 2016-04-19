@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mshtml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,26 @@ namespace InformationRetrieval
                     action("<html>" + artical + "</html>");
                 }
             }
+        }
+    }
+
+    public static class html_tokenizer
+    {
+        public static void tokenize(string file, Action<List<string>> action)
+        {
+            if (action == null)
+                return;
+            HTMLDocument doc = new HTMLDocument();
+            IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
+            doc2.write(File.ReadAllText(file));
+
+            var paralist = doc.getElementsByTagName("html");
+            List<string> tokens = new List<string>();
+            foreach (IHTMLElement element in paralist)
+            {
+                tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')' }, StringSplitOptions.RemoveEmptyEntries));
+            }
+            action(tokens);
         }
     }
 }
