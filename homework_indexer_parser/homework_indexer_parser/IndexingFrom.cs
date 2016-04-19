@@ -30,17 +30,19 @@ namespace InformationRetrieval
             label_directory.Text = "dir: " + folderBrowserDialog.SelectedPath;
         }
 
+        ProcessingClass pc;
         private void button_next_Click(object sender, EventArgs e)
         {
             button_next.Enabled = false;
             string path = folderBrowserDialog.SelectedPath;
             string warc = openFileDialog.FileName;
-            ProcessingClass pc = new ProcessingClass(warc, new DirectoryOrganizer(path));
+            pc = new ProcessingClass(warc, new DirectoryOrganizer(path));
             pc.MessageHandler += (msg, str) =>
             {
                 Invoke(new Action(() =>
                 listBox1.Items.Add(str)));
             };
+            pc.ProcessEndHandler += (b) => Invoke(new Action(() => button_next.Enabled = true));
             pc.Start();
         }
     }
