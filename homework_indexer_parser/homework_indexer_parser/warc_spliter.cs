@@ -10,10 +10,11 @@ namespace InformationRetrieval
 {
     public static class warc_spliter
     {
-        public static void split(string file, Action<string> action)
+        public static int split(string file, Action<string> action)
         {
+            int count = 0;
             if (action == null)
-                return;
+                return 0;
             using (var fstream = File.OpenRead(file))
             using (StreamReader reader = new StreamReader(fstream))
             {
@@ -24,8 +25,10 @@ namespace InformationRetrieval
                     //Find </HTML>
                     var artical = reader.ReadUntil("</html>");
                     action("<html>" + artical + "</html>");
+                    ++count;
                 }
             }
+            return count;
         }
     }
 
