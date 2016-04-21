@@ -51,5 +51,15 @@ namespace InformationRetrieval
         {
             return artical_wtf.ToDictionary(x => x.Key, x => x.Value * gloable_idf[x.Key]);
         }
+
+        public static Dictionary<string, double> normalize_tfidf(Dictionary<string, double> artical_wtf)
+        {
+            double length = Math.Sqrt(artical_wtf.Values.Select(x => x * x).Sum());
+            if (length == 0)
+            {
+                return artical_wtf;
+            }
+            return artical_wtf.ToDictionary(x => x.Key, x => x.Value / length);
+        }
     }
 }

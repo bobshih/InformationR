@@ -121,6 +121,7 @@ namespace InformationRetrieval
                 Dictionary<string, List<int>> mainDic;
                 DictionaryAndPostingSerializer.Load(out mainDic, dirorg.GetMainDictionaryPath());
                 var dic_idf = indexing.idf(indexing.fetch_df(mainDic), artical_count);
+                DictionaryAndPostingSerializer.Save(dic_idf, dirorg.GetInverseDocumentFrequencyPath());
                 mainDic = null;
                 for (int i = 0; i < artical_count; ++i)
                 {
@@ -130,7 +131,8 @@ namespace InformationRetrieval
                     Dictionary<string, List<int>> dic;
                     DictionaryAndPostingSerializer.Load(out dic, dirorg.GetDictionaryPath(i));
                     var tfidf = indexing.tfidf(indexing.weighted_tf(indexing.fetch_tf(dic)), dic_idf);
-                    DictionaryAndPostingSerializer.Save(tfidf, dirorg.GetWeightVectorPath(i));
+                    tfidf = indexing.normalize_tfidf(tfidf);
+                    DictionaryAndPostingSerializer.Save(tfidf, dirorg.GetNormalizedWeightVectorPath(i));
                 }
                 PostMessage(MessageType.NOTICE, "Weighting Finish");
 

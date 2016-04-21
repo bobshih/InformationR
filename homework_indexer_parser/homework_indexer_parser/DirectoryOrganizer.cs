@@ -32,9 +32,9 @@ namespace InformationRetrieval
         {
             return root + "mainDictionary.dictionary.txt";
         }
-        public string GetWeightVectorPath(int i)
+        public string GetNormalizedWeightVectorPath(int i)
         {
-            return root + i.ToString() + ".wtfidf.txt";
+            return root + i.ToString() + ".nwtfidf.txt";
         }
         public string GetInverseDocumentFrequencyPath()
         {

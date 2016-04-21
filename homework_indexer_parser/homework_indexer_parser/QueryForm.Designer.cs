@@ -39,10 +39,19 @@
             label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // ipnut_querytext
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(12, 95);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(54, 15);
+            label1.TabIndex = 6;
+            label1.Text = "Query : ";
+            // 
+            // input_querytext
             // 
             this.input_querytext.Location = new System.Drawing.Point(82, 92);
-            this.input_querytext.Name = "ipnut_querytext";
+            this.input_querytext.Name = "input_querytext";
             this.input_querytext.Size = new System.Drawing.Size(275, 25);
             this.input_querytext.TabIndex = 0;
             // 
@@ -67,9 +76,10 @@
             // 
             // button1
             // 
+            this.button1.AutoSize = true;
             this.button1.Location = new System.Drawing.Point(12, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(103, 37);
+            this.button1.Size = new System.Drawing.Size(105, 37);
             this.button1.TabIndex = 4;
             this.button1.Text = " OpenDirectory";
             this.button1.UseVisualStyleBackColor = true;
@@ -92,15 +102,6 @@
             this.queryResultListBox.Name = "queryResultListBox";
             this.queryResultListBox.Size = new System.Drawing.Size(345, 244);
             this.queryResultListBox.TabIndex = 5;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(12, 95);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(54, 15);
-            label1.TabIndex = 6;
-            label1.Text = "Query : ";
             // 
             // QueryForm
             // 
