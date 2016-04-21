@@ -68,12 +68,6 @@
     <Compile Include="QueryForm.Designer.cs">
       <DependentUpon>QueryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SimpleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SimpleForm.Designer.cs">
-      <DependentUpon>SimpleForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="warc_spliter.cs" />
     <EmbeddedResource Include="IndexingFrom.resx">
       <DependentUpon>IndexingFrom.cs</DependentUpon>
@@ -90,9 +84,6 @@
     </Compile>
     <EmbeddedResource Include="QueryForm.resx">
       <DependentUpon>QueryForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SimpleForm.resx">
-      <DependentUpon>SimpleForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

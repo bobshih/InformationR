@@ -169,7 +169,7 @@ namespace InformationRetrieval
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                     throw new AbortedException();
                 PostMessage(MessageType.NOTICE, "Indexing File " + i.ToString());
-                var dic = indexing.genetrateInvertedIndex(dirorg.GetTokenPath(i));
+                var dic = indexing.genetrateInvertedIndex(File.ReadAllLines(dirorg.GetTokenPath(i)));
                 DictionaryAndPostingSerializer.Save(dic, dirorg.GetDictionaryPath(i));
                 foreach (var key in dic.Keys)
                 {

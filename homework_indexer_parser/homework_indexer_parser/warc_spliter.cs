@@ -49,7 +49,7 @@ namespace InformationRetrieval
             List<string> tokens = new List<string>();
             foreach (IHTMLElement element in paralist)
             {
-                tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')' }, StringSplitOptions.RemoveEmptyEntries));
+                tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
             }
             return (tokens);
         }

@@ -9,23 +9,20 @@ namespace InformationRetrieval
 {
     public static class indexing
     {
-        public static Dictionary<string, List<int>> genetrateInvertedIndex(string file)
+        public static Dictionary<string, List<int>> genetrateInvertedIndex(IEnumerable<string> tokens)
         {
             Dictionary<string, List<int>> dic = new Dictionary<string, List<int>>();
-            var lines = File.ReadAllLines(file);
-            for (int i = 0; i < lines.Length; ++i)
+            int i = 0;
+            foreach (var str in tokens)
             {
                 List<int> posting;
-                if (!dic.TryGetValue(lines[i], out posting))
+                if (!dic.TryGetValue(str, out posting))
                 {
-                    List<int> l = new List<int>();
-                    l.Add(i);
-                    dic.Add(lines[i], l);
+                    posting = new List<int>();
+                    dic.Add(str, posting);
                 }
-                else
-                {
-                    posting.Add(i);
-                }
+                posting.Add(i);
+                ++i;
             }
             return (dic);
         }
