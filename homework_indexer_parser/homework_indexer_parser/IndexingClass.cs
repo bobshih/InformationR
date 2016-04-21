@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InformationRetrieval
 {
-    class ProcessingClass
+    class IndexingClass
     {
         public enum MessageType
         {
@@ -45,14 +45,14 @@ namespace InformationRetrieval
         /// Initialize Processing Class With File List
         /// </summary>
         /// <param name="filenames">files to process</param>
-        public ProcessingClass(string file, DirectoryOrganizer dirorg)
+        public IndexingClass(string file, DirectoryOrganizer dirorg)
         {
             this.dirorg = dirorg;
             this.file = file;
             thread = new Thread(ProcessFile);
         }
 
-        ~ProcessingClass()
+        ~IndexingClass()
         {
             Stop();
             thread.Join();
@@ -145,7 +145,6 @@ namespace InformationRetrieval
             {
                 throw;
             }
-                /*
             catch (AbortedException)
             {
                 PostMessage(MessageType.WARNNING, "Progress Abort");
@@ -159,7 +158,7 @@ namespace InformationRetrieval
                 {
                     ProcessEndHandler(false);
                 }
-            }*/
+            }
             if (ProcessEndHandler != null)
             {
                 ProcessEndHandler(true);
@@ -214,7 +213,7 @@ namespace InformationRetrieval
             PostMessage(MessageType.NOTICE, "Splitting File ...");
             Action<string> callback = x =>
             {
-                PostMessage(MessageType.NOTICE, "Splitting File ..." + currentsplitedartical.ToString());
+                PostMessage(MessageType.NOTICE, "Find Artical # " + currentsplitedartical.ToString());
                 File.WriteAllText(dirorg.GetArticalPath(currentsplitedartical++), x);
             };
             int artical_count = warc_spliter.split(file, callback);

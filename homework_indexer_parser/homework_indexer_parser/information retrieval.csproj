@@ -57,7 +57,7 @@
     <Compile Include="IndexingFrom.Designer.cs">
       <DependentUpon>IndexingFrom.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProcessingClass.cs">
+    <Compile Include="IndexingClass.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Program.cs" />
