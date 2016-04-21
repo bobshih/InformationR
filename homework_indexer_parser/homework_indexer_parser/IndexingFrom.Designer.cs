@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel_pathInput = new System.Windows.Forms.Panel();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.label_directory = new System.Windows.Forms.Label();
             this.label_filepath = new System.Windows.Forms.Label();
             this.button_next = new System.Windows.Forms.Button();
@@ -36,12 +37,13 @@
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.label_currentState = new System.Windows.Forms.Label();
             this.panel_pathInput.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_pathInput
             // 
+            this.panel_pathInput.Controls.Add(this.label_currentState);
             this.panel_pathInput.Controls.Add(this.listBox1);
             this.panel_pathInput.Controls.Add(this.label_directory);
             this.panel_pathInput.Controls.Add(this.label_filepath);
@@ -53,6 +55,15 @@
             this.panel_pathInput.Name = "panel_pathInput";
             this.panel_pathInput.Size = new System.Drawing.Size(927, 361);
             this.panel_pathInput.TabIndex = 0;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(508, 23);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(407, 319);
+            this.listBox1.TabIndex = 3;
             // 
             // label_directory
             // 
@@ -106,14 +117,14 @@
             // 
             this.openFileDialog.Title = "Open A Warc File";
             // 
-            // listBox1
+            // label_currentState
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(508, 23);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(407, 319);
-            this.listBox1.TabIndex = 3;
+            this.label_currentState.AutoSize = true;
+            this.label_currentState.Location = new System.Drawing.Point(23, 263);
+            this.label_currentState.Name = "label_currentState";
+            this.label_currentState.Size = new System.Drawing.Size(41, 15);
+            this.label_currentState.TabIndex = 4;
+            this.label_currentState.Text = "label1";
             // 
             // IndexingFrom
             // 
@@ -123,6 +134,7 @@
             this.Controls.Add(this.panel_pathInput);
             this.Name = "IndexingFrom";
             this.Text = "IndexingFrom";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IndexingFrom_FormClosing);
             this.panel_pathInput.ResumeLayout(false);
             this.panel_pathInput.PerformLayout();
             this.ResumeLayout(false);
@@ -140,5 +152,6 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label_currentState;
     }
 }

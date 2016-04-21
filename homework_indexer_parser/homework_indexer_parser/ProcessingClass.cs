@@ -141,6 +141,11 @@ namespace InformationRetrieval
                 #endregion
 
             }
+            catch (NotImplementedException)
+            {
+                throw;
+            }
+                /*
             catch (AbortedException)
             {
                 PostMessage(MessageType.WARNNING, "Progress Abort");
@@ -154,7 +159,7 @@ namespace InformationRetrieval
                 {
                     ProcessEndHandler(false);
                 }
-            }
+            }*/
             if (ProcessEndHandler != null)
             {
                 ProcessEndHandler(true);
@@ -207,7 +212,12 @@ namespace InformationRetrieval
         {
             int currentsplitedartical = 0;
             PostMessage(MessageType.NOTICE, "Splitting File ...");
-            int artical_count = warc_spliter.split(file, x => File.WriteAllText(dirorg.GetArticalPath(currentsplitedartical++), x));
+            Action<string> callback = x =>
+            {
+                PostMessage(MessageType.NOTICE, "Splitting File ..." + currentsplitedartical.ToString());
+                File.WriteAllText(dirorg.GetArticalPath(currentsplitedartical++), x);
+            };
+            int artical_count = warc_spliter.split(file, callback);
             PostMessage(MessageType.NOTICE, "Splitting File Finish");
             return artical_count;
         }

@@ -18,6 +18,8 @@ namespace InformationRetrieval
             while (reader.Peek() != -1)
             {
                 string temp = reader.ReadUntil(delim[delim.Length - 1]);
+                if (temp == null)
+                    return "";
                 if (temp.Length > delim.Length - 1 && temp.Substring(temp.Length - fdelim.Length).Equals(fdelim))
                 {
                     //find 'delim'
@@ -28,6 +30,7 @@ namespace InformationRetrieval
                 {
                     //not find 'delim'
                     builder.Append(temp);
+                    builder.Append(delim[delim.Length - 1]);
                     continue;
                 }
             }

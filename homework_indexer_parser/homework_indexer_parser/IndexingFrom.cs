@@ -39,11 +39,15 @@ namespace InformationRetrieval
             pc = new ProcessingClass(warc, new DirectoryOrganizer(path));
             pc.MessageHandler += (msg, str) =>
             {
-                Invoke(new Action(() =>
-                listBox1.Items.Add(str)));
+                Invoke(new Action(() => listBox1.Items.Add(str)));
+                Invoke(new Action(() => label_currentState.Text = str));
             };
             pc.ProcessEndHandler += (b) => Invoke(new Action(() => button_next.Enabled = true));
             pc.Start();
+        }
+
+        private void IndexingFrom_FormClosing(object sender, FormClosingEventArgs e)
+        {
         }
     }
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace InformationRetrieval
 {
@@ -44,12 +45,15 @@ namespace InformationRetrieval
             HTMLDocument doc = new HTMLDocument();
             IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
             doc2.write(File.ReadAllText(file));
+           // Majestic12.HTMLparser parser = new Majestic12.HTMLparser();
+
 
             var paralist = doc.getElementsByTagName("html");
             List<string> tokens = new List<string>();
             foreach (IHTMLElement element in paralist)
             {
-                tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
+                if (element.innerText != null)
+                    tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
             }
             return (tokens);
         }
