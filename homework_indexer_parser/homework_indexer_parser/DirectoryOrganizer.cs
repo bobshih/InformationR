@@ -32,5 +32,9 @@ namespace InformationRetrieval
         {
             return root + "mainDictionary.dictionary.txt";
         }
+        public string GetWeightVectorPath(int i)
+        {
+            return root + i.ToString() + ".wtfidf.txt";
+        }
     }
 }

@@ -116,6 +116,28 @@ namespace InformationRetrieval
                 Process_Tokenize(waitGroup, artical_count);
                 Process_Indexing(waitGroup, artical_count);
 
+                #region DEV
+                PostMessage(MessageType.NOTICE, "Weighting ...");
+                Dictionary<string, List<int>> mainDic;
+                DictionaryAndPostingSerializer.Load(out mainDic, dirorg.GetMainDictionaryPath());
+                var dic_idf = indexing.idf(indexing.fetch_df(mainDic), artical_count);
+                mainDic = null;
+                for (int i = 0; i < artical_count; ++i)
+                {
+                    if (EventWaitHandle.WaitAny(waitGroup) == 0)
+                        throw new AbortedException();
+                    PostMessage(MessageType.NOTICE, "Weighting File " + i.ToString());
+                    Dictionary<string, List<int>> dic;
+                    DictionaryAndPostingSerializer.Load(out dic, dirorg.GetDictionaryPath(i));
+                    var tfidf = indexing.tfidf(indexing.weighted_tf(indexing.fetch_tf(dic)), dic_idf);
+                    DictionaryAndPostingSerializer.Save(tfidf, dirorg.GetWeightVectorPath(i));
+                }
+                PostMessage(MessageType.NOTICE, "Tokenizing File Finish");
+
+
+
+                #endregion
+
             }
             catch (AbortedException)
             {
