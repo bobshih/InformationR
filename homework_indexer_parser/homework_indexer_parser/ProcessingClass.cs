@@ -132,7 +132,7 @@ namespace InformationRetrieval
                     var tfidf = indexing.tfidf(indexing.weighted_tf(indexing.fetch_tf(dic)), dic_idf);
                     DictionaryAndPostingSerializer.Save(tfidf, dirorg.GetWeightVectorPath(i));
                 }
-                PostMessage(MessageType.NOTICE, "Tokenizing File Finish");
+                PostMessage(MessageType.NOTICE, "Weighting Finish");
 
 
 

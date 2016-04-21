@@ -36,5 +36,9 @@ namespace InformationRetrieval
         {
             return root + i.ToString() + ".wtfidf.txt";
         }
+        public string GetInverseTermFrequencyPath()
+        {
+            return root + "idf.txt";
+        }
     }
 }
