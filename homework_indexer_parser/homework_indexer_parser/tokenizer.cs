@@ -40,13 +40,11 @@ namespace InformationRetrieval
             action(tokenize(file));
         }
 
-        public static List<string> tokenize(string file)
+        public static List<string> tokenize(string document)
         {
             HTMLDocument doc = new HTMLDocument();
             IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
-            doc2.write(File.ReadAllText(file));
-           // Majestic12.HTMLparser parser = new Majestic12.HTMLparser();
-
+            doc2.write(document);
 
             var paralist = doc.getElementsByTagName("html");
             List<string> tokens = new List<string>();

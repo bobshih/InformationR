@@ -23,7 +23,6 @@ namespace InformationRetrieval
         #region Process State Properties
         private bool Started = false;
 
-
         #endregion
 
         private Thread thread;
@@ -112,7 +111,7 @@ namespace InformationRetrieval
             {
                 var waitGroup = new EventWaitHandle[] { abortEvent, suspendEvent };
 
-                int artical_count = Process_Split();
+                int artical_count = Process_Split(waitGroup);
                 Process_Tokenize(waitGroup, artical_count);
                 Process_Indexing(waitGroup, artical_count);
 
@@ -202,17 +201,19 @@ namespace InformationRetrieval
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                     throw new AbortedException();
                 PostMessage(MessageType.NOTICE, "Tokenizing File " + i.ToString());
-                File.WriteAllLines(dirorg.GetTokenPath(i), html_tokenizer.tokenize(dirorg.GetArticalPath(i)));
+                File.WriteAllLines(dirorg.GetTokenPath(i), html_tokenizer.tokenize(File.ReadAllText(dirorg.GetArticalPath(i))));
             }
             PostMessage(MessageType.NOTICE, "Tokenizing File Finish");
         }
 
-        private int Process_Split()
+        private int Process_Split(EventWaitHandle[] waitGroup)
         {
             int currentsplitedartical = 0;
             PostMessage(MessageType.NOTICE, "Splitting File ...");
             Action<string> callback = x =>
             {
+                if (EventWaitHandle.WaitAny(waitGroup) == 0)
+                    throw new AbortedException();
                 PostMessage(MessageType.NOTICE, "Find Artical # " + currentsplitedartical.ToString());
                 File.WriteAllText(dirorg.GetArticalPath(currentsplitedartical++), x);
             };

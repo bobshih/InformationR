@@ -48,6 +48,7 @@ namespace InformationRetrieval
 
         private void IndexingFrom_FormClosing(object sender, FormClosingEventArgs e)
         {
+            pc.Stop();
         }
     }
 }

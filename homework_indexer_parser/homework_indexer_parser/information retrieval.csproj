@@ -68,7 +68,7 @@
     <Compile Include="QueryForm.Designer.cs">
       <DependentUpon>QueryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="warc_spliter.cs" />
+    <Compile Include="tokenizer.cs" />
     <EmbeddedResource Include="IndexingFrom.resx">
       <DependentUpon>IndexingFrom.cs</DependentUpon>
     </EmbeddedResource>
