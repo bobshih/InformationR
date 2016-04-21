@@ -12,7 +12,8 @@ namespace InformationRetrieval
         {
             ERROR,
             WARNNING,
-            NOTICE
+            NOTICE,
+            NOTICE_SMALL
         };
         public event Action<MessageType, string> MessageHandler;
         /// <summary>
@@ -173,7 +174,7 @@ namespace InformationRetrieval
             {
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                     throw new AbortedException();
-                PostMessage(MessageType.NOTICE, "Indexing File " + i.ToString());
+                PostMessage(MessageType.NOTICE_SMALL, "Indexing File " + i.ToString());
                 var dic = indexing.genetrateInvertedIndex(File.ReadAllLines(dirorg.GetTokenPath(i)));
                 DictionaryAndPostingSerializer.Save(dic, dirorg.GetDictionaryPath(i));
                 foreach (var key in dic.Keys)
@@ -200,7 +201,7 @@ namespace InformationRetrieval
             {
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                     throw new AbortedException();
-                PostMessage(MessageType.NOTICE, "Tokenizing File " + i.ToString());
+                PostMessage(MessageType.NOTICE_SMALL, "Tokenizing File " + i.ToString());
                 File.WriteAllLines(dirorg.GetTokenPath(i), html_tokenizer.tokenize(File.ReadAllText(dirorg.GetArticalPath(i))));
             }
             PostMessage(MessageType.NOTICE, "Tokenizing File Finish");
@@ -214,7 +215,7 @@ namespace InformationRetrieval
             {
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                     throw new AbortedException();
-                PostMessage(MessageType.NOTICE, "Find Artical # " + currentsplitedartical.ToString());
+                PostMessage(MessageType.NOTICE_SMALL, "Find Artical # " + currentsplitedartical.ToString());
                 File.WriteAllText(dirorg.GetArticalPath(currentsplitedartical++), x);
             };
             int artical_count = warc_spliter.split(file, callback);

@@ -16,39 +16,36 @@ namespace InformationRetrieval
         public IndexingFrom()
         {
             InitializeComponent();
-        }
-
-        private void openFile_Click(object sender, EventArgs e)
-        {
-            openFileDialog.ShowDialog();
-            label_filepath.Text = "file: " + openFileDialog.FileName;
-        }
-
-        private void button_openDir_Click(object sender, EventArgs e)
-        {
-            folderBrowserDialog.ShowDialog();
-            label_directory.Text = "dir: " + folderBrowserDialog.SelectedPath;
+            fileAndDirectoryPanel.NextButtonClicked += button_next_Click;
         }
 
         IndexingClass pc;
-        private void button_next_Click(object sender, EventArgs e)
+        private void button_next_Click()
         {
-            button_next.Enabled = false;
-            string path = folderBrowserDialog.SelectedPath;
-            string warc = openFileDialog.FileName;
+            fileAndDirectoryPanel.Enabled = false;
+            string path = fileAndDirectoryPanel.Directory;
+            string warc = fileAndDirectoryPanel.File;
             pc = new IndexingClass(warc, new DirectoryOrganizer(path));
             pc.MessageHandler += (msg, str) =>
             {
-                Invoke(new Action(() => listBox1.Items.Add(str)));
-                Invoke(new Action(() => label_currentState.Text = str));
+                Invoke(new Action(() =>
+                {
+                    //if (msg != IndexingClass.MessageType.NOTICE_SMALL)
+                    listBox1.Items.Add(str);
+                    label_currentState.Text = str;
+                    //listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                    //listBox1.SelectedIndex = -1;
+
+                }));
             };
-            pc.ProcessEndHandler += (b) => Invoke(new Action(() => button_next.Enabled = true));
+            pc.ProcessEndHandler += (b) => Invoke(new Action(() => fileAndDirectoryPanel.Enabled = true));
             pc.Start();
         }
 
         private void IndexingFrom_FormClosing(object sender, FormClosingEventArgs e)
         {
-            pc.Stop();
+            if (pc != null)
+                pc.Stop();
         }
     }
 }

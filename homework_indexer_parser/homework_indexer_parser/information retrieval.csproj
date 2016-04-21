@@ -50,6 +50,12 @@
     <Compile Include="DictionaryAndPostingSerializer.cs" />
     <Compile Include="DirectoryOrganizer.cs" />
     <Compile Include="Extension_StreamReader.cs" />
+    <Compile Include="FileAndDirectoryPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FileAndDirectoryPanel.Designer.cs">
+      <DependentUpon>FileAndDirectoryPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="indexing.cs" />
     <Compile Include="IndexingFrom.cs">
       <SubType>Form</SubType>
@@ -69,6 +75,9 @@
       <DependentUpon>QueryForm.cs</DependentUpon>
     </Compile>
     <Compile Include="tokenizer.cs" />
+    <EmbeddedResource Include="FileAndDirectoryPanel.resx">
+      <DependentUpon>FileAndDirectoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IndexingFrom.resx">
       <DependentUpon>IndexingFrom.cs</DependentUpon>
     </EmbeddedResource>
