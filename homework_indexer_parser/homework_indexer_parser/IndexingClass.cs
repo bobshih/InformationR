@@ -115,36 +115,12 @@ namespace InformationRetrieval
                 int artical_count = Process_Split(waitGroup);
                 Process_Tokenize(waitGroup, artical_count);
                 Process_Indexing(waitGroup, artical_count);
-
-                #region DEV
-                PostMessage(MessageType.NOTICE, "Weighting ...");
-                Dictionary<string, List<int>> mainDic;
-                DictionaryAndPostingSerializer.Load(out mainDic, dirorg.GetMainDictionaryPath());
-                var dic_idf = indexing.idf(indexing.fetch_df(mainDic), artical_count);
-                DictionaryAndPostingSerializer.Save(dic_idf, dirorg.GetInverseDocumentFrequencyPath());
-                mainDic = null;
-                for (int i = 0; i < artical_count; ++i)
-                {
-                    if (EventWaitHandle.WaitAny(waitGroup) == 0)
-                        throw new AbortedException();
-                    PostMessage(MessageType.NOTICE, "Weighting File " + i.ToString());
-                    Dictionary<string, List<int>> dic;
-                    DictionaryAndPostingSerializer.Load(out dic, dirorg.GetDictionaryPath(i));
-                    var tfidf = indexing.tfidf(indexing.weighted_tf(indexing.fetch_tf(dic)), dic_idf);
-                    tfidf = indexing.normalize_tfidf(tfidf);
-                    DictionaryAndPostingSerializer.Save(tfidf, dirorg.GetNormalizedWeightVectorPath(i));
-                }
-                PostMessage(MessageType.NOTICE, "Weighting Finish");
-
-
-
-                #endregion
-
+                Process_Weighting(waitGroup, artical_count);
             }
-            catch (NotImplementedException)
-            {
-                throw;
-            }
+            //catch (NotImplementedException)
+            // {
+            //    throw;
+            // }
             catch (AbortedException)
             {
                 PostMessage(MessageType.WARNNING, "Progress Abort");
@@ -165,7 +141,31 @@ namespace InformationRetrieval
             }
         }
 
+
         #region process detail
+
+        private void Process_Weighting(EventWaitHandle[] waitGroup, int artical_count)
+        {
+            PostMessage(MessageType.NOTICE, "Weighting ...");
+            Dictionary<string, List<int>> mainDic;
+            DictionaryAndPostingSerializer.Load(out mainDic, dirorg.GetMainDictionaryPath());
+            var dic_idf = indexing.idf(indexing.fetch_df(mainDic), artical_count);
+            DictionaryAndPostingSerializer.Save(dic_idf, dirorg.GetInverseDocumentFrequencyPath());
+            mainDic = null;
+            for (int i = 0; i < artical_count; ++i)
+            {
+                if (EventWaitHandle.WaitAny(waitGroup) == 0)
+                    throw new AbortedException();
+                PostMessage(MessageType.NOTICE, "Weighting File " + i.ToString());
+                Dictionary<string, List<int>> dic;
+                DictionaryAndPostingSerializer.Load(out dic, dirorg.GetDictionaryPath(i));
+                var tfidf = indexing.tfidf(indexing.weighted_tf(indexing.fetch_tf(dic)), dic_idf);
+                tfidf = indexing.normalize_tfidf(tfidf);
+                DictionaryAndPostingSerializer.Save(tfidf, dirorg.GetNormalizedWeightVectorPath(i));
+            }
+            PostMessage(MessageType.NOTICE, "Weighting Finish");
+        }
+
         private void Process_Indexing(EventWaitHandle[] waitGroup, int artical_count)
         {
             PostMessage(MessageType.NOTICE, "Indexing File ...");
@@ -223,9 +223,5 @@ namespace InformationRetrieval
             return artical_count;
         }
         #endregion
-
-        private void ProcessFinish()
-        {
-        }
     }
 }

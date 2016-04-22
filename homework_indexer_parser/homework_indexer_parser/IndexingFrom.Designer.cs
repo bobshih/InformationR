@@ -54,7 +54,7 @@
             // fileAndDirectoryPanel
             // 
             this.fileAndDirectoryPanel.AutoSize = true;
-            this.fileAndDirectoryPanel.Location = new System.Drawing.Point(12, 12);
+            this.fileAndDirectoryPanel.Location = new System.Drawing.Point(12, 23);
             this.fileAndDirectoryPanel.Name = "fileAndDirectoryPanel";
             this.fileAndDirectoryPanel.Size = new System.Drawing.Size(406, 326);
             this.fileAndDirectoryPanel.TabIndex = 5;

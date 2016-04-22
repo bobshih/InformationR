@@ -13,8 +13,9 @@ namespace InformationRetrieval
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new IndexingFrom());
-
+            new QueryForm().Show();
+            new IndexingFrom().Show();
+            Application.Run();
         }
     }
 }
