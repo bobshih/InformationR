@@ -7,7 +7,7 @@
     <ProjectGuid>{A7BB935E-4178-40F0-B5FC-A8367D14341D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>homework_indexer_parser</RootNamespace>
+    <RootNamespace>InformationRetrieval</RootNamespace>
     <AssemblyName>homework_indexer_parser</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -47,33 +47,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataGridViewDisableButtonCell.cs" />
-    <Compile Include="DictionaryFolder\Dictionary.cs" />
-    <Compile Include="DictionaryFolder\Posting.cs" />
-    <Compile Include="Extension Method\ListBoxExtension.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="DictionaryAndPostingSerializer.cs" />
+    <Compile Include="DirectoryOrganizer.cs" />
+    <Compile Include="Extension_StreamReader.cs" />
+    <Compile Include="FileAndDirectoryPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FileAndDirectoryPanel.Designer.cs">
+      <DependentUpon>FileAndDirectoryPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="indexing.cs" />
+    <Compile Include="IndexingFrom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="IndexingFrom.Designer.cs">
+      <DependentUpon>IndexingFrom.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model.cs" />
-    <Compile Include="ParserFolder\Parser.cs" />
-    <Compile Include="ProcessingClass.cs" />
-    <Compile Include="ProcessingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProcessingForm.Designer.cs">
-      <DependentUpon>ProcessingForm.cs</DependentUpon>
+    <Compile Include="IndexingClass.cs">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleParser\Parser.cs" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="QueryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QueryForm.Designer.cs">
+      <DependentUpon>QueryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tokenizer.cs" />
+    <EmbeddedResource Include="FileAndDirectoryPanel.resx">
+      <DependentUpon>FileAndDirectoryPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProcessingForm.resx">
-      <DependentUpon>ProcessingForm.cs</DependentUpon>
+    <EmbeddedResource Include="IndexingFrom.resx">
+      <DependentUpon>IndexingFrom.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -85,6 +91,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="QueryForm.resx">
+      <DependentUpon>QueryForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -99,16 +108,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\button.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\button1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background1.png" />
+    <ProjectReference Include="..\HTMLparser\HTMLparserLibDotNet20.csproj">
+      <Project>{499c0fa8-9b6c-4590-926b-ff5061ae6c18}</Project>
+      <Name>HTMLparserLibDotNet20</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

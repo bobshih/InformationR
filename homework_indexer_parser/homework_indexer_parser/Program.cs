@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace homework_indexer_parser
+namespace InformationRetrieval
 {
     static class Program
     {
@@ -13,7 +13,9 @@ namespace homework_indexer_parser
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            new QueryForm().Show();
+            new IndexingFrom().Show();
+            Application.Run();
         }
     }
 }
