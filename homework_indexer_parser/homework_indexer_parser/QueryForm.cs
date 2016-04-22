@@ -34,42 +34,49 @@ namespace InformationRetrieval
 
         private void button_query_Click(object sender, EventArgs e)
         {
-            var dirorg = new DirectoryOrganizer(CurrentDirectory);
-            Dictionary<string, List<int>> maindic;
-            DictionaryAndPostingSerializer.Load(out maindic, dirorg.GetMainDictionaryPath());
-            Dictionary<string, double> idf;
-            DictionaryAndPostingSerializer.Load(out idf, dirorg.GetInverseDocumentFrequencyPath());
-            var querys = input_querytext.Text.Split(' ', '\t').Where(s => maindic.ContainsKey(s));
-
-            var tfidfv = indexing.normalize_tfidf(indexing.tfidf(indexing.weighted_tf(indexing.fetch_tf(indexing.genetrateInvertedIndex(querys.AsEnumerable()))), idf));
-
-            Dictionary<int, double> queryResault = new Dictionary<int, double>();
-            foreach (var t in tfidfv)
+            try
             {
-                List<int> posting;
-                if (!maindic.TryGetValue(t.Key, out posting))
-                    continue;
-                foreach (int docID in posting)
-                {
-                    if (queryResault.ContainsKey(docID))
-                        continue;
+                var dirorg = new DirectoryOrganizer(CurrentDirectory);
+                Dictionary<string, List<int>> maindic;
+                DictionaryAndPostingSerializer.Load(out maindic, dirorg.GetMainDictionaryPath());
+                Dictionary<string, double> idf;
+                DictionaryAndPostingSerializer.Load(out idf, dirorg.GetInverseDocumentFrequencyPath());
+                var querys = input_querytext.Text.Split(' ', '\t').Where(s => maindic.ContainsKey(s));
 
-                    Dictionary<string, double> docw;
-                    DictionaryAndPostingSerializer.Load(out docw, dirorg.GetNormalizedWeightVectorPath(docID));
-                    double similarity = 0;
-                    foreach (var tw in tfidfv)
+                var tfidfv = indexing.normalize_tfidf(indexing.tfidf(indexing.weighted_tf(indexing.fetch_tf(indexing.genetrateInvertedIndex(querys.AsEnumerable()))), idf));
+
+                Dictionary<int, double> queryResault = new Dictionary<int, double>();
+                foreach (var t in tfidfv)
+                {
+                    List<int> posting;
+                    if (!maindic.TryGetValue(t.Key, out posting))
+                        continue;
+                    foreach (int docID in posting)
                     {
-                        double weight;
-                        if (docw.TryGetValue(tw.Key, out weight))
+                        if (queryResault.ContainsKey(docID))
+                            continue;
+
+                        Dictionary<string, double> docw;
+                        DictionaryAndPostingSerializer.Load(out docw, dirorg.GetNormalizedWeightVectorPath(docID));
+                        double similarity = 0;
+                        foreach (var tw in tfidfv)
                         {
-                            similarity += tw.Value * weight;
+                            double weight;
+                            if (docw.TryGetValue(tw.Key, out weight))
+                            {
+                                similarity += tw.Value * weight;
+                            }
                         }
+                        queryResault.Add(docID, similarity);
                     }
-                    queryResault.Add(docID, similarity);
                 }
+                queryResultListBox.Items.Clear();
+                queryResultListBox.Items.AddRange(queryResault.OrderByDescending(x => x.Value).Select(x => x.Key.ToString() + " " + x.Value.ToString()).ToArray());
             }
-            queryResultListBox.Items.Clear();
-            queryResultListBox.Items.AddRange(queryResault.OrderByDescending(x => x.Value).Select(x => x.Key.ToString() + " " + x.Value.ToString()).ToArray());
+            catch (System.Exception exce)
+            {
+                MessageBox.Show("There is an exception\n massage: " + exce.Message);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

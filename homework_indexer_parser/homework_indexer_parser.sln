@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "information retrieval", "homework_indexer_parser\information retrieval.csproj", "{A7BB935E-4178-40F0-B5FC-A8367D14341D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{499C0FA8-9B6C-4590-926B-FF5061AE6C18} = {499C0FA8-9B6C-4590-926B-FF5061AE6C18}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTMLparserLibDotNet20", "HTMLparser\HTMLparserLibDotNet20.csproj", "{499C0FA8-9B6C-4590-926B-FF5061AE6C18}"
 EndProject
