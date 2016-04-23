@@ -36,37 +36,41 @@
             // label_currentState
             // 
             this.label_currentState.AutoSize = true;
-            this.label_currentState.Location = new System.Drawing.Point(505, 23);
+            this.label_currentState.Location = new System.Drawing.Point(379, 18);
+            this.label_currentState.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_currentState.Name = "label_currentState";
-            this.label_currentState.Size = new System.Drawing.Size(78, 15);
+            this.label_currentState.Size = new System.Drawing.Size(63, 12);
             this.label_currentState.TabIndex = 4;
             this.label_currentState.Text = "CurrentState";
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(508, 45);
+            this.listBox1.ItemHeight = 12;
+            this.listBox1.Location = new System.Drawing.Point(381, 36);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(407, 304);
+            this.listBox1.Size = new System.Drawing.Size(306, 244);
             this.listBox1.TabIndex = 3;
             // 
             // fileAndDirectoryPanel
             // 
             this.fileAndDirectoryPanel.AutoSize = true;
-            this.fileAndDirectoryPanel.Location = new System.Drawing.Point(12, 23);
+            this.fileAndDirectoryPanel.Location = new System.Drawing.Point(11, 17);
+            this.fileAndDirectoryPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.fileAndDirectoryPanel.Name = "fileAndDirectoryPanel";
-            this.fileAndDirectoryPanel.Size = new System.Drawing.Size(406, 326);
+            this.fileAndDirectoryPanel.Size = new System.Drawing.Size(304, 261);
             this.fileAndDirectoryPanel.TabIndex = 5;
             // 
             // IndexingFrom
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(927, 361);
+            this.ClientSize = new System.Drawing.Size(695, 289);
             this.Controls.Add(this.fileAndDirectoryPanel);
             this.Controls.Add(this.label_currentState);
             this.Controls.Add(this.listBox1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "IndexingFrom";
             this.Text = "IndexingFrom";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IndexingFrom_FormClosing);

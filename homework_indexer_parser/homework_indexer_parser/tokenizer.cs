@@ -1,4 +1,5 @@
-﻿using mshtml;
+﻿using Majestic12;
+using mshtml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,12 @@ using System.Windows.Forms;
 
 namespace InformationRetrieval
 {
+    public enum TokenSetting
+    {
+        none = 1,
+        uppper
+    }
+
     public static class warc_spliter
     {
         public static int split(string file, Action<string> action)
@@ -35,6 +42,22 @@ namespace InformationRetrieval
 
     public static class html_tokenizer
     {
+        static TokenSetting tokenSetting = TokenSetting.none;
+
+        public static void SetTokenSetting(string ts)
+        {
+            switch (ts)
+            {
+                case "None":
+                    tokenSetting = TokenSetting.none;
+                    break;
+                case "Case Folding (Upper)":
+                    tokenSetting = TokenSetting.uppper;
+                    break;
+                default:
+                    throw new Exception("this kind of token setting, " + ts + ", is invalid.");
+            }
+        }
         public static void tokenize(string file, Action<List<string>> action)
         {
             action(tokenize(file));
@@ -42,16 +65,38 @@ namespace InformationRetrieval
 
         public static List<string> tokenize(string document)
         {
-            HTMLDocument doc = new HTMLDocument();
-            IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
-            doc2.write(document);
-
-            var paralist = doc.getElementsByTagName("html");
+            HTMLparser p = new HTMLparser(document);
             List<string> tokens = new List<string>();
-            foreach (IHTMLElement element in paralist)
+
+            while (true)
             {
-                if (element.innerText != null)
-                    tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
+                HTMLchunk chunk = p.ParseNext();
+                if (chunk == null)
+                    break;
+                else
+                {
+                    if (chunk.oHTML != "")
+                        tokens.AddRange(chunk.oHTML.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
+                }
+            }
+
+            //HTMLDocument doc = new HTMLDocument();
+            //IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
+            //doc2.write(document);
+            //var paralist = doc.getElementsByTagName("html");
+            //List<string> tokens = new List<string>();
+            //foreach (IHTMLElement element in paralist)
+            //{
+            //    if (element.innerText != null)
+            //        tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
+            //}
+
+            if (tokenSetting == TokenSetting.uppper)
+            {
+                for (int i = 0; i < tokens.Count; i++)
+                {
+                    tokens[i] = tokens[i].ToUpper();
+                }
             }
             return (tokens);
         }

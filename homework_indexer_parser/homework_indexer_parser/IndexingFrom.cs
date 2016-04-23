@@ -25,6 +25,8 @@ namespace InformationRetrieval
             fileAndDirectoryPanel.Enabled = false;
             string path = fileAndDirectoryPanel.Directory;
             string warc = fileAndDirectoryPanel.File;
+            string tokenSetting = fileAndDirectoryPanel.TokenSetting;
+            html_tokenizer.SetTokenSetting(tokenSetting);
             pc = new IndexingClass(warc, new DirectoryOrganizer(path));
             pc.MessageHandler += (msg, str) =>
             {
@@ -46,6 +48,10 @@ namespace InformationRetrieval
         {
             if (pc != null)
                 pc.Stop();
+            if (Application.OpenForms.Count == 1)
+            {
+                Application.Exit();
+            }
         }
     }
 }

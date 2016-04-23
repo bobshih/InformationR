@@ -84,5 +84,13 @@ namespace InformationRetrieval
             folderBrowserDialog.ShowDialog();
             CurrentDirectory = folderBrowserDialog.SelectedPath;
         }
+
+        private void QueryForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Application.OpenForms.Count == 1)
+            {
+                Application.Exit();
+            }
+        }
     }
 }

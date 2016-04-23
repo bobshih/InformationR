@@ -47,6 +47,26 @@ namespace HTMLparserLibDotNet20
                 label_file.Text = value;
             }
         }
+        public String TokenSetting
+        {
+            get
+            {
+                String setting = "";
+                setting += CheckRadioButton(radioButton_None);
+                setting += CheckRadioButton(radioButton_CaseFolding);
+                return setting;
+            }
+            private set{}
+        }
+
+        private String CheckRadioButton(RadioButton rButton)
+        {
+            if (rButton.Checked)
+            {
+                return rButton.Text;
+            }
+            return "";
+        }
 
         public FileAndDirectoryPanel()
         {
