@@ -31,6 +31,8 @@
             System.Windows.Forms.Label label_directory_novariable;
             System.Windows.Forms.Label label_filepath_novariable;
             this.panel_pathInput = new System.Windows.Forms.Panel();
+            this.radioButton_CaseFoldingUpper = new System.Windows.Forms.RadioButton();
+            this.radioButton_None = new System.Windows.Forms.RadioButton();
             this.label_dir = new System.Windows.Forms.Label();
             this.label_file = new System.Windows.Forms.Label();
             this.button_next = new System.Windows.Forms.Button();
@@ -38,8 +40,7 @@
             this.button_openFile = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.radioButton_None = new System.Windows.Forms.RadioButton();
-            this.radioButton_CaseFolding = new System.Windows.Forms.RadioButton();
+            this.radioButton_CaseFoldingLower = new System.Windows.Forms.RadioButton();
             label_directory_novariable = new System.Windows.Forms.Label();
             label_filepath_novariable = new System.Windows.Forms.Label();
             this.panel_pathInput.SuspendLayout();
@@ -67,7 +68,8 @@
             // 
             // panel_pathInput
             // 
-            this.panel_pathInput.Controls.Add(this.radioButton_CaseFolding);
+            this.panel_pathInput.Controls.Add(this.radioButton_CaseFoldingLower);
+            this.panel_pathInput.Controls.Add(this.radioButton_CaseFoldingUpper);
             this.panel_pathInput.Controls.Add(this.radioButton_None);
             this.panel_pathInput.Controls.Add(this.label_dir);
             this.panel_pathInput.Controls.Add(this.label_file);
@@ -78,10 +80,32 @@
             this.panel_pathInput.Controls.Add(this.button_openFile);
             this.panel_pathInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_pathInput.Location = new System.Drawing.Point(0, 0);
-            this.panel_pathInput.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel_pathInput.Margin = new System.Windows.Forms.Padding(2);
             this.panel_pathInput.Name = "panel_pathInput";
             this.panel_pathInput.Size = new System.Drawing.Size(322, 297);
             this.panel_pathInput.TabIndex = 1;
+            // 
+            // radioButton_CaseFoldingUpper
+            // 
+            this.radioButton_CaseFoldingUpper.AutoSize = true;
+            this.radioButton_CaseFoldingUpper.Location = new System.Drawing.Point(17, 191);
+            this.radioButton_CaseFoldingUpper.Name = "radioButton_CaseFoldingUpper";
+            this.radioButton_CaseFoldingUpper.Size = new System.Drawing.Size(124, 16);
+            this.radioButton_CaseFoldingUpper.TabIndex = 6;
+            this.radioButton_CaseFoldingUpper.Text = "Case Folding (Upper)";
+            this.radioButton_CaseFoldingUpper.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_None
+            // 
+            this.radioButton_None.AutoSize = true;
+            this.radioButton_None.Checked = true;
+            this.radioButton_None.Location = new System.Drawing.Point(17, 168);
+            this.radioButton_None.Name = "radioButton_None";
+            this.radioButton_None.Size = new System.Drawing.Size(48, 16);
+            this.radioButton_None.TabIndex = 5;
+            this.radioButton_None.TabStop = true;
+            this.radioButton_None.Text = "None";
+            this.radioButton_None.UseVisualStyleBackColor = true;
             // 
             // label_dir
             // 
@@ -106,7 +130,7 @@
             // button_next
             // 
             this.button_next.Location = new System.Drawing.Point(163, 182);
-            this.button_next.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_next.Margin = new System.Windows.Forms.Padding(2);
             this.button_next.Name = "button_next";
             this.button_next.Size = new System.Drawing.Size(124, 69);
             this.button_next.TabIndex = 1;
@@ -117,7 +141,7 @@
             // button_openDir
             // 
             this.button_openDir.Location = new System.Drawing.Point(17, 109);
-            this.button_openDir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_openDir.Margin = new System.Windows.Forms.Padding(2);
             this.button_openDir.Name = "button_openDir";
             this.button_openDir.Size = new System.Drawing.Size(73, 32);
             this.button_openDir.TabIndex = 1;
@@ -128,7 +152,7 @@
             // button_openFile
             // 
             this.button_openFile.Location = new System.Drawing.Point(17, 50);
-            this.button_openFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_openFile.Margin = new System.Windows.Forms.Padding(2);
             this.button_openFile.Name = "button_openFile";
             this.button_openFile.Size = new System.Drawing.Size(73, 32);
             this.button_openFile.TabIndex = 0;
@@ -136,27 +160,16 @@
             this.button_openFile.UseVisualStyleBackColor = true;
             this.button_openFile.Click += new System.EventHandler(this.button_openFile_Click);
             // 
-            // radioButton_None
+            // radioButton_CaseFoldingLower
             // 
-            this.radioButton_None.AutoSize = true;
-            this.radioButton_None.Checked = true;
-            this.radioButton_None.Location = new System.Drawing.Point(17, 168);
-            this.radioButton_None.Name = "radioButton_None";
-            this.radioButton_None.Size = new System.Drawing.Size(48, 16);
-            this.radioButton_None.TabIndex = 5;
-            this.radioButton_None.TabStop = true;
-            this.radioButton_None.Text = "None";
-            this.radioButton_None.UseVisualStyleBackColor = true;
-            // 
-            // radioButton_CaseFolding
-            // 
-            this.radioButton_CaseFolding.AutoSize = true;
-            this.radioButton_CaseFolding.Location = new System.Drawing.Point(17, 191);
-            this.radioButton_CaseFolding.Name = "radioButton_CaseFolding";
-            this.radioButton_CaseFolding.Size = new System.Drawing.Size(124, 16);
-            this.radioButton_CaseFolding.TabIndex = 6;
-            this.radioButton_CaseFolding.Text = "Case Folding (Upper)";
-            this.radioButton_CaseFolding.UseVisualStyleBackColor = true;
+            this.radioButton_CaseFoldingLower.AutoSize = true;
+            this.radioButton_CaseFoldingLower.Location = new System.Drawing.Point(17, 213);
+            this.radioButton_CaseFoldingLower.Name = "radioButton_CaseFoldingLower";
+            this.radioButton_CaseFoldingLower.Size = new System.Drawing.Size(125, 16);
+            this.radioButton_CaseFoldingLower.TabIndex = 7;
+            this.radioButton_CaseFoldingLower.TabStop = true;
+            this.radioButton_CaseFoldingLower.Text = "Case Folding (Lower)";
+            this.radioButton_CaseFoldingLower.UseVisualStyleBackColor = true;
             // 
             // FileAndDirectoryPanel
             // 
@@ -164,7 +177,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.Controls.Add(this.panel_pathInput);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FileAndDirectoryPanel";
             this.Size = new System.Drawing.Size(322, 297);
             this.panel_pathInput.ResumeLayout(false);
@@ -183,8 +196,9 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.Label label_dir;
         private System.Windows.Forms.Label label_file;
-        private System.Windows.Forms.RadioButton radioButton_CaseFolding;
+        private System.Windows.Forms.RadioButton radioButton_CaseFoldingUpper;
         private System.Windows.Forms.RadioButton radioButton_None;
+        private System.Windows.Forms.RadioButton radioButton_CaseFoldingLower;
 
     }
 }

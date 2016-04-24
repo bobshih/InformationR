@@ -53,7 +53,8 @@ namespace HTMLparserLibDotNet20
             {
                 String setting = "";
                 setting += CheckRadioButton(radioButton_None);
-                setting += CheckRadioButton(radioButton_CaseFolding);
+                setting += CheckRadioButton(radioButton_CaseFoldingUpper);
+                setting += CheckRadioButton(radioButton_CaseFoldingLower);
                 return setting;
             }
             private set{}

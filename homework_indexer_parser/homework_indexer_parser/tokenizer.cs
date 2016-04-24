@@ -13,7 +13,8 @@ namespace InformationRetrieval
     public enum TokenSetting
     {
         none = 1,
-        uppper
+        uppper,
+        lower
     }
 
     public static class warc_spliter
@@ -54,6 +55,9 @@ namespace InformationRetrieval
                 case "Case Folding (Upper)":
                     tokenSetting = TokenSetting.uppper;
                     break;
+                case "Case Folding (Lower)":
+                    tokenSetting = TokenSetting.lower;
+                    break;
                 default:
                     throw new Exception("this kind of token setting, " + ts + ", is invalid.");
             }
@@ -91,12 +95,20 @@ namespace InformationRetrieval
             //        tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
             //}
 
-            if (tokenSetting == TokenSetting.uppper)
+            switch (tokenSetting)
             {
-                for (int i = 0; i < tokens.Count; i++)
-                {
-                    tokens[i] = tokens[i].ToUpper();
-                }
+                case TokenSetting.none:
+                    break;
+                case TokenSetting.uppper:
+                    for (int i = 0; i < tokens.Count; i++)
+                        tokens[i] = tokens[i].ToUpper();
+                    break;
+                case TokenSetting.lower:
+                    for (int i = 0; i < tokens.Count; i++)
+                        tokens[i] = tokens[i].ToLower();
+                    break;
+                default:
+                    throw new Exception("this token setting, " + tokenSetting + ", is invalid when converting tokens");
             }
             return (tokens);
         }
