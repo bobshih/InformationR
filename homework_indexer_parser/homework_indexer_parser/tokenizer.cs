@@ -110,7 +110,11 @@ namespace InformationRetrieval
                 default:
                     throw new Exception("this token setting, " + tokenSetting + ", is invalid when converting tokens");
             }
-            return (tokens);
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                tokens[i] = new String(tokens[i].Where(char.IsLetterOrDigit).ToArray());
+            }
+            return tokens.Where((s)=>!String.IsNullOrEmpty(s)).ToList();
         }
     }
 }
