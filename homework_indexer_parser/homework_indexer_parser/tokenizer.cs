@@ -94,6 +94,11 @@ namespace InformationRetrieval
             //    if (element.innerText != null)
             //        tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
             //}
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                tokens[i] = new String(tokens[i].Where(char.IsLetterOrDigit).ToArray());
+            }
+            tokens = tokens.Where((s) => !String.IsNullOrEmpty(s)).ToList();
 
             switch (tokenSetting)
             {
@@ -110,11 +115,8 @@ namespace InformationRetrieval
                 default:
                     throw new Exception("this token setting, " + tokenSetting + ", is invalid when converting tokens");
             }
-            for (int i = 0; i < tokens.Count; i++)
-            {
-                tokens[i] = new String(tokens[i].Where(char.IsLetterOrDigit).ToArray());
-            }
-            return tokens.Where((s)=>!String.IsNullOrEmpty(s)).ToList();
+
+            return tokens;
         }
     }
 }
