@@ -2,6 +2,7 @@
 using mshtml;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,25 +81,13 @@ namespace InformationRetrieval
                 else
                 {
                     if (chunk.oHTML != "")
-                        tokens.AddRange(chunk.oHTML.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
+                        tokens.AddRange(chunk.oHTML.Split(new char[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries));
                 }
             }
 
-            //HTMLDocument doc = new HTMLDocument();
-            //IHTMLDocument2 doc2 = (IHTMLDocument2)doc;
-            //doc2.write(document);
-            //var paralist = doc.getElementsByTagName("html");
-            //List<string> tokens = new List<string>();
-            //foreach (IHTMLElement element in paralist)
-            //{
-            //    if (element.innerText != null)
-            //        tokens.AddRange(element.innerText.Split(new char[] { '|', ' ', '\n', '\r', '\t', '(', ')', '*' }, StringSplitOptions.RemoveEmptyEntries));
-            //}
-            for (int i = 0; i < tokens.Count; i++)
-            {
-                tokens[i] = new String(tokens[i].Where(char.IsLetterOrDigit).ToArray());
-            }
-            tokens = tokens.Where((s) => !String.IsNullOrEmpty(s)).ToList();
+            tokens = tokens
+                .Select(x => new String(x.Where(Char.IsLetterOrDigit).ToArray()))
+                .Where((s) => !String.IsNullOrEmpty(s)).ToList();
 
             switch (tokenSetting)
             {
@@ -113,7 +102,7 @@ namespace InformationRetrieval
                         tokens[i] = tokens[i].ToLower();
                     break;
                 default:
-                    throw new Exception("this token setting, " + tokenSetting + ", is invalid when converting tokens");
+                    throw new InvalidEnumArgumentException("this token setting, " + tokenSetting + ", is invalid when converting tokens");
             }
 
             return tokens;
