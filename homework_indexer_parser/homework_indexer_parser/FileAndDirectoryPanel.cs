@@ -6,7 +6,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
-namespace HTMLparserLibDotNet20
+namespace InformationRetrieval
 {
     public partial class FileAndDirectoryPanel : UserControl
     {
@@ -47,26 +47,10 @@ namespace HTMLparserLibDotNet20
                 label_file.Text = value;
             }
         }
-        public String TokenSetting
+        public TokenSetting TokenSetting
         {
-            get
-            {
-                String setting = "";
-                setting += CheckRadioButton(radioButton_None);
-                setting += CheckRadioButton(radioButton_CaseFoldingUpper);
-                setting += CheckRadioButton(radioButton_CaseFoldingLower);
-                return setting;
-            }
-            private set{}
-        }
-
-        private String CheckRadioButton(RadioButton rButton)
-        {
-            if (rButton.Checked)
-            {
-                return rButton.Text;
-            }
-            return "";
+            get;
+            private set;
         }
 
         public FileAndDirectoryPanel()
@@ -74,6 +58,7 @@ namespace HTMLparserLibDotNet20
             InitializeComponent();
             label_dir.Text = "";
             label_file.Text = "";
+            TokenSetting = InformationRetrieval.TokenSetting.none;
         }
 
         private void button_openDir_Click(object sender, EventArgs e)
@@ -101,6 +86,19 @@ namespace HTMLparserLibDotNet20
             }
         }
 
+        private void radioButton_None_CheckedChanged(object sender, EventArgs e)
+        {
+            TokenSetting = InformationRetrieval.TokenSetting.none;
+        }
 
+        private void radioButton_CaseFoldingUpper_CheckedChanged(object sender, EventArgs e)
+        {
+            TokenSetting = InformationRetrieval.TokenSetting.uppper;
+        }
+
+        private void radioButton_CaseFoldingLower_CheckedChanged(object sender, EventArgs e)
+        {
+            TokenSetting = InformationRetrieval.TokenSetting.lower;
+        }
     }
 }

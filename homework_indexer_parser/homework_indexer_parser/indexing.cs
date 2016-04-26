@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InformationRetrieval
 {
@@ -34,7 +31,7 @@ namespace InformationRetrieval
 
         public static Dictionary<string, double> weighted_tf(Dictionary<string, double> artical_tf)
         {
-            return artical_tf.ToDictionary(x => x.Key, x => /*x.Value == 0 ? 0 : newver 0*/ 1 + Math.Log10(x.Value));
+            return artical_tf.ToDictionary(x => x.Key, x => 1 + Math.Log10(x.Value));
         }
 
         public static Dictionary<string, double> fetch_df(Dictionary<string, List<int>> gloable_dic)

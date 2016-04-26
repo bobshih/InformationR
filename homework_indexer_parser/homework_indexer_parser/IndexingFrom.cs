@@ -25,9 +25,7 @@ namespace InformationRetrieval
             fileAndDirectoryPanel.Enabled = false;
             string path = fileAndDirectoryPanel.Directory;
             string warc = fileAndDirectoryPanel.File;
-            string tokenSetting = fileAndDirectoryPanel.TokenSetting;
-            html_tokenizer.SetTokenSetting(tokenSetting);
-            pc = new IndexingClass(warc, new DirectoryOrganizer(path));
+            pc = new IndexingClass(warc, new DirectoryOrganizer(path), fileAndDirectoryPanel.TokenSetting);
             pc.MessageHandler += (msg, str) =>
             {
                 Invoke(new Action(() =>
@@ -37,7 +35,6 @@ namespace InformationRetrieval
                     label_currentState.Text = str;
                     //listBox1.SelectedIndex = listBox1.Items.Count - 1;
                     //listBox1.SelectedIndex = -1;
-
                 }));
             };
             pc.ProcessEndHandler += (b) => Invoke(new Action(() => fileAndDirectoryPanel.Enabled = true));
@@ -46,6 +43,7 @@ namespace InformationRetrieval
 
         private void IndexingFrom_FormClosing(object sender, FormClosingEventArgs e)
         {
+            fileAndDirectoryPanel.NextButtonClicked -= button_next_Click;
             if (pc != null)
                 pc.Stop();
             if (Application.OpenForms.Count == 1)

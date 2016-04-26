@@ -30,7 +30,7 @@
         {
             this.label_currentState = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.fileAndDirectoryPanel = new HTMLparserLibDotNet20.FileAndDirectoryPanel();
+            this.fileAndDirectoryPanel = new FileAndDirectoryPanel();
             this.SuspendLayout();
             // 
             // label_currentState
@@ -83,6 +83,6 @@
 
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label_currentState;
-        private HTMLparserLibDotNet20.FileAndDirectoryPanel fileAndDirectoryPanel;
+        private FileAndDirectoryPanel fileAndDirectoryPanel;
     }
 }

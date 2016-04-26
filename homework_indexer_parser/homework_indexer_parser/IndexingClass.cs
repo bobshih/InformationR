@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace InformationRetrieval
 {
@@ -32,6 +31,7 @@ namespace InformationRetrieval
 
         private string file;
         private DirectoryOrganizer dirorg;
+        private TokenSetting tokenizeSetting;
 
         private void PostMessage(MessageType type, string message)
         {
@@ -45,10 +45,11 @@ namespace InformationRetrieval
         /// Initialize Processing Class With File List
         /// </summary>
         /// <param name="filenames">files to process</param>
-        public IndexingClass(string file, DirectoryOrganizer dirorg)
+        public IndexingClass(string file, DirectoryOrganizer dirorg,TokenSetting setting)
         {
             this.dirorg = dirorg;
             this.file = file;
+            this.tokenizeSetting = setting;
             thread = new Thread(ProcessFile);
         }
 
@@ -141,7 +142,6 @@ namespace InformationRetrieval
             }
         }
 
-
         #region process detail
 
         private void Process_Weighting(EventWaitHandle[] waitGroup, int artical_count)
@@ -202,7 +202,7 @@ namespace InformationRetrieval
                 if (EventWaitHandle.WaitAny(waitGroup) == 0)
                     throw new AbortedException();
                 PostMessage(MessageType.NOTICE_SMALL, "Tokenizing File " + i.ToString());
-                File.WriteAllLines(dirorg.GetTokenPath(i), html_tokenizer.tokenize(File.ReadAllText(dirorg.GetArticalPath(i))));
+                File.WriteAllLines(dirorg.GetTokenPath(i), html_tokenizer.tokenize(File.ReadAllText(dirorg.GetArticalPath(i)), tokenizeSetting));
             }
             PostMessage(MessageType.NOTICE, "Tokenizing File Finish");
         }

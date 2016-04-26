@@ -1,19 +1,15 @@
 ﻿using Majestic12;
-using mshtml;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace InformationRetrieval
 {
     public enum TokenSetting
     {
-        none = 1,
+        none,
         uppper,
         lower
     }
@@ -44,31 +40,7 @@ namespace InformationRetrieval
 
     public static class html_tokenizer
     {
-        static TokenSetting tokenSetting = TokenSetting.none;
-
-        public static void SetTokenSetting(string ts)
-        {
-            switch (ts)
-            {
-                case "None":
-                    tokenSetting = TokenSetting.none;
-                    break;
-                case "Case Folding (Upper)":
-                    tokenSetting = TokenSetting.uppper;
-                    break;
-                case "Case Folding (Lower)":
-                    tokenSetting = TokenSetting.lower;
-                    break;
-                default:
-                    throw new Exception("this kind of token setting, " + ts + ", is invalid.");
-            }
-        }
-        public static void tokenize(string file, Action<List<string>> action)
-        {
-            action(tokenize(file));
-        }
-
-        public static List<string> tokenize(string document)
+        public static List<string> tokenize(string document,TokenSetting setting)
         {
             HTMLparser p = new HTMLparser(document);
             List<string> tokens = new List<string>();
@@ -89,7 +61,7 @@ namespace InformationRetrieval
                 .Select(x => new String(x.Where(Char.IsLetterOrDigit).ToArray()))
                 .Where((s) => !String.IsNullOrEmpty(s)).ToList();
 
-            switch (tokenSetting)
+            switch (setting)
             {
                 case TokenSetting.none:
                     break;
@@ -102,7 +74,7 @@ namespace InformationRetrieval
                         tokens[i] = tokens[i].ToLower();
                     break;
                 default:
-                    throw new InvalidEnumArgumentException("this token setting, " + tokenSetting + ", is invalid when converting tokens");
+                    throw new InvalidEnumArgumentException("this token setting, " + setting + ", is invalid when converting tokens");
             }
 
             return tokens;
