@@ -15,6 +15,15 @@ namespace TestKNN
                 return new List<double>() { 1, 2, 3 };
             }
         }
+
+        private List<double> list2
+        {
+            get
+            {
+                return new List<double>() { 4, 5, 6 };
+            }
+        }
+
         private KNN knn;
 
         [TestInitialize]
@@ -26,23 +35,19 @@ namespace TestKNN
         [TestMethod]
         public void TestSameQueryAndSample()
         {
-            var list1 = 
-            var list2 = new List<double>() { 4, 5, 6 };
             knn.AddTrainingData(list1, 1);
             knn.AddTrainingData(list2, 2);
-            Assert.AreEqual(knn.FindCategory(list1, 1), 1);
-            Assert.AreEqual(knn.FindCategory(list2, 1), 2);
+            Assert.AreEqual(1, knn.FindCategory(list1, 1));
+            Assert.AreEqual(2, knn.FindCategory(list2, 1));
         }
 
         [TestMethod]
         public void TestQueryKMoreThanSample()
         {
-            var list1 = new List<double>() { 1, 2, 3 };
-            var list2 = new List<double>() { 4, 5, 6 };
             knn.AddTrainingData(list1, 1);
             knn.AddTrainingData(list2, 2);
-            Assert.AreEqual(knn.FindCategory(list1, 1), 1);
-            Assert.AreEqual(knn.FindCategory(list2, 1), 2);
+            Assert.AreEqual(1, knn.FindCategory(list1, 10));
+            Assert.AreEqual(2, knn.FindCategory(list2, 10));
         }
     }
 }

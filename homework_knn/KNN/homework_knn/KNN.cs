@@ -20,10 +20,19 @@ namespace homework_knn
 
         public int FindCategory(List<double> data, int K)
         {
+            var temp = DatasetEnumerator
+                 .Select(x => new KeyValuePair<int, double>(x.Key, DistanceFunction(data, x.Value)))
+                /*.OrderByDescending(x => x.Value)
+                .Take(K)
+                .GroupBy(x => x.Key)
+                .OrderBy(x => x.Count())
+                .First().Key*/;
+
             return
                 DatasetEnumerator
                  .Select(x => new KeyValuePair<int, double>(x.Key, DistanceFunction(data, x.Value)))
                  .OrderByDescending(x => x.Value)
+                 .Reverse()
                  .Take(K)
                  .GroupBy(x => x.Key)
                  .OrderBy(x => x.Count())
