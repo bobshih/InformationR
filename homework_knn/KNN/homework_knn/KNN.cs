@@ -9,7 +9,8 @@ namespace homework_knn
 {
     public class KNN
     {
-        Dictionary<int, List<List<double>>> dataset = new Dictionary<int, List<List<double>>>();
+        private Dictionary<int, List<List<double>>> dataset = new Dictionary<int, List<List<double>>>();
+        private Func<List<double>, List<double>, double> distanceFunction = DistanceFunction.EuclideanDistanceSquare;
 
 
         public void AddTrainingData(List<double> data, int category)
@@ -33,36 +34,13 @@ namespace homework_knn
 
             return
                 DatasetEnumerator
-                 .Select(x => new KeyValuePair<int, double>(x.Key, DistanceFunction(data, x.Value)))
+                 .Select(x => new KeyValuePair<int, double>(x.Key, distanceFunction(data, x.Value)))
                  .OrderByDescending(x => x.Value)
                  .Reverse()
                  .Take(K)
                  .GroupBy(x => x.Key)
                  .OrderBy(x => x.Count())
                  .First().Key;
-        }
-
-        /// <summary>
-        /// return RMS of two list
-        /// </summary>
-        /// <exception cref="ArgumentException">Size Not Match</exception>
-        private double DistanceFunction(List<double> left, List<double> right)
-        {
-            if (left.Count != right.Count)
-            {
-                throw new ArgumentException("Size Not Match");
-            }
-            /*
-            double sum = 0;
-            int count = left.Count;
-            for (int i = 0; i < left.Count; ++i)
-            {
-                double diff = left[i] - right[i];
-                sum += diff * diff;
-            }
-            return Math.Sqrt(sum / left.Count);
-            */
-            return Math.Sqrt(left.Zip(right, (x, y) => x - y).Select(x => x * x).Sum() / left.Count);
         }
 
         /// <summary>

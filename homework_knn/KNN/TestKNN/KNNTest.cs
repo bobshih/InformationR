@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace TestKNN
 {
     [TestClass]
-    public class UnitTest1
+    public class KNNTest
     {
         private List<double> SampleList1
         {
