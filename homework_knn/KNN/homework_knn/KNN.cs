@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace homework_knn
 {
     public class KNN
     {
-        Dictionary<int, List<List<double>>> dataset;
+        Dictionary<int, List<List<double>>> dataset = new Dictionary<int, List<List<double>>>();
 
 
         public void AddTrainingData(List<double> data, int category)
@@ -29,9 +30,24 @@ namespace homework_knn
                  .First().Key;
         }
 
+        /// <summary>
+        /// return RMS of two list
+        /// </summary>
         private double DistanceFunction(List<double> left, List<double> right)
         {
-            throw new NotImplementedException();
+            Trace.Assert(left.Count == right.Count, "Size Not Match");
+            throw new ArgumentException("Size Not Match");
+
+            double sum = 0;
+            int count = left.Count;
+            for (int i = 0; i < left.Count; ++i)
+            {
+                double diff = left[i] - right[i];
+                sum += diff * diff;
+            }
+            return Math.Sqrt(sum / left.Count);
+
+            return Math.Sqrt(left.Zip(right, (x, y) => x - y).Select(x => x * x).Sum() / left.Count);
         }
 
         /// <summary>
