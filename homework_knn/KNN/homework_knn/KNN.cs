@@ -18,15 +18,13 @@ namespace homework_knn
             value.Add(data);/*.clone if need*/
         }
 
+        /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
         public int FindCategory(List<double> data, int K)
         {
-            var temp = DatasetEnumerator
-                 .Select(x => new KeyValuePair<int, double>(x.Key, DistanceFunction(data, x.Value)))
-                /*.OrderByDescending(x => x.Value)
-                .Take(K)
-                .GroupBy(x => x.Key)
-                .OrderBy(x => x.Count())
-                .First().Key*/;
+            if (dataset.Count == 0)
+            {
+                throw new InvalidOperationException("No Category Created Yet");
+            }
 
             return
                 DatasetEnumerator
@@ -42,6 +40,7 @@ namespace homework_knn
         /// <summary>
         /// return RMS of two list
         /// </summary>
+        /// <exception cref="ArgumentException">Size Not Match</exception>
         private double DistanceFunction(List<double> left, List<double> right)
         {
             if (left.Count != right.Count)
