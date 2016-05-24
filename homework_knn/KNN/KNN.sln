@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homework_knn", "homework_knn\homework_knn.csproj", "{1D159BCC-9678-4676-932E-92ADB413E0F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestKNN", "TestKNN\TestKNN.csproj", "{4296FE79-D606-4E7F-AFDF-FB73A50D5231}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1D159BCC-9678-4676-932E-92ADB413E0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D159BCC-9678-4676-932E-92ADB413E0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D159BCC-9678-4676-932E-92ADB413E0F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4296FE79-D606-4E7F-AFDF-FB73A50D5231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4296FE79-D606-4E7F-AFDF-FB73A50D5231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4296FE79-D606-4E7F-AFDF-FB73A50D5231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4296FE79-D606-4E7F-AFDF-FB73A50D5231}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
