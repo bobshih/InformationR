@@ -18,13 +18,13 @@ namespace homework_knn
             value.Add(data);/*.clone if need*/
         }
 
-        public int FindCategory(List<double> data, int N)
+        public int FindCategory(List<double> data, int K)
         {
             return
                 DatasetEnumerator
                  .Select(x => new KeyValuePair<int, double>(x.Key, DistanceFunction(data, x.Value)))
                  .OrderByDescending(x => x.Value)
-                 .Take(N)
+                 .Take(K)
                  .GroupBy(x => x.Key)
                  .OrderBy(x => x.Count())
                  .First().Key;
@@ -35,9 +35,11 @@ namespace homework_knn
         /// </summary>
         private double DistanceFunction(List<double> left, List<double> right)
         {
-            Trace.Assert(left.Count == right.Count, "Size Not Match");
-            throw new ArgumentException("Size Not Match");
-
+            if (left.Count != right.Count)
+            {
+                throw new ArgumentException("Size Not Match");
+            }
+            /*
             double sum = 0;
             int count = left.Count;
             for (int i = 0; i < left.Count; ++i)
@@ -46,7 +48,7 @@ namespace homework_knn
                 sum += diff * diff;
             }
             return Math.Sqrt(sum / left.Count);
-
+            */
             return Math.Sqrt(left.Zip(right, (x, y) => x - y).Select(x => x * x).Sum() / left.Count);
         }
 
