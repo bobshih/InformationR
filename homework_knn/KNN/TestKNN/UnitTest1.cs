@@ -68,12 +68,34 @@ namespace TestKNN
 
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void TestQueryFromZeroCategory()
         {
+            knn.FindCategory(SampleList1, 1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestNegtiveK()
+        {
             knn.AddTrainingData(SampleList1, 1);
-            knn.AddTrainingData(SampleList2, 2);
-            Assert.AreEqual(1, knn.FindCategory(SampleList1, 10));
-            Assert.AreEqual(2, knn.FindCategory(SampleList2, 10));
+            knn.FindCategory(SampleList1, -1);
+        }
+
+        [TestMethod]
+        public void TestQueryFromZeroCategoryAndNegtiveK()
+        {
+            try
+            {
+                knn.FindCategory(SampleList1, -1);
+                Assert.Fail("Should Have Some Exception");
+            }
+            catch (ArgumentException)
+            {
+            }
+            catch (InvalidOperationException)
+            {
+            }
         }
     }
 }

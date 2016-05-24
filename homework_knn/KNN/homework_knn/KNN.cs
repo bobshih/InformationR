@@ -19,11 +19,16 @@ namespace homework_knn
         }
 
         /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
+        /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
         public int FindCategory(List<double> data, int K)
         {
             if (dataset.Count == 0)
             {
                 throw new InvalidOperationException("No Category Created Yet");
+            }
+            if (K < 0)
+            {
+                throw new ArgumentException("K Must Bigget Than 0");
             }
 
             return
