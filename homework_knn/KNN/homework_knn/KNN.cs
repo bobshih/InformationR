@@ -5,23 +5,59 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace homework_knn
+namespace Classifiers
 {
-    public class KNN
+    public class KNN<CategoryType, DataType>
     {
-        private Dictionary<int, List<List<double>>> dataset = new Dictionary<int, List<List<double>>>();
-        private Func<List<double>, List<double>, double> distanceFunction = DistanceFunction.EuclideanDistanceSquare;
-
-
-        public void AddTrainingData(List<double> data, int category)
+        private List<KeyValuePair<CategoryType, DataType>> dataset;
+        public IEqualityComparer<CategoryType> CategoryComparer
         {
-            List<List<double>> value = dataset.GetOrCreate(category);
-            value.Add(data);/*.clone if need*/
+            get;
+            private set;
         }
 
+        public KNN()
+        {
+            dataset = new List<KeyValuePair<CategoryType, DataType>>();
+            CategoryComparer = EqualityComparer<CategoryType>.Default;
+        }
+
+        public KNN(IEqualityComparer<CategoryType> comparer)
+        {
+            dataset = new List<KeyValuePair<CategoryType, DataType>>();
+            CategoryComparer = comparer;
+        }
+
+        public void AddTrainingData(DataType data, CategoryType category)
+        {
+            dataset.Add(new KeyValuePair<CategoryType, DataType>(category, data));
+        }
+
+        /// <summary>
+        /// Find Category
+        /// </summary>
+        /// <param name="data">TestData</param>
+        /// <param name="K">K</param>
+        /// <param name="distanceFunction">Function To Calculate Distance Between DataType</param>
+        /// <returns>Result Category</returns>
         /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
         /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
-        public int FindCategory(List<double> data, int K)
+        public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction)
+        {
+            return FindCategory(data, K, distanceFunction, Comparer<DistanceType>.Default);
+        }
+
+        /// <summary>
+        /// Find Category With Custom DistanceComparer
+        /// </summary>
+        /// <param name="data">TestData</param>
+        /// <param name="K">K</param>
+        /// <param name="distanceFunction">Function To Calculate Distance Between DataType</param>
+        /// <param name="distanceComparer">Function To Compare Distance</param>
+        /// <returns>Result Category</returns>
+        /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
+        /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
+        public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction, IComparer<DistanceType> distanceComparer)
         {
             if (dataset.Count == 0)
             {
@@ -34,30 +70,23 @@ namespace homework_knn
 
             return
                 DatasetEnumerator
-                 .Select(x => new KeyValuePair<int, double>(x.Key, distanceFunction(data, x.Value)))
-                 .OrderByDescending(x => x.Value)
-                 .Reverse()
+                 .Select(x => new KeyValuePair<CategoryType, DistanceType>(x.Key, distanceFunction(data, x.Value)))
+                 .OrderBy(x => x.Value, distanceComparer)
                  .Take(K)
-                 .GroupBy(x => x.Key)
-                 .OrderBy(x => x.Count())
+                 .GroupBy(x => x.Key, CategoryComparer)
+                 .OrderByDescending(x => x.Count())
                  .First().Key;
         }
 
         /// <summary>
-        /// Return Enumerator Of Key-Value Pair 
+        /// Return Enumerator Of Key-Value Pair Base On Each Value
         /// </summary>
         /// <remarks>If Internal Container 'dataset' Is List of keyValuePair, Just Enumerate The List</remarks>
-        private IEnumerable<KeyValuePair<int, List<double>>> DatasetEnumerator
+        private IEnumerable<KeyValuePair<CategoryType, DataType>> DatasetEnumerator
         {
             get
             {
-                foreach (var category_datalist_pair in dataset)
-                {
-                    foreach (var data in category_datalist_pair.Value)
-                    {
-                        yield return new KeyValuePair<int, List<double>>(category_datalist_pair.Key, data);
-                    }
-                }
+                return dataset;
             }
         }
     }
