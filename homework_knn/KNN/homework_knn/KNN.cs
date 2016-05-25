@@ -35,8 +35,7 @@ namespace homework_knn
             return
                 DatasetEnumerator
                  .Select(x => new KeyValuePair<int, double>(x.Key, distanceFunction(data, x.Value)))
-                 .OrderByDescending(x => x.Value)
-                 .GetReverseEnumerator()
+                 .OrderBy(x => x.Value)
                  .Take(K)
                  .GroupBy(x => x.Key)
                  .OrderBy(x => x.Count())
