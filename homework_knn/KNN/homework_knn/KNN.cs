@@ -7,16 +7,6 @@ using System.Threading.Tasks;
 
 namespace homework_knn
 {
-    public class KNN:KNN<int,List<double>>
-    {
-        /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
-        /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
-        public int FindCategory(List<double> data, int K)
-        {
-            return base.FindCategory(data, K, DistanceFunction.EuclideanDistanceSquare);
-        }
-    }
-
     public class KNN<CategoryType, DataType>
     {
         private List<KeyValuePair<CategoryType, DataType>> dataset;

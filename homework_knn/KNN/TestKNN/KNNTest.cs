@@ -8,6 +8,7 @@ namespace TestKNN
     [TestClass]
     public class KNNTest
     {
+        protected Func<List<double>, List<double>, double> distanceFunction = DistanceFunction.EuclideanDistanceSquare;
         private List<double> SampleList1
         {
             get
@@ -40,12 +41,12 @@ namespace TestKNN
             }
         }
 
-        private KNN knn;
+        private KNN<int, List<double>> knn;
 
         [TestInitialize]
         public void Initialize()
         {
-            knn = new KNN();
+            knn = new KNN<int, List<double>>();
         }
 
         [TestMethod]
@@ -53,8 +54,8 @@ namespace TestKNN
         {
             knn.AddTrainingData(SampleList1, 1);
             knn.AddTrainingData(SampleList2, 2);
-            Assert.AreEqual(1, knn.FindCategory(SampleList1, 1));
-            Assert.AreEqual(2, knn.FindCategory(SampleList2, 1));
+            Assert.AreEqual(1, knn.FindCategory(SampleList1, 1, distanceFunction));
+            Assert.AreEqual(2, knn.FindCategory(SampleList2, 1, distanceFunction));
         }
 
         [TestMethod]
@@ -62,7 +63,7 @@ namespace TestKNN
         {
             knn.AddTrainingData(SampleList1, 1);
             knn.AddTrainingData(SampleList2, 2);
-            Assert.AreEqual(1, knn.FindCategory(SampleListCloseToList1MoreThan2, 1));
+            Assert.AreEqual(1, knn.FindCategory(SampleListCloseToList1MoreThan2, 1, distanceFunction));
         }
 
         [TestMethod]
@@ -70,8 +71,8 @@ namespace TestKNN
         {
             knn.AddTrainingData(SampleList1, 1);
             knn.AddTrainingData(SampleList2, 2);
-            Assert.AreEqual(1, knn.FindCategory(SampleList1, 10));
-            Assert.AreEqual(2, knn.FindCategory(SampleList2, 10));
+            Assert.AreEqual(1, knn.FindCategory(SampleList1, 10, distanceFunction));
+            Assert.AreEqual(2, knn.FindCategory(SampleList2, 10, distanceFunction));
         }
 
         [TestMethod]
@@ -80,14 +81,14 @@ namespace TestKNN
             knn.AddTrainingData(SampleList1, 1);
             knn.AddTrainingData(SampleList2, 1);
             knn.AddTrainingData(SampleList2, 2);
-            Assert.AreEqual(1, knn.FindCategory(SampleListEquallyCloseToList1AndList2, 2));
+            Assert.AreEqual(1, knn.FindCategory(SampleListEquallyCloseToList1AndList2, 2, distanceFunction));
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestQueryFromZeroCategory()
         {
-            knn.FindCategory(SampleList1, 1);
+            knn.FindCategory(SampleList1, 1, distanceFunction);
         }
 
         [TestMethod]
@@ -95,7 +96,7 @@ namespace TestKNN
         public void TestNegtiveK()
         {
             knn.AddTrainingData(SampleList1, 1);
-            knn.FindCategory(SampleList1, -1);
+            knn.FindCategory(SampleList1, -1, distanceFunction);
         }
 
         [TestMethod]
@@ -103,7 +104,7 @@ namespace TestKNN
         {
             try
             {
-                knn.FindCategory(SampleList1, -1);
+                knn.FindCategory(SampleList1, -1, distanceFunction);
                 Assert.Fail("Should Have Some Exception");
             }
             catch (ArgumentException)
@@ -112,6 +113,11 @@ namespace TestKNN
             catch (InvalidOperationException)
             {
             }
+        }
+
+        [TestClass]
+        public class Testtttt : KNNTest
+        {
         }
     }
 }
