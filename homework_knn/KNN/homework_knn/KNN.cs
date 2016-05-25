@@ -43,7 +43,7 @@ namespace homework_knn
         }
 
         /// <summary>
-        /// Return Enumerator Of Key-Value Pair 
+        /// Return Enumerator Of Key-Value Pair Base On Each Value
         /// </summary>
         /// <remarks>If Internal Container 'dataset' Is List of keyValuePair, Just Enumerate The List</remarks>
         private IEnumerable<KeyValuePair<int, List<double>>> DatasetEnumerator
@@ -57,6 +57,51 @@ namespace homework_knn
                         yield return new KeyValuePair<int, List<double>>(category_datalist_pair.Key, data);
                     }
                 }
+            }
+        }
+    }
+
+    public class KNN<CategoryType, DataType>
+    {
+        private List<KeyValuePair<CategoryType, DataType>> dataset = new List<KeyValuePair<CategoryType, DataType>>();
+
+        public void AddTrainingData(DataType data, CategoryType category)
+        {
+            dataset.Add(new KeyValuePair<CategoryType, DataType>(category, data));
+        }
+
+        /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
+        /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
+        public int FindCategory<DistanceType>(DataType data, int K, Func<DataType, DistanceType> distanceFunction, IComparer<DistanceType> distanceComparer)
+        {
+            if (dataset.Count == 0)
+            {
+                throw new InvalidOperationException("No Category Created Yet");
+            }
+            if (K < 0)
+            {
+                throw new ArgumentException("K Must Bigget Than 0");
+            }
+
+            return
+                DatasetEnumerator
+                 .Select(x => new KeyValuePair<CategoryType, DistanceType>(x.Key, distanceFunction(data, x.Value)))
+                 .OrderBy(x => x.Value)
+                 .Take(K)
+                 .GroupBy(x => x.Key)
+                 .OrderBy(x => x.Count())
+                 .First().Key;
+        }
+
+        /// <summary>
+        /// Return Enumerator Of Key-Value Pair Base On Each Value
+        /// </summary>
+        /// <remarks>If Internal Container 'dataset' Is List of keyValuePair, Just Enumerate The List</remarks>
+        private IEnumerable<KeyValuePair<CategoryType, DataType>> DatasetEnumerator
+        {
+            get
+            {
+                return dataset;
             }
         }
     }

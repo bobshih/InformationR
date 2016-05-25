@@ -1,8 +1,7 @@
-﻿using System;
+﻿using homework_knn;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using homework_knn;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TestKNN
 {
