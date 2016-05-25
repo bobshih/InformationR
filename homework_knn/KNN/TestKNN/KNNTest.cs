@@ -67,9 +67,10 @@ namespace TestKNN
         public void TestQueryKMoreThanSample()
         {
             KnnKernal.AddTrainingData(Sample1, Class1);
-            KnnKernal.AddTrainingData(Sample2, Class2);
+            KnnKernal.AddTrainingData(Sample1, Class1);
+            KnnKernal.AddTrainingData(Sample1, Class2);
             Assert.AreEqual(Class1, KnnKernal.FindCategory(Sample1, 10, DistanceCalculateFunction));
-            Assert.AreEqual(Class2, KnnKernal.FindCategory(Sample2, 10, DistanceCalculateFunction));
+            Assert.AreEqual(Class1, KnnKernal.FindCategory(Sample2, 10, DistanceCalculateFunction));
         }
 
         [TestMethod]
