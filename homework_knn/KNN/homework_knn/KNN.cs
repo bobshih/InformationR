@@ -72,7 +72,21 @@ namespace homework_knn
 
         /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
         /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
-        public int FindCategory<DistanceType>(DataType data, int K, Func<DataType, DistanceType> distanceFunction, IComparer<DistanceType> distanceComparer)
+        public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction)
+        {
+            return FindCategory(data, K, distanceFunction, Comparer<DistanceType>.Default, EqualityComparer<CategoryType>.Default);
+        }
+
+        /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
+        /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
+        public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction)
+        {
+            return FindCategory(data, K, distanceFunction, Comparer<DistanceType>.Default, EqualityComparer<CategoryType>.Default);
+        }
+
+        /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
+        /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
+        public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction, IComparer<DistanceType> distanceComparer, IEqualityComparer<CategoryType> categoryComparer)
         {
             if (dataset.Count == 0)
             {
@@ -86,9 +100,9 @@ namespace homework_knn
             return
                 DatasetEnumerator
                  .Select(x => new KeyValuePair<CategoryType, DistanceType>(x.Key, distanceFunction(data, x.Value)))
-                 .OrderBy(x => x.Value)
+                 .OrderBy(x => x.Value, distanceComparer)
                  .Take(K)
-                 .GroupBy(x => x.Key)
+                 .GroupBy(x => x.Key, categoryComparer)
                  .OrderBy(x => x.Count())
                  .First().Key;
         }
