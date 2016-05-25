@@ -1,4 +1,4 @@
-﻿using homework_knn;
+﻿using Classifiers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
