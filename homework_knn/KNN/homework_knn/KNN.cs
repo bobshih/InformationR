@@ -64,6 +64,23 @@ namespace homework_knn
     public class KNN<CategoryType, DataType>
     {
         private List<KeyValuePair<CategoryType, DataType>> dataset = new List<KeyValuePair<CategoryType, DataType>>();
+        public IEqualityComparer<CategoryType> CategoryComparer
+        {
+            get;
+            private set;
+        }
+
+        public KNN()
+        {
+            dataset = new List<KeyValuePair<CategoryType, DataType>>();
+            CategoryComparer = EqualityComparer<CategoryType>.Default;
+        }
+
+        public KNN(IEqualityComparer<CategoryType> comparer)
+        {
+            dataset = new List<KeyValuePair<CategoryType, DataType>>();
+            CategoryComparer = comparer;
+        }
 
         public void AddTrainingData(DataType data, CategoryType category)
         {
@@ -74,19 +91,12 @@ namespace homework_knn
         /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
         public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction)
         {
-            return FindCategory(data, K, distanceFunction, Comparer<DistanceType>.Default, EqualityComparer<CategoryType>.Default);
+            return FindCategory(data, K, distanceFunction, Comparer<DistanceType>.Default);
         }
 
         /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
         /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
-        public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction)
-        {
-            return FindCategory(data, K, distanceFunction, Comparer<DistanceType>.Default, EqualityComparer<CategoryType>.Default);
-        }
-
-        /// <exception cref="InvalidOperationException">No Category Created Yet</exception>
-        /// <exception cref="ArgumentException">K Must Bigget Than Zero</exception>
-        public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction, IComparer<DistanceType> distanceComparer, IEqualityComparer<CategoryType> categoryComparer)
+        public CategoryType FindCategory<DistanceType>(DataType data, int K, Func<DataType, DataType, DistanceType> distanceFunction, IComparer<DistanceType> distanceComparer)
         {
             if (dataset.Count == 0)
             {
@@ -102,7 +112,7 @@ namespace homework_knn
                  .Select(x => new KeyValuePair<CategoryType, DistanceType>(x.Key, distanceFunction(data, x.Value)))
                  .OrderBy(x => x.Value, distanceComparer)
                  .Take(K)
-                 .GroupBy(x => x.Key, categoryComparer)
+                 .GroupBy(x => x.Key, CategoryComparer)
                  .OrderBy(x => x.Count())
                  .First().Key;
         }
