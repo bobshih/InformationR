@@ -68,13 +68,24 @@ namespace homework_knn
                 throw new ArgumentException("K Must Bigget Than 0");
             }
 
+
+            var middle = DatasetEnumerator
+             .Select(x => new KeyValuePair<CategoryType, DistanceType>(x.Key, distanceFunction(data, x.Value)))//*
+             .OrderBy(x => x.Value, distanceComparer)//*
+             .Take(K)//*
+             .GroupBy(x => x.Key, CategoryComparer)//*
+             .OrderByDescending(x => x.Count())/*
+             .First()/*
+             .Key*/
+            ;
+
             return
                 DatasetEnumerator
                  .Select(x => new KeyValuePair<CategoryType, DistanceType>(x.Key, distanceFunction(data, x.Value)))
                  .OrderBy(x => x.Value, distanceComparer)
                  .Take(K)
                  .GroupBy(x => x.Key, CategoryComparer)
-                 .OrderBy(x => x.Count())
+                 .OrderByDescending(x => x.Count())
                  .First().Key;
         }
 
