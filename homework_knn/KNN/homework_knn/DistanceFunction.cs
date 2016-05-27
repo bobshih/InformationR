@@ -20,5 +20,6 @@ namespace Classifiers
             }
             return left.Zip(right, (x, y) => x - y).Select(x => x * x).Sum();
         }
+
     }
 }
