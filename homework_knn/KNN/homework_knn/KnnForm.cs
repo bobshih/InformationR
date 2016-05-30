@@ -125,6 +125,8 @@ namespace homework_knn
         private async void button_evaluation_Click(object sender, EventArgs e)
         {
             this.Enabled = false;
+            progressBar_Training.Maximum = 19 * 2 * 60;
+            progressBar_Training.Value = 0;
             int[,] answer = new int[19,3];
             for (int i = 1; i <= 19; i++)
             {
@@ -155,6 +157,7 @@ namespace homework_knn
                             answer[i - 1, 1]++;
                             //answer[result - 1, 2]++;
                         }
+                       ++ progressBar_Training.Value;
                     }
                 }
             }
