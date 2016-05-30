@@ -121,5 +121,61 @@ namespace homework_knn
         {
             label_K.Text = "K : " + trackBar_K.Value.ToString();
         }
+
+        private async void button_evaluation_Click(object sender, EventArgs e)
+        {
+            this.Enabled = false;
+            int[,] answer = new int[19,3];
+            for (int i = 1; i <= 19; i++)
+            {
+                string sport = "a" + i.ToString("D2");
+                for (int j = 7; j <= 8; j++)
+                {
+                    string player = "p" + j.ToString();
+                    for (int k = 1; k <= 60; k++)
+                    {
+                        string path = folder + "\\" + sport + "\\" + player + "\\s" + k.ToString("D2") + ".txt";
+                        if (!File.Exists(path))
+                        {
+                            throw new Exception("there is no file existing");
+                        }
+                        List<double> nums = await AsyncGetFileNumbers(path);
+                        int result = -1;
+                        int tick = trackBar_K.Value;
+                        await Task.Run(new Action(() =>
+                        {
+                            result = knn.FindCategory<double>(nums, tick, DistanceFunction.EuclideanDistanceSquare);
+                        }));
+                        if (result == i)
+                        {
+                            answer[i-1, 0]++;
+                        }
+                        else
+                        {
+                            answer[i - 1, 1]++;
+                            //answer[result - 1, 2]++;
+                        }
+                    }
+                }
+            }
+            
+            // evaluation
+            double macro_p = 0;
+            for (int i = 0; i < 19; i++)
+            {
+                macro_p += (double)answer[i, 0] / (answer[i, 0] + answer[i, 1]);
+            }
+            macro_p /= 19;
+            double micro_p_up = 0;
+            double micro_p_down = 0;
+            for (int i = 0; i < 19; i++)
+            {
+                micro_p_up += answer[i, 0];
+                micro_p_down += answer[i, 1];
+            }
+            label_micro_p.Text = (micro_p_up / micro_p_down).ToString();
+            label_macro_p.Text = macro_p.ToString();
+            this.Enabled = true;
+        }
     }
 }

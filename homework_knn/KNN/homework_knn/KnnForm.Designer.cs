@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.Label label_macro;
             this.button_KNN_result = new System.Windows.Forms.Button();
             this.button_folder = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -39,6 +40,11 @@
             this.progressBar_Training = new System.Windows.Forms.ProgressBar();
             this.trackBar_K = new System.Windows.Forms.TrackBar();
             this.label_K = new System.Windows.Forms.Label();
+            this.button_evaluation = new System.Windows.Forms.Button();
+            this.label_micro = new System.Windows.Forms.Label();
+            this.label_macro_p = new System.Windows.Forms.Label();
+            this.label_micro_p = new System.Windows.Forms.Label();
+            label_macro = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_K)).BeginInit();
             this.SuspendLayout();
             // 
@@ -131,11 +137,60 @@
             this.label_K.TabIndex = 9;
             this.label_K.Text = "K : 1";
             // 
+            // button_evaluation
+            // 
+            this.button_evaluation.Location = new System.Drawing.Point(12, 188);
+            this.button_evaluation.Name = "button_evaluation";
+            this.button_evaluation.Size = new System.Drawing.Size(75, 23);
+            this.button_evaluation.TabIndex = 10;
+            this.button_evaluation.Text = "Evaluation";
+            this.button_evaluation.UseVisualStyleBackColor = true;
+            this.button_evaluation.Click += new System.EventHandler(this.button_evaluation_Click);
+            // 
+            // label_macro
+            // 
+            label_macro.AutoSize = true;
+            label_macro.Location = new System.Drawing.Point(93, 193);
+            label_macro.Name = "label_macro";
+            label_macro.Size = new System.Drawing.Size(89, 12);
+            label_macro.TabIndex = 11;
+            label_macro.Text = "Macro Precision : ";
+            // 
+            // label_micro
+            // 
+            this.label_micro.AutoSize = true;
+            this.label_micro.Location = new System.Drawing.Point(269, 193);
+            this.label_micro.Name = "label_micro";
+            this.label_micro.Size = new System.Drawing.Size(90, 12);
+            this.label_micro.TabIndex = 12;
+            this.label_micro.Text = "Micro. Precision : ";
+            // 
+            // label_macro_p
+            // 
+            this.label_macro_p.AutoSize = true;
+            this.label_macro_p.Location = new System.Drawing.Point(188, 193);
+            this.label_macro_p.Name = "label_macro_p";
+            this.label_macro_p.Size = new System.Drawing.Size(0, 12);
+            this.label_macro_p.TabIndex = 13;
+            // 
+            // label_micro_p
+            // 
+            this.label_micro_p.AutoSize = true;
+            this.label_micro_p.Location = new System.Drawing.Point(365, 193);
+            this.label_micro_p.Name = "label_micro_p";
+            this.label_micro_p.Size = new System.Drawing.Size(0, 12);
+            this.label_micro_p.TabIndex = 14;
+            // 
             // KnnForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 186);
+            this.ClientSize = new System.Drawing.Size(534, 223);
+            this.Controls.Add(this.label_micro_p);
+            this.Controls.Add(this.label_macro_p);
+            this.Controls.Add(this.label_micro);
+            this.Controls.Add(label_macro);
+            this.Controls.Add(this.button_evaluation);
             this.Controls.Add(this.label_K);
             this.Controls.Add(this.trackBar_K);
             this.Controls.Add(this.progressBar_Training);
@@ -167,5 +222,9 @@
         private System.Windows.Forms.Button button_KNN_result;
         private System.Windows.Forms.TrackBar trackBar_K;
         private System.Windows.Forms.Label label_K;
+        private System.Windows.Forms.Button button_evaluation;
+        private System.Windows.Forms.Label label_micro;
+        private System.Windows.Forms.Label label_macro_p;
+        private System.Windows.Forms.Label label_micro_p;
     }
 }
