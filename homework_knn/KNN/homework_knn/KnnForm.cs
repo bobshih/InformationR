@@ -30,11 +30,11 @@ namespace homework_knn
             folder = folderBrowserDialog.SelectedPath;
             label_folder.Text = folder;
 
+            panel1.Enabled = false;
             try
             {
                 progressBar_Training.Maximum = 19 * 6 * 60;
                 progressBar_Training.Value = 0;
-                button_folder.Enabled = false;
                 for (int i = 1; i <= 19; i++)
                 {
                     string sport = "a" + i.ToString("D2");
@@ -53,15 +53,14 @@ namespace homework_knn
                         }
                     }
                 }
-                button_folder.Enabled = true;
                 MessageBox.Show("Training Done");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("there is an exception, Message: " + ex.Message);
                 label_folder.Text = "Empty";
-                button_folder.Enabled = true;
             }
+            panel1.Enabled = true;
         }
 
         private void button_test_data_Click(object sender, EventArgs e)
@@ -124,9 +123,9 @@ namespace homework_knn
 
         private async void button_evaluation_Click(object sender, EventArgs e)
         {
-            this.Enabled = false;
-            progressBar_Training.Maximum = 19 * 2 * 60;
-            progressBar_Training.Value = 0;
+            panel1.Enabled = false;
+            progressBar_evaluation.Maximum = 19 * 2 * 60;
+            progressBar_evaluation.Value = 0;
             int[,] answer = new int[19,3];
             for (int i = 1; i <= 19; i++)
             {
@@ -157,7 +156,7 @@ namespace homework_knn
                             answer[i - 1, 1]++;
                             //answer[result - 1, 2]++;
                         }
-                       ++ progressBar_Training.Value;
+                        ++progressBar_evaluation.Value;
                     }
                 }
             }
@@ -176,9 +175,15 @@ namespace homework_knn
                 micro_p_up += answer[i, 0];
                 micro_p_down += answer[i, 1];
             }
-            label_micro_p.Text = (micro_p_up / micro_p_down).ToString();
+            label_micro_p.Text = (micro_p_up / (micro_p_down+micro_p_up)).ToString();
             label_macro_p.Text = macro_p.ToString();
-            this.Enabled = true;
+            MessageBox.Show("DONE");
+            panel1.Enabled = true;
+        }
+
+        private void KnnForm_Load(object sender, EventArgs e)
+        {
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
         }
     }
 }
