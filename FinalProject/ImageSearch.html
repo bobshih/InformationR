@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Image Search</title>
+<link rel="stylesheet" href="eatsmylife.css">
+</head>
+
+<body>	
+	<div class="dropzone" id="dropzone">Drop your pictures here! Sexy Girls</div>
+	<div class="uploaded" id = "uploaded">preview</div>
+
+	<script>	
+
+		(function(){
+			var dropzone = document.getElementById('dropzone');
+
+
+			dropzone.ondrop = function(e){
+				e.preventDefault();
+				this.className = 'dropzone';
+				//upload(e.dataTransfer.files);
+			};
+
+			dropzone.ondragover = function(){
+				this.className = 'dropzone dragover';
+				return false;
+			};
+
+			dropzone.ondragleave = function(){
+				this.className = 'dropzone';
+				return false;
+			};
+
+		}());
+
+
+
+			/*var upload = function(files){
+				var formData = new FormData(),
+					xhr = new XMLHttpRequest(),
+					x;
+
+				for(x = 0; x < files.length; x = x + 1){
+					formData.append('file[]', files[x]);
+				}
+
+				xhr.open('post', 'upload.php');
+				xhr.send(formData);
+
+			}*/
+
+	</script>
+
+
+</body>
+</html>
+
+
