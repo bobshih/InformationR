@@ -1,14 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta charset="utf-8">
 <title>Image Search</title>
 <link rel="stylesheet" href="eatsmylife.css">
 </head>
 
 <body>	
+	<table>
 	<div class="dropzone" id="dropzone">Drop your pictures here! Sexy Girls</div><p/><p/>
 	<div class="uploaded" id = "uploaded"><img id="myimg" src=""/></div>
+	<div class="result" id="result">result here</div>
 
 	<script>	
-		var previewImg = document.getElementById('myimg');	//預覽圖片	
+		var previewImg = document.getElementById('myimg');		
 
 		(function(){
 			//var dropzone = document.getElementById('dropzone');		
@@ -16,7 +21,7 @@
 			dropzone.ondrop = function(e){
 				e.preventDefault();
 				this.className = 'dropzone';
-				previewImg.src = "test.jpg";	//尚為完成，先隨便弄一個，目前隨便拉一個圖片進來都會跑出這張圖
+				previewImg.src = "test.jpg";
 				//var files = e.dataTransfer.files;	
 				//			
 				//var imageURL = e.dataTransfer.getData('URL');
