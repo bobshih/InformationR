@@ -8,7 +8,7 @@
 	<div class="uploaded" id = "uploaded"><img id="myimg" src=""/></div>
 
 	<script>	
-		var previewImg = document.getElementById('myimg');		
+		var previewImg = document.getElementById('myimg');	//預覽圖片	
 
 		(function(){
 			//var dropzone = document.getElementById('dropzone');		
@@ -16,7 +16,7 @@
 			dropzone.ondrop = function(e){
 				e.preventDefault();
 				this.className = 'dropzone';
-				previewImg.src = "test.jpg";
+				previewImg.src = "test.jpg";	//尚為完成，先隨便弄一個，目前隨便拉一個圖片進來都會跑出這張圖
 				//var files = e.dataTransfer.files;	
 				//			
 				//var imageURL = e.dataTransfer.getData('URL');
