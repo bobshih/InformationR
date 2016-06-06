@@ -1,27 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
 <meta charset="utf-8">
 <title>Image Search</title>
 <link rel="stylesheet" href="eatsmylife.css">
-<script type="text/javascript" scr="dropzone.js">
-
-</script>
 </head>
 
-<body>
-	<div class="dropzone" id="dropzone">Drop your pictures here! Sexy Girls</div>
-	<div class="uploaded" id = "uploaded">preview</div>
+<body>	
+	<div class="dropzone" id="dropzone">Drop your pictures here! Sexy Girls</div><p/><p/>
+	<div class="uploaded" id = "uploaded"><img id="myimg" src=""/></div>
 
-	<!-- <script>
+	<script>	
+		var previewImg = document.getElementById('myimg');		
 
 		(function(){
-			var dropzone = document.getElementById('dropzone');
-
+			//var dropzone = document.getElementById('dropzone');		
 
 			dropzone.ondrop = function(e){
 				e.preventDefault();
 				this.className = 'dropzone';
+				previewImg.src = "test.jpg";
+				//var files = e.dataTransfer.files;	
+				//			
+				//var imageURL = e.dataTransfer.getData('URL');
 				//upload(e.dataTransfer.files);
 			};
 
@@ -53,8 +51,11 @@
 
 			}*/
 
-	</script> -->
+	</script>
 
 
 </body>
 </html>
+
+
+
