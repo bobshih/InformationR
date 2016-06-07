@@ -10,24 +10,28 @@ var canvas = $("#canvas")[0];
 var ctx = canvas.getContext("2d");
 var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
+var cimgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
 // ctx.putImageData(toGray(imgData, 3), 0, 0);
 testImg.onload = function() {
   AutoResizeImage(80,80,this);
   canvas.width = testImg.width;
   canvas.height = testImg.height;
   ctx.drawImage(testImg, 0, 0, testImg.width, testImg.height);
+  cimgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    ctx.putImageData(toGray(imgData, 3), 0, 0);
+
+    console.log(imgCompare(toGray(imgData,4),toGray(cimgData,3)));
 };
 
-function colorUpsidedown(imgData) {
-    for (var i = 0; i < imgData.data.length; i += 4) {
-        imgData.data[i] = 255 - imgData.data[i];
-        imgData.data[i + 1] = 255 - imgData.data[i + 1];
-        imgData.data[i + 2] = 255 - imgData.data[i + 2];
-        imgData.data[i + 3] = 255;
+function colorUpsidedown(vimgData) {
+    for (var i = 0; i < vimgData.data.length; i += 4) {
+        vimgData.data[i] = 255 - vimgData.data[i];
+        vimgData.data[i + 1] = 255 - vimgData.data[i + 1];
+        vimgData.data[i + 2] = 255 - vimgData.data[i + 2];
+        vimgData.data[i + 3] = 255;
     }
-    return imgData;
+    return vimgData;
 }
 
 function toGray(imgData, n) {
