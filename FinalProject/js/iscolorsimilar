@@ -1,0 +1,28 @@
+var tolerance = { // between 0 and 255
+			red: 16,
+			green: 16,
+			blue: 16,
+			alpha: 16,
+			minBrightness: 16,
+			maxBrightness: 240
+		};
+	function isColorSimilar(a, b, color){
+
+		var absDiff = Math.abs(a - b);
+
+		if(typeof a === 'undefined'){
+			return false;
+		}
+		if(typeof b === 'undefined'){
+			return false;
+		}
+
+		if(a === b){
+			return true;
+		} else if ( absDiff < tolerance[color] ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
