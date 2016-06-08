@@ -11,23 +11,21 @@ dropZone.on("drop", function(event) {
     var files  = event.originalEvent.dataTransfer ; //擷取拖曳的檔案
     console.log(files.getData("text/plain"));
     dropImg.src=files.getData("text/plain");
-    dropCanvas.width = dropImg.width;
-    dropCanvas.height = dropImg.height;
-    dropCtx.drawImage(dropImg, 0, 0, dropCanvas.width, dropCanvas.height);
-    var dropImgData= dropCtx.getImageData(0, 0, dropCanvas.width, dropCanvas.height);
-    ctx.putImageData(toGray(dropImgData, 3), 0, 0);
+
 });
 
-$(dropImg).change( function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log("d");
-    dropCanvas.width = dropImg.width;
-    dropCanvas.height = dropImg.height;
-    dropCtx.drawImage(dropImg, 0, 0, dropCanvas.width, dropCanvas.height);
-    var dropImgData= dropCtx.getImageData(0, 0, dropCanvas.width, dropCanvas.height);
-    ctx.putImageData(toGray(dropImgData, 3), 0, 0);
-});
+dropImg.onload=function(){
+      doSomething();
+}
+
+function doSomething(){
+
+  dropCanvas.width = dropImg.width;
+  dropCanvas.height = dropImg.height;
+  dropCtx.drawImage(dropImg, 0, 0, dropCanvas.width, dropCanvas.height);
+  var dropImgData= dropCtx.getImageData(0, 0, dropCanvas.width, dropCanvas.height);
+  ctx.putImageData(toGray(dropImgData, 3), 0, 0);
+}
 
 var openFile = function(event) {
     var input = event.target;
