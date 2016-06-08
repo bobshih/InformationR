@@ -6,7 +6,7 @@ var tolerance = { // between 0 and 255
 			minBrightness: 16,
 			maxBrightness: 240
 		};
-	function isColorSimilar(a, b, color){
+	function isColorSimilar(a, b, color){//a跟b傳入圖片的color即可比較
 
 		var absDiff = Math.abs(a - b);
 
