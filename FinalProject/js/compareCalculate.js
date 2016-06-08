@@ -2,11 +2,10 @@
 /*此method是比較畫素的灰度
 剛剛算完的平均值傳入,將每個畫素的灰度,與平均值進行比較,大於或等於平均值,回傳TRUE;小於平均值,回傳FALSE*/
 function thresholdMap(data, threshold){
-
-    return mapToBits(data,  function(byteData){
+            return utils.mapToBits(data, function(byteData){
                 return byteData >= threshold;
             });
-}
+        }
 
 
 
