@@ -3,11 +3,11 @@
 剛剛算完的平均值傳入,將每個畫素的灰度,與平均值進行比較,大於或等於平均值,回傳TRUE;小於平均值,回傳FALSE*/
 function thresholdMap(data, threshold){
 
-    return mapToBits(data, isBiggerThanAverage(byteData));
+    return mapToBits(data,  function(byteData){
+                return byteData >= threshold;
+            });
 }
-function isBiggerThanAverage(byteData){
-    return byteData >= threshold;
-}
+
 
 
 /*此method是計算雜湊值
