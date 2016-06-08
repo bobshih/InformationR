@@ -5,4 +5,4 @@ function Average(data){
             count += data[i];
         }
         return Math.round(count / data.length);
-},
+}
