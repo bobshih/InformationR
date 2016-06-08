@@ -10,7 +10,6 @@ var canvas = $("#canvas")[0];
 var ctx = canvas.getContext("2d");
 var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-var cimgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 // ctx.putImageData(toGray(imgData, 3), 0, 0);
 testImg.onload = function() {
@@ -18,10 +17,8 @@ testImg.onload = function() {
   canvas.width = testImg.width;
   canvas.height = testImg.height;
   ctx.drawImage(testImg, 0, 0, testImg.width, testImg.height);
-  cimgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-    console.log(imgCompare(toGray(imgData,4),toGray(cimgData,3)));
+  imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  console.log(imgColorIdentify(colorUpsidedown(imgData)));
 };
 
 function colorUpsidedown(vimgData) {
@@ -34,6 +31,9 @@ function colorUpsidedown(vimgData) {
     return vimgData;
 }
 
+//轉灰階
+//參數(圖的data,灰階層數)
+//回傳 轉換後的imgdata
 function toGray(imgData, n) {
     var gap = (function() {
         var result = [];
@@ -67,6 +67,8 @@ function toGray(imgData, n) {
     return imgData;
 }
 
+//圖的等比例縮小
+//參數(寬,高,圖)
 function AutoResizeImage(maxWidth, maxHeight, objImg) {
     var img = new Image();
     img.src = objImg.src;
@@ -92,4 +94,31 @@ function AutoResizeImage(maxWidth, maxHeight, objImg) {
     }
     objImg.height = h;
     objImg.width = w;
+}
+
+//顏色判斷
+//參數(imgdata)
+//回傳圖片是偏RGB中的哪個(1=R,2=G,3=B)
+function imgColorIdentify(vimgData){
+  var R=0;
+  var G=0;
+  var B=0;
+  var total=vimgData.data.length/4;
+
+  for (var i = 0; i < vimgData.data.length; i += 4) {
+      if(vimgData.data[i] >=vimgData.data[i+1] &&vimgData.data[i] >=vimgData.data[i+2] )
+      R++;
+      else if(vimgData.data[i+1]>=vimgData.data[i+2])
+      G++;
+      else {
+        B++;
+      }
+  }
+  if(R>=G&&R>=B)
+  return 1;
+  else if(G>=B)
+  return 2;
+  else {
+    return 3;
+  }
 }
