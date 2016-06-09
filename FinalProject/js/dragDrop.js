@@ -25,6 +25,7 @@ function doSomething(){
   dropCtx.drawImage(dropImg, 0, 0, dropCanvas.width, dropCanvas.height);
   var dropImgData= dropCtx.getImageData(0, 0, dropCanvas.width, dropCanvas.height);
   ctx.putImageData(toGray(dropImgData, 3), 0, 0);
+  $("#similarity").html(imgCompare(imgData,dropImgData));
 }
 
 var openFile = function(event) {

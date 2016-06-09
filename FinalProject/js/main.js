@@ -13,12 +13,12 @@ var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 // ctx.putImageData(toGray(imgData, 3), 0, 0);
 testImg.onload = function() {
-  AutoResizeImage(80,80,this);
-  canvas.width = testImg.width;
-  canvas.height = testImg.height;
-  ctx.drawImage(testImg, 0, 0, testImg.width, testImg.height);
-  imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  console.log(imgColorIdentify(colorUpsidedown(imgData)));
+    AutoResizeImage(80, 80, this);
+    canvas.width = testImg.width;
+    canvas.height = testImg.height;
+    ctx.drawImage(testImg, 0, 0, testImg.width, testImg.height);
+    imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.putImageData(toGray(imgData), 0, 0);
 };
 
 function colorUpsidedown(vimgData) {
@@ -35,34 +35,45 @@ function colorUpsidedown(vimgData) {
 //參數(圖的data,灰階層數)
 //回傳 轉換後的imgdata
 function toGray(imgData, n) {
-    var gap = (function() {
-        var result = [];
-        for (var i = 1; i < n; i++) {
-            result.push(Math.ceil((i / n) * 255));
-        }
-        return result;
-    })(); //臨界值
-    var colors = (function() {
-        var result = [];
-        result.push(0);
-        for (var i = 1; i < n - 1; i++) {
-            result.push(Math.ceil((i / (n - 1)) * 255));
-        }
-        result.push(255);
-        return result;
-    })(); //灰色
+    var imgData = arguments[0];
+    if (arguments[1]) {
+        var n = arguments[1];
+        var gap = (function() {
+            var result = [];
+            for (var i = 1; i < n; i++) {
+                result.push(Math.ceil((i / n) * 255));
+            }
+            return result;
+        })(); //臨界值
+        var colors = (function() {
+            var result = [];
+            result.push(0);
+            for (var i = 1; i < n - 1; i++) {
+                result.push(Math.ceil((i / (n - 1)) * 255));
+            }
+            result.push(255);
+            return result;
+        })(); //灰色
 
-    for (var i = 0; i < imgData.data.length; i += 4) {
+        for (var i = 0; i < imgData.data.length; i += 4) {
 
-        var level = 0;
-        for (var gaps = 0; gaps < gap.length; gaps++) {
-            if (imgData.data[i] > gap[gaps])
-                level++;
+            var level = 0;
+            for (var gaps = 0; gaps < gap.length; gaps++) {
+                if ((imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3 > gap[gaps])
+                    level++;
+            }
+
+            imgData.data[i] = colors[level];
+            imgData.data[i + 1] = colors[level];
+            imgData.data[i + 2] = colors[level];
         }
-
-        imgData.data[i] = colors[level];
-        imgData.data[i + 1] = colors[level];
-        imgData.data[i + 2] = colors[level];
+    } else {
+      for (var i = 0; i < imgData.data.length; i += 4) {
+        var avg=(imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
+          imgData.data[i] = avg;
+          imgData.data[i + 1] = avg;
+          imgData.data[i + 2] = avg;
+      }
     }
     return imgData;
 }
@@ -99,26 +110,26 @@ function AutoResizeImage(maxWidth, maxHeight, objImg) {
 //顏色判斷
 //參數(imgdata)
 //回傳圖片是偏RGB中的哪個(1=R,2=G,3=B)
-function imgColorIdentify(vimgData){
-  var R=0;
-  var G=0;
-  var B=0;
-  var total=vimgData.data.length/4;
+function imgColorIdentify(vimgData) {
+    var R = 0;
+    var G = 0;
+    var B = 0;
+    var total = vimgData.data.length / 4;
 
-  for (var i = 0; i < vimgData.data.length; i += 4) {
-      if(vimgData.data[i] >=vimgData.data[i+1] &&vimgData.data[i] >=vimgData.data[i+2] )
-      R++;
-      else if(vimgData.data[i+1]>=vimgData.data[i+2])
-      G++;
-      else {
-        B++;
-      }
-  }
-  if(R>=G&&R>=B)
-  return 1;
-  else if(G>=B)
-  return 2;
-  else {
-    return 3;
-  }
+    for (var i = 0; i < vimgData.data.length; i += 4) {
+        if (vimgData.data[i] >= vimgData.data[i + 1] && vimgData.data[i] >= vimgData.data[i + 2])
+            R++;
+        else if (vimgData.data[i + 1] >= vimgData.data[i + 2])
+            G++;
+        else {
+            B++;
+        }
+    }
+    if (R >= G && R >= B)
+        return 1;
+    else if (G >= B)
+        return 2;
+    else {
+        return 3;
+    }
 }
