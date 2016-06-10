@@ -19,8 +19,21 @@ function thresholdMap(data, threshold){
     如果不相同的資料位不超過5就說明兩張圖片很相似；如果大於10,就說明這是兩張不同的圖片*/
 function mapToBits(data, callback){
     var result = 0, bit = 0;
+    var i=0;
     data.forEach(function(element){
         result |= callback(element) << bit++;
     });
     return result;
+}
+
+function fingerPrint(data){
+    var avg=0;
+    var result;
+    for(var i=0;i<dropImgData.data.length;i+=4){
+      av+=dropImgData.data[i];
+    }
+    av/=dropImgData.data.length/4;
+
+
+  return result;
 }

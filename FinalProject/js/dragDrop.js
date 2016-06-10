@@ -1,8 +1,12 @@
 var dropZone=$("#dropZone");
 var dropImg=$("#dropImg")[0];
+var dropZone2=$("#dropZone2");
+var dropImg2=$("#dropImg2")[0];
 var dropCanvas=document.createElement("canvas");
 var dropCtx=dropCanvas.getContext("2d");
 var imgPicker=$("#imgPicker");
+var n=document.getElementById("selector").value;
+$("#selector").on("change",function(event){ n=document.getElementById("selector").value;doSomething();});
 imgPicker.on("change", function(event) {openFile(event);});
 
 dropZone.on("drop", function(event) {
@@ -19,14 +23,21 @@ dropImg.onload=function(){
 }
 
 function doSomething(){
-  var n;
-  n=document.getElementById("selector").value;
   dropCanvas.width = dropImg.width;
   dropCanvas.height = dropImg.height;
+
   dropCtx.drawImage(dropImg, 0, 0, dropCanvas.width, dropCanvas.height);
   var dropImgData= dropCtx.getImageData(0, 0, dropCanvas.width, dropCanvas.height);
-  ctx.putImageData(toGray(dropImgData, 3), 0, 0);
-  $("#similarity").html(imgCompare(imgData,dropImgData));
+  ctx.putImageData(toGray(dropImgData, n), 0, 0);
+  var grayData=[];
+  var av=0;
+  for(var i=0;i<dropImgData.data.length;i+=4){
+    grayData.push(dropImgData.data[i]);
+    av+=dropImgData.data[i];
+  }
+  av/=dropImgData.data.length/4;
+  console.log(av);
+  $("#similarity").html(thresholdMap(grayData,av).toString(2));
 }
 
 var openFile = function(event) {

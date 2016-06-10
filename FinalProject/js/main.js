@@ -12,7 +12,7 @@ var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 // ctx.putImageData(toGray(imgData, 3), 0, 0);
 testImg.onload = function() {
-    AutoResizeImage(80, 80, this);
+    AutoResizeImage(8, 8, this);
     canvas.width = testImg.width;
     canvas.height = testImg.height;
     ctx.drawImage(testImg, 0, 0, testImg.width, testImg.height);
