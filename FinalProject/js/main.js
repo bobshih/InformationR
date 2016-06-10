@@ -10,7 +10,6 @@ var canvas = $("#canvas")[0];
 var ctx = canvas.getContext("2d");
 var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-
 // ctx.putImageData(toGray(imgData, 3), 0, 0);
 testImg.onload = function() {
     AutoResizeImage(80, 80, this);
@@ -20,6 +19,20 @@ testImg.onload = function() {
     imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     ctx.putImageData(toGray(imgData), 0, 0);
 };
+
+function hash(img){
+  //縮小
+  AutoResizeImage(8, 8, img);
+
+  //將縮小後的畫上canvas
+  canvas.width = testImg.width;
+  canvas.height = testImg.height;
+  ctx.drawImage(img, 0, 0, testImg.width, testImg.height);
+  imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+  //轉灰階
+  ctx.putImageData(toGray(imgData), 0, 0);
+}
 
 function colorUpsidedown(vimgData) {
     for (var i = 0; i < vimgData.data.length; i += 4) {

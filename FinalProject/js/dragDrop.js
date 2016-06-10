@@ -25,12 +25,8 @@ function doSomething(){
   dropCanvas.height = dropImg.height;
   dropCtx.drawImage(dropImg, 0, 0, dropCanvas.width, dropCanvas.height);
   var dropImgData= dropCtx.getImageData(0, 0, dropCanvas.width, dropCanvas.height);
-<<<<<<< HEAD
   ctx.putImageData(toGray(dropImgData, 3), 0, 0);
   $("#similarity").html(imgCompare(imgData,dropImgData));
-=======
-  ctx.putImageData(toGray(dropImgData, n), 0, 0);
->>>>>>> 4dc2802a4c720b88cc417c3ddc3dfbd67d284d21
 }
 
 var openFile = function(event) {
