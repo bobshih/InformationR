@@ -18,22 +18,17 @@ function thresholdMap(data, threshold){
 /*演算法上說這就是那張圖片的指紋(也可說是他的身分證)(接著還要比較這些指紋,用Hamming distance(完成),
     如果不相同的資料位不超過5就說明兩張圖片很相似；如果大於10,就說明這是兩張不同的圖片*/
 function mapToBits(data, callback){
-    var result = 0, bit = 0;
-    var i=0;
+    var result = ""
+    // var i=0;
     data.forEach(function(element){
-        result |= callback(element) << bit++;
+      if(callback(element)){
+        result="1"+result;
+      }
+      else{
+        result="0"+result;
+      }
+        // console.log(i+"+"+callback(element)+"+"+result);
+        // i++;
     });
     return result;
-}
-
-function fingerPrint(data){
-    var avg=0;
-    var result;
-    for(var i=0;i<dropImgData.data.length;i+=4){
-      av+=dropImgData.data[i];
-    }
-    av/=dropImgData.data.length/4;
-
-
-  return result;
 }

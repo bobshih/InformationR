@@ -19,6 +19,10 @@ dropZone.on("drop", function(event) {
 });
 
 dropImg.onload=function(){
+  this.width=8;
+  this.height=8;
+  console.log(this.width+"+"+this.height);
+      imgToPrint(this);
       doSomething();
 }
 
@@ -36,7 +40,6 @@ function doSomething(){
     av+=dropImgData.data[i];
   }
   av/=dropImgData.data.length/4;
-  console.log(av);
   $("#similarity").html(thresholdMap(grayData,av).toString(2));
 }
 

@@ -12,7 +12,9 @@ var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 // ctx.putImageData(toGray(imgData, 3), 0, 0);
 testImg.onload = function() {
-    AutoResizeImage(8, 8, this);
+  this.width=8;
+  this.height=8;
+    imgToPrint(this);
     canvas.width = testImg.width;
     canvas.height = testImg.height;
     ctx.drawImage(testImg, 0, 0, testImg.width, testImg.height);
@@ -20,19 +22,6 @@ testImg.onload = function() {
     ctx.putImageData(toGray(imgData), 0, 0);
 };
 
-function hash(img){
-  //縮小
-  AutoResizeImage(8, 8, img);
-
-  //將縮小後的畫上canvas
-  canvas.width = testImg.width;
-  canvas.height = testImg.height;
-  ctx.drawImage(img, 0, 0, testImg.width, testImg.height);
-  imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-  //轉灰階
-  ctx.putImageData(toGray(imgData), 0, 0);
-}
 
 function colorUpsidedown(vimgData) {
     for (var i = 0; i < vimgData.data.length; i += 4) {
@@ -145,4 +134,24 @@ function imgColorIdentify(vimgData) {
     else {
         return 3;
     }
+}
+
+
+function imgToPrint(img){
+  var can= document.createElement("canvas");
+  var canCtx=dropCanvas.getContext("2d");
+  can.width = img.width;
+  can.height = img.height;
+  canCtx.drawImage(img, 0, 0, can.width, can.height);
+  var iData= canCtx.getImageData(0, 0, can.width, can.height);
+  canCtx.putImageData(toGray(iData), 0, 0);
+  var grayData=[];
+  var av=0;
+  for(var i=0;i<iData.data.length;i+=4){
+    grayData.push(iData.data[i]);
+    av+=iData.data[i];
+  }
+  av/=iData.data.length/4;
+  console.log(thresholdMap(grayData,av).toString(2));
+  return thresholdMap(grayData,av).toString(2);
 }
