@@ -12,7 +12,7 @@ var testTag = function() {
         existOrNot = (snapshot.child(type).exists());
         console.log(existOrNot);
         document.getElementsByName('existLabel')[0].innerHTML = existOrNot;
-        new Firebase(ref + type).once("value", function(snapshot) {
+        new Firebase(ref + type+"/orgin").once("value", function(snapshot) {
             childNum = snapshot.numChildren();
             document.getElementsByName('existLabel')[0].innerHTML += childNum;
         });
@@ -32,17 +32,18 @@ var uploadFile = function(count) {
     console.log("in uploadFile");
     console.log("count = " + count);
     console.log("childNum = " + childNum);
-    var newRef = ref + type + "/" + (childNum + 1 + count);
+    var id = (childNum + 1 + count);
+    var newRef = ref + type + "/";
 
     // 存原圖片
-    var firebase = new Firebase(newRef + "/orgin");
+    var firebase = new Firebase(newRef + "orgin/" + id);
     console.log(firebase.toString());
     var orgin = $('#' + count).attr("src");
     // console.log(orgin);
     firebase.set(orgin);
 
     //存指紋
-    var firebase = new Firebase(newRef + "/print");
+    var firebase = new Firebase(newRef + "print/" + id);
     console.log(firebase.toString());
     var print = document.getElementsByName('print')[count].innerHTML;
     // var print = $("p[name='print']")[count].text();
