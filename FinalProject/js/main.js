@@ -1,27 +1,27 @@
-// var testImg=$("#testImg");
-var testImg = document.createElement("img");
-$(testImg).appendTo("body");
-testImg.src = "src/testIMG.jpg";
-
-var width = testImg.width;
-var height = testImg.height;
-var canvas = $("#canvas")[0];
-
-var ctx = canvas.getContext("2d");
-var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+// // var testImg=$("#testImg");
+// var testImg = document.createElement("img");
+// // $(testImg).appendTo("body");
+// // testImg.src = "src/testIMG.jpg";
+//
+// var width = testImg.width;
+// var height = testImg.height;
+// var canvas = $("#canvas")[0];
+//
+// var ctx = canvas.getContext("2d");
+// var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 // ctx.putImageData(toGray(imgData, 3), 0, 0);
-testImg.onload = function() {
-  this.width=8;
-console.log(this.width);
-    AutoResizeImage(8, 8, this);
-    imgToPrint(this);
-    canvas.width = testImg.width;
-    canvas.height = testImg.height;
-    ctx.drawImage(testImg, 0, 0, testImg.width, testImg.height);
-    imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    ctx.putImageData(toGray(imgData), 0, 0);
-};
+// testImg.onload = function() {
+//     this.width = 8;
+//     console.log(this.width);
+//     AutoResizeImage(8, 8, this);
+//     imgToPrint(this);
+//     canvas.width = testImg.width;
+//     canvas.height = testImg.height;
+//     ctx.drawImage(testImg, 0, 0, testImg.width, testImg.height);
+//     imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+//     ctx.putImageData(toGray(imgData), 0, 0);
+// };
 
 
 function colorUpsidedown(vimgData) {
@@ -71,12 +71,12 @@ function toGray(imgData, n) {
             imgData.data[i + 2] = colors[level];
         }
     } else {
-      for (var i = 0; i < imgData.data.length; i += 4) {
-        var avg=(imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
-          imgData.data[i] = avg;
-          imgData.data[i + 1] = avg;
-          imgData.data[i + 2] = avg;
-      }
+        for (var i = 0; i < imgData.data.length; i += 4) {
+            var avg = (imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
+            imgData.data[i] = avg;
+            imgData.data[i + 1] = avg;
+            imgData.data[i + 2] = avg;
+        }
     }
     return imgData;
 }
@@ -138,21 +138,97 @@ function imgColorIdentify(vimgData) {
 }
 
 
-function imgToPrint(img){
-  var can= document.createElement("canvas");
-  var canCtx=dropCanvas.getContext("2d");
-  can.width = img.width;
-  can.height = img.height;
-  canCtx.drawImage(img, 0, 0, can.width, can.height);
-  var iData= canCtx.getImageData(0, 0, can.width, can.height);
-  canCtx.putImageData(toGray(iData), 0, 0);
-  var grayData=[];
-  var av=0;
-  for(var i=0;i<iData.data.length;i+=4){
-    grayData.push(iData.data[i]);
-    av+=iData.data[i];
-  }
-  av/=iData.data.length/4;
-  // console.log(thresholdMap(grayData,av).toString(2));
-  return thresholdMap(grayData,av).toString(2);
+function imgToPrint() {
+    // var vimg = document.createElement("img");
+    // vimg.src = img.src;
+    var vimg = $("#imgUnShow")[0];
+    console.log(vimg);
+    var can = document.createElement("canvas");
+    var canCtx = can.getContext("2d");
+    can.width = vimg.width;
+    can.height = vimg.height;
+    canCtx.drawImage(vimg, 0, 0, can.width, can.height);
+    var iData = canCtx.getImageData(0, 0, can.width, can.height);
+    canCtx.putImageData(toGray(iData), 0, 0);
+
+    var grayData = [];
+    var av = 0;
+    for (var i = 0; i < iData.data.length; i += 4) {
+        grayData.push(iData.data[i]);
+        av += iData.data[i];
+    }
+    av /= iData.data.length / 4;
+    // console.log(thresholdMap(grayData,av).toString(2));
+    return thresholdMap(grayData, av).toString(2);
+}
+
+var imgPicker = $("#imgPicker");
+imgPicker.on("change", function(event) {
+    openFile(event);
+
+});
+
+var openFile = function(event) {
+
+    var input = event.target;
+    var reader = new FileReader();
+    reader.onload = function() {
+      $(".relativeImg").empty();
+        var dataURL = reader.result;
+        $("#imgUnShow")[0].src = dataURL;
+        $("#imgShow")[0].src = dataURL;
+        $("#imgUnShow")[0].onload = function() {
+            compare();
+        };
+    };
+    reader.readAsDataURL(input.files[0]);
+};
+GetPrints();
+
+function compare(img) {
+    var imgP = imgToPrint(img);
+    console.log(imgP);
+    prints.forEach(function(element) {
+        element.dis = hamdist(element.p, imgP);
+    });
+    prints.sort(function(a, b) {
+        if (a.dis == b.dis)
+            return a.id - b.id;
+        return a.dis - b.dis;
+    });
+
+    var type = [];
+    var k = 5;
+    for (var i = 0; i < k; i++) {
+        var flag = true;
+        type.forEach(function(ele) {
+            if (ele.name == prints[i].cName) {
+                ele.count += 1;
+                flag = false;
+            }
+        });
+        if (flag) {
+            var obj = {};
+            obj.name = prints[i].cName;
+            obj.count = 1;
+            type.push(obj);
+        }
+        // type.push(prints[i]);
+    }
+    type.sort(function(a, b) {
+        return a.count < b.count;
+    })
+
+    console.log(type);
+    document.getElementsByName('tags')[0].innerHTML = "tags=>"
+    type.forEach(function(ele) {
+        document.getElementsByName('tags')[0].innerHTML += ("type: " + ele.name + "(" + ele.count + ");");
+    });
+
+    for (var i = 0; i < 10; i++) {
+        GetImage(prints[i].cName, prints[i].id);
+        // var vimg=document.createElement("img");
+        // vimg.src=GetImage(prints[i].cName,prints[i].id);
+        // $(vimg).appendTo($("#relativeImg"));
+    }
 }

@@ -12,33 +12,48 @@ var GetCategoryPrints = function(cName) {
             print.p = p.val();
             // console.log(print);
             prints.push(print);
-        });
 
-        console.log("get prints");
-        console.log(prints);
+        });
+        fireBaseFlag--;
+        // console.log("get prints");
+        // console.log(prints);
+        if (!fireBaseFlag)
+        {
+$("#imgPicker").attr("disabled",false);
+             $('#done').text("done");}
     });
 }
+$("#imgPicker").attr("disabled",true);
+var fireBaseFlag;
 
 var GetPrints = function() {
     var firebase = new Firebase(firebaseRef + "category");
+
     firebase.once('value', function(categories) {
+        fireBaseFlag = categories.length;
         categories.forEach(function(category) {
             var c = category.key();
             GetCategoryPrints(c);
-
-
         });
     });
+
 }
 
 var GetImage = function(type, id) {
-    console.log("in get image type = " + type + " id = " + id);
+    // console.log("in get image type = " + type + " id = " + id);
     var f = new Firebase(firebaseRef + type + '/orgin/' + id);
     f.on('value', function(snapshot) {
-        console.log("firebase = " + f.toString());
-        document.getElementById("img").src = snapshot.val();
+        // console.log("firebase = " + f.toString());
+        // console.log(snapshot.val());
+        // return snapshot.val();
+              var vimg=document.createElement("img");
+              vimg.width=80;
+              vimg.height=80;
+              vimg.src = snapshot.val();
+            $(vimg).appendTo($(".relativeImg"));
     });
+
 }
 
 // $(document).ready(GetPrints);
-$(document).ready(GetImage("test1", 1));
+// $(document).ready(GetImage("test1", 1));
