@@ -16,6 +16,12 @@ var testTag = function() {
             childNum = snapshot.numChildren();
             document.getElementsByName('existLabel')[0].innerHTML += childNum;
         });
+
+        // 設定新的類別，如果不存在的話
+        if(existOrNot === false){
+            new Firebase(ref+"category/" + type).set(type);
+        }
+
         spinner.stop();
     });
 
