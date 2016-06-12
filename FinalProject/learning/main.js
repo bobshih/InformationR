@@ -65,6 +65,7 @@ var main = function() {
         count = document.getElementById('file-upload').files.length;
     });
     $("#read_button").click(function() {
+        $('#pics').empty();
         var files = document.getElementById('file-upload').files;
         for (i = 0; i < count; i++) {
             readFile(files[i], i);
