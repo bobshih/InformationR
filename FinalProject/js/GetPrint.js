@@ -17,13 +17,13 @@ var GetCategoryPrints = function(cName) {
         fireBaseFlag--;
         // console.log("get prints");
         // console.log(prints);
-        if (!fireBaseFlag)
-        {
-$("#imgPicker").attr("disabled",false);
-             $('#done').text("done");}
+        if (!fireBaseFlag) {
+            $("#imgPicker").attr("disabled", false);
+            $('#done').text("done");
+        }
     });
 }
-$("#imgPicker").attr("disabled",true);
+$("#imgPicker").attr("disabled", true);
 var fireBaseFlag;
 
 var GetPrints = function() {
@@ -46,11 +46,17 @@ var GetImage = function(type, id) {
         // console.log("firebase = " + f.toString());
         // console.log(snapshot.val());
         // return snapshot.val();
-              var vimg=document.createElement("img");
-              vimg.width=80;
-              vimg.height=80;
-              vimg.src = snapshot.val();
-            $(vimg).appendTo($(".relativeImg"));
+        var vimg = document.createElement("img");
+        vimg.width = 80;
+        vimg.height = 80;
+        vimg.src = snapshot.val();
+        vimg.onload = function() {
+            imgBuffer.push(vimg);
+            imgFlag--;
+            if (!imgFlag) {
+                imgPrint();
+            }
+        };
     });
 
 }

@@ -173,7 +173,7 @@ var openFile = function(event) {
     var input = event.target;
     var reader = new FileReader();
     reader.onload = function() {
-      $(".relativeImg").empty();
+        init();
         var dataURL = reader.result;
         $("#imgUnShow")[0].src = dataURL;
         $("#imgShow")[0].src = dataURL;
@@ -224,11 +224,35 @@ function compare(img) {
     type.forEach(function(ele) {
         document.getElementsByName('tags')[0].innerHTML += ("type: " + ele.name + "(" + ele.count + ");");
     });
+    showRelative(10);
 
-    for (var i = 0; i < 10; i++) {
-        GetImage(prints[i].cName, prints[i].id);
-        // var vimg=document.createElement("img");
-        // vimg.src=GetImage(prints[i].cName,prints[i].id);
-        // $(vimg).appendTo($("#relativeImg"));
+
+}
+
+var imgBuffer=[];
+var imgFlag;
+function showRelative(k){
+  if(prints.length<k)
+  k=prints.length;
+  imgFlag=k;
+  for (var i = 0; i < k; i++) {
+      GetImage(prints[i].cName, prints[i].id);
+      // var vimg=document.createElement("img");
+      // vimg.src=GetImage(prints[i].cName,prints[i].id);
+      // $(vimg).appendTo($("#relativeImg"));
+  }
+}
+
+function imgPrint(){
+  imgBuffer.forEach(
+    function(ele){
+        $(ele).appendTo($(".relativeImg"));
     }
+  );
+}
+
+function init()
+{
+  imgBuffer=[];
+  $(".relativeImg").empty();
 }
