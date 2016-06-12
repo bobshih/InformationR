@@ -1,14 +1,9 @@
 var dropZone=$("#dropZone");
 var dropImg=$("#dropImg")[0];
-var dropZone2=$("#dropZone2");
-var dropImg2=$("#dropImg2")[0];
 var dropCanvas=document.createElement("canvas");
 var dropCtx=dropCanvas.getContext("2d");
 var imgPicker=$("#imgPicker");
-var n=document.getElementById("selector").value;
-$("#selector").on("change",function(event){ n=document.getElementById("selector").value;doSomething();});
 imgPicker.on("change", function(event) {openFile(event);});
-
 dropZone.on("drop", function(event) {
     event.preventDefault();
     event.stopPropagation();

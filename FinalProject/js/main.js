@@ -13,7 +13,8 @@ var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 // ctx.putImageData(toGray(imgData, 3), 0, 0);
 testImg.onload = function() {
   this.width=8;
-  this.height=8;
+console.log(this.width);
+    AutoResizeImage(8, 8, this);
     imgToPrint(this);
     canvas.width = testImg.width;
     canvas.height = testImg.height;
@@ -152,6 +153,6 @@ function imgToPrint(img){
     av+=iData.data[i];
   }
   av/=iData.data.length/4;
-  console.log(thresholdMap(grayData,av).toString(2));
+  // console.log(thresholdMap(grayData,av).toString(2));
   return thresholdMap(grayData,av).toString(2);
 }

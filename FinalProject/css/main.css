@@ -9,4 +9,18 @@
   width: 8px;
   height: 8px; }
 
+.imgInput {
+  width: 80px;
+  height: 80px;
+  border: 2px dashed blue; }
+
+.imgShow {
+  width: 80px;
+  height: 80px; }
+
+.relativeImg {
+  width: 100%;
+  height: 80px;
+  border: 2px solid yellow; }
+
 /*# sourceMappingURL=main.css.map */
